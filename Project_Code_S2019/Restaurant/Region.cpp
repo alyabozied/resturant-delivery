@@ -82,6 +82,22 @@ Order* Region::dequeueF()
 	FOrderQueue.dequeue(ord);
 	return  ord;
 }
+void Region::DeleteMotors()
+{
+	while (NMotorQueue.getcount() != 0)
+	{
+		delete NMotorQueue.extractMax();
+	}
+	while (VMotorQueue.getcount() != 0)
+	{
+		delete VMotorQueue.extractMax();
+	}
+	while (FMotorQueue.getcount() != 0)
+	{
+		delete FMotorQueue.extractMax();
+	}
+}
+
 
 
 

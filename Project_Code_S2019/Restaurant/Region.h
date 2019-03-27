@@ -36,6 +36,7 @@ public:
 	Order* dequeueN();
 	Order* dequeueV();
 	Order* dequeueF();
+	void DeleteMotors();
 
 
 	~Region(void);

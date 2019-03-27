@@ -183,11 +183,10 @@ void Restaurant::ReadFile()
 		}
 
 	}
+	delete NMotors;
+	delete VMotors;
+	delete FMotors;
 	
-
-
-
-
 }
 
 
@@ -222,7 +221,10 @@ void Restaurant::simulate()   // Phase one simulation function and it is named s
 
 	
 
-
+	for (int i = 0; i < 4; i++)
+	{
+		GetRegion(i)->DeleteMotors();
+	}
 	pGUI->PrintMessage("generation done, click to END program");
 	pGUI->waitForClick();
 
