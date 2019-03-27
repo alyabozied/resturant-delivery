@@ -29,7 +29,7 @@ public:
 	void ExecuteEvents(int TimeStep);	//executes all events at current timestep
 	Region* GetRegion(int);
 	void RunSimulation();
-	void ReadFile();
+	bool ReadFile();
 	void AddtoQueue(Order* po);
 	Order* getOrder();
 	

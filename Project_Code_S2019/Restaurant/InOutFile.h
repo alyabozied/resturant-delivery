@@ -18,8 +18,8 @@ class InOutFile
 public:
 	InOutFile(Restaurant*, GUI*);
 	~InOutFile();
-	void Read();
-	void Write();
+	bool Read();
+	bool Write();
 private:
 
 };

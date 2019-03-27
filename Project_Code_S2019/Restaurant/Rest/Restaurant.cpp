@@ -69,10 +69,12 @@ Region* Restaurant::GetRegion(int index)
 
 
 //function to read inputs from a file
-void Restaurant::ReadFile()
+bool Restaurant::ReadFile()
 {
 	InOutFile loadfile(this, pGUI);
-	loadfile.Read();
+	if(loadfile.Read())
+		return true;
+	return false;
 }
 
 
@@ -85,7 +87,12 @@ Restaurant::~Restaurant()
 
 void Restaurant::simulate()   // Phase one simulation function and it is named simulate cause it is the only simulation function in this phase
 {
-	ReadFile(); int currstep = 1 ;
+	if(!ReadFile())
+	{
+		pGUI->waitForClick();
+		return;
+	}
+	int currstep = 1 ;
 	pGUI->PrintMessage("");
 	bool FlagOrd=true;
 	while(!EventsQueue.isEmpty() || FlagOrd )

@@ -10,7 +10,13 @@ InOutFile::~InOutFile()
 
 }
 
-void InOutFile::Read()
+bool InOutFile::Write()
+{
+	//modified later to output in a file
+	return false;
+}
+
+bool InOutFile::Read()
 {
 	pGUI->PrintMessage("Enter the file name: ");
 	FileName = pGUI->GetString();
@@ -18,7 +24,7 @@ void InOutFile::Read()
 	if(!InputFile.is_open())
 	{
 		pGUI->PrintMessage("an error occured loading the file there may not exist a file with this name");
-		return;
+		return false; 
 	}
 	//speed of differnet types of motors
 	int SpeedN, SpeedF, SpeedV;
@@ -111,9 +117,11 @@ void InOutFile::Read()
 		else 
 		{
 			pGUI->PrintMessage("wrong file format");
+			return false;
 		}
 
 	}
+	return true;
 }
 
 
