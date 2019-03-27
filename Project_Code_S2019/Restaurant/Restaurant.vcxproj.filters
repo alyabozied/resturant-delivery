@@ -120,6 +120,9 @@
     <ClInclude Include="Region.h">
       <Filter>Restaurant</Filter>
     </ClInclude>
+    <ClInclude Include="InOutFile.h">
+      <Filter>Restaurant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Demo_Main.cpp" />
@@ -253,6 +256,9 @@
       <Filter>Events</Filter>
     </ClCompile>
     <ClCompile Include="Region.cpp">
+      <Filter>Restaurant</Filter>
+    </ClCompile>
+    <ClCompile Include="InOutFile.cpp">
       <Filter>Restaurant</Filter>
     </ClCompile>
   </ItemGroup>

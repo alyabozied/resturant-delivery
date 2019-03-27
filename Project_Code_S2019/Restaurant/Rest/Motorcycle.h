@@ -9,24 +9,25 @@ class Motorcycle
 {
 	int ID;
 	ORD_TYPE type;	//for each order type there is a corresponding motorcycle type 
-	int speed;		//meters it can move in one clock tick (in one timestep)
+	double speed;		//meters it can move in one clock tick (in one timestep)
 	REGION	region;	//region of the motorcycle
 	STATUS	status;	//idle or in-service
 	int ArrivalTime;
 public:
 	Motorcycle();
+	Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type);
 	//Setters and Getters for All Date Members
-	int GetStatues()const;
-	void SetStatus(int);
+	STATUS GetStatus()const;
+	void SetStatus(STATUS);
 
 	int GetID()const;
 	void SetID(int);
 
-	int GetSpeed()const;
-	void SetSpeed(int);
+	double GetSpeed()const;
+	void SetSpeed(double);
 
-	int GetType()const;
-	void SetType(int);
+	ORD_TYPE GetType()const;
+	void SetType(ORD_TYPE);
 	bool operator <(Motorcycle M);
 	bool operator >(Motorcycle M);
 	bool operator ==(Motorcycle M);

@@ -104,6 +104,7 @@
     <ClInclude Include="Generic_DS\PriorityQueue.h" />
     <ClInclude Include="Generic_DS\Queue.h" />
     <ClInclude Include="GUI\GUI.h" />
+    <ClInclude Include="InOutFile.h" />
     <ClInclude Include="Region.h" />
     <ClInclude Include="Rest\Motorcycle.h" />
     <ClInclude Include="Rest\Order.h" />
@@ -151,6 +152,7 @@
     <ClCompile Include="Events\ArrivalEvent.cpp" />
     <ClCompile Include="Events\PromotionEvent.cpp" />
     <ClCompile Include="GUI\GUI.cpp" />
+    <ClCompile Include="InOutFile.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="Rest\Motorcycle.cpp" />
     <ClCompile Include="Rest\Order.cpp" />

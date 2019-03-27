@@ -6,7 +6,7 @@
 #include "..\GUI\GUI.h"
 #include "..\Generic_DS\Queue.h"
 #include "..\Events\Event.h"
-
+#include "..\InOutFile.h"
 #include"..\Region.h"
 #include "Order.h"
 
@@ -17,7 +17,7 @@ private:
 	GUI *pGUI;
 	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
 	Region R[4];
-	Queue<Order*> Queue1;	//Important: This is just for demo
+	//Queue<Order*> Queue1;	//Important: This is just for demo
 	
 	// TODO: Add More Data Members As Needed
 	//
