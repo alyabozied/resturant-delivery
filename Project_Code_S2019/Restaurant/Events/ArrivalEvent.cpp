@@ -16,6 +16,9 @@ ArrivalEvent::ArrivalEvent(int eTime, int oID, ORD_TYPE oType, REGION reg, int d
 	OrdDistance = dist> 0 ? dist :0;
 }
 
+
+
+
 void ArrivalEvent::Execute(Restaurant* pRest)
 {
 	//This function should create an order and fills its data 

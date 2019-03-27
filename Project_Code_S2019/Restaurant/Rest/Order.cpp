@@ -12,7 +12,10 @@ Order::Order(int id, ORD_TYPE r_Type, REGION r_region, int dist, double mon)
 	else  
 		priorty= - ArrTime;
 	
-	
+}
+void Order::SetType(ORD_TYPE oType)
+{
+	type=oType;
 }
 
 Order::~Order()

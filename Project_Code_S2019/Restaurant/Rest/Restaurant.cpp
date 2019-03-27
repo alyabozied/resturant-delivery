@@ -19,8 +19,7 @@ void Restaurant::RunSimulation()
 {
 	pGUI = new GUI;
 	PROG_MODE	mode = pGUI->getGUIMode();
-		
-	switch (mode)	//Add a function for each mode in next phases
+			switch (mode)	//Add a function for each mode in next phases
 	{
 	case MODE_INTR:
 		break;
@@ -202,6 +201,7 @@ Restaurant::~Restaurant()
 void Restaurant::simulate()   // Phase one simulation function and it is named simulate cause it is the only simulation function in this phase
 {
 	ReadFile(); int currstep = 1 ;
+	pGUI->PrintMessage("");
 	bool FlagOrd=true;
 	while(!EventsQueue.isEmpty() || FlagOrd )
 	{
@@ -209,12 +209,10 @@ void Restaurant::simulate()   // Phase one simulation function and it is named s
 		ExecuteEvents(currstep);
 		FlagOrd=LoadGUI();
 		char timestep[10];
-		itoa(currstep,timestep,10);	
-		
-		//pGUI->PrintMessage("Click to proceed");
+		itoa(currstep,timestep,10);			
 		pGUI->waitForClick();
-		pGUI->PrintMessage(timestep);
 		pGUI->UpdateInterface();
+		pGUI->DrawTimeStepCenter(currstep);
 		pGUI->ResetDrawingList();
 		currstep++;
 		DeleteMax();	

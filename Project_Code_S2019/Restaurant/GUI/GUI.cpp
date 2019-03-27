@@ -78,11 +78,11 @@ void GUI::DrawString(const int iX, const int iY, const string Text)
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::ClearStatusBar() const
 {
-	pWind->SetPen(WHITE, 3);
-	pWind->SetBrush(WHITE);
+	pWind->SetPen(RED, 3);
+	pWind->SetBrush(BLACK);
 	pWind->DrawRectangle(0, WindHeight - StatusBarHeight , WindWidth, WindHeight);	
 
-	pWind->SetPen(BROWN, 3);
+	pWind->SetPen(RED, 3);
 	pWind->DrawLine(0, WindHeight - StatusBarHeight , WindWidth, WindHeight - StatusBarHeight);	
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -99,9 +99,9 @@ void GUI::DrawRestArea() const
 	int L = RestWidth / 2;
 
 	// 1- Drawing the brown square of the Rest
-	pWind->SetPen(BROWN);
+	pWind->SetPen(DARKBLUE);
 	pWind->SetBrush(BROWN);
-	pWind->DrawRectangle(RestStartX, RestStartY, RestEndX, RestEndY);
+	pWind->DrawCircle(WindWidth/2, (WindHeight-100)/2,200);
 
 	// 2- Drawing the 2 brown crossed lines (for making 4 regions)
 	pWind->SetPen(BROWN, 3);
@@ -109,26 +109,30 @@ void GUI::DrawRestArea() const
 	pWind->DrawLine(WindWidth/2, MenuBarHeight, WindWidth/2, WindHeight-StatusBarHeight);
 
 	// 3- Drawing the 2 white crossed lines (inside the Rest)
-	pWind->SetPen(WHITE);
+	pWind->SetPen(BLACK);
 	pWind->DrawLine(WindWidth/2, YHalfDrawingArea - RestWidth/2, WindWidth/2, YHalfDrawingArea + RestWidth/2);
 	pWind->DrawLine(WindWidth/2 - RestWidth/2, YHalfDrawingArea, WindWidth/2 + RestWidth/2, YHalfDrawingArea);
 
 	// 4- Drawing the 4 white squares inside the Rest (one for each tower)
-	pWind->SetPen(WHITE);
-	pWind->SetBrush(WHITE);
-	pWind->DrawRectangle(RestStartX + L/3, RestStartY + L/3, RestStartX + 2*L/3, RestStartY + 2*L/3);
-	pWind->DrawRectangle(RestStartX + L/3, RestEndY - L/3, RestStartX + 2*L/3, RestEndY - 2*L/3);
-	pWind->DrawRectangle(RestEndX - 2*L/3, RestStartY + L/3, RestEndX - L/3, RestStartY + 2*L/3);
-	pWind->DrawRectangle(RestEndX - 2*L/3, RestEndY - L/3, RestEndX - L/3, RestEndY - 2*L/3);
+	pWind->SetPen(DARKBLUE);
+	pWind->SetBrush(DARKSLATEBLUE);
+	pWind->DrawCircle(540, 215, 50 );
+	pWind->DrawCircle(540,335,50);
+	pWind->DrawCircle(660,215,50);
+	pWind->DrawCircle(660,335,50);
 
 	// 5- Writing the letter of each region (A, B, C, D)
-	pWind->SetPen(BROWN);
+	pWind->SetPen(FORESTGREEN);
 	pWind->SetFont(25, BOLD , BY_NAME, "Arial");
-	pWind->DrawString(RestStartX + (int)(0.44*L), RestStartY + 5*L/12, "A");
-	pWind->DrawString(RestStartX + (int)(0.44*L), YHalfDrawingArea + 5*L/12, "D");
+	pWind->DrawString(530 ,  RestStartY + 5*L/12, "A");
+	pWind->DrawString(530 , YHalfDrawingArea + 5*L/12, "D");
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), RestStartY + 5*L/12, "B");
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), YHalfDrawingArea + 5*L/12, "C"); 
 
+	// 6- Drawing circle to count the current step
+	pWind->SetPen(DARKBLUE);
+	pWind->SetBrush(BLACK);
+	pWind->DrawCircle(600,275,20);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a private function
@@ -154,25 +158,25 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a pri
 	switch (Region)
 	{
 	case A_REG:
-		refX = (WindWidth/2 - RestWidth/2);
+		refX = (WindWidth/2 - 200);
 		refY = YHalfDrawingArea - OrderHeight; //
 		x = refX - DrawDistance*OrderWidth - DrawDistance; //(Distance)
 		y = refY - YPos*OrderHeight - YPos; // YPos
 		break;
 	case B_REG:
-		refX = (WindWidth/2 + RestWidth/2);
+		refX = (WindWidth/2 + 200);
 		refY = YHalfDrawingArea - OrderHeight; //
 		x = refX + (DrawDistance-1)*OrderWidth + DrawDistance; //(Distance)
 		y = refY - YPos*OrderHeight - YPos; // YPos
 		break;
 	case C_REG:
-		refX = (WindWidth/2 + RestWidth/2);
+		refX = (WindWidth/2 + 200);
 		refY = YHalfDrawingArea + OrderHeight; //
 		x = refX + (DrawDistance-1)*OrderWidth + DrawDistance; //(Distance)
 		y = refY + (YPos-1)*OrderHeight + YPos; // YPos
 		break;
 	case D_REG:
-		refX = (WindWidth/2 - RestWidth/2);
+		refX = (WindWidth/2 - 200);
 		refY = YHalfDrawingArea + OrderHeight; //
 		x = refX - DrawDistance*OrderWidth - DrawDistance; //(Distance)
 		y = refY + (YPos-1)*OrderHeight + YPos; // YPos
@@ -184,7 +188,6 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a pri
 	// Drawing the Order
 	pWind->SetPen(clr);
 	pWind->SetBrush(clr);
-	//pWind->DrawRectangle(x, y, x + OrderWidth, y + OrderHeight);
 	pWind->SetFont(20,BOLD, MODERN);
 	pWind->DrawInteger(x,y,pO->GetID());
 }
@@ -249,4 +252,16 @@ PROG_MODE	GUI::getGUIMode() const
 	while(Mode< 0 || Mode >= MODE_CNT);
 	
 	return Mode;
+}
+///////////////////////////////////////////////////////////////
+void GUI::DrawTimeStepCenter(int TS)
+{
+
+	
+	// Drawing current step
+	pWind->SetPen(DARKBLUE);
+	pWind->SetBrush(GREY);
+	pWind->SetFont(20,BOLD, MODERN);
+	pWind->DrawInteger(592,265,TS);
+
 }

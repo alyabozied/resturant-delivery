@@ -29,7 +29,7 @@ public:
 
 	int GetType() const;
 	REGION GetRegion() const;
-
+	void SetType(ORD_TYPE);
 	void SetDistance(int d);
 	int GetDistance() const;
 	bool operator <(Order v);

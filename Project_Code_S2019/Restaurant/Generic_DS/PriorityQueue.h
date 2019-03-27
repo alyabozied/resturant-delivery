@@ -137,7 +137,7 @@ void priorityQueue<T>::changePriority(T item,int priorty){
 	else shiftup(index);
 }
 template <typename T>
-T priorityQueue<T>::getmax()const{
+T priorityQueue<T>::getmax()const	{
 	return tree[0];
 }
 template <typename T>
