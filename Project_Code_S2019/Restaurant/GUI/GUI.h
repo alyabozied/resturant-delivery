@@ -100,7 +100,7 @@ public:
 	void ResetDrawingList();		//resets drawing list (should be called every timestep after drawing)
 
 	PROG_MODE getGUIMode() const;			//returns the mode of the program
-	void DrawTimeStepCenter(int);
+	void DrawTimeStepCenter(string );
 };
 
 #endif

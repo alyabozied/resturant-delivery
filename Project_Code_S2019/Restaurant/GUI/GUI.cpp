@@ -78,20 +78,39 @@ void GUI::DrawString(const int iX, const int iY, const string Text)
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::ClearStatusBar() const
 {
-	pWind->SetPen(RED, 3);
-	pWind->SetBrush(BLACK);
+	pWind->SetPen(RED, 2);
+	pWind->SetBrush(WHITE);
 	pWind->DrawRectangle(0, WindHeight - StatusBarHeight , WindWidth, WindHeight);	
 
-	pWind->SetPen(RED, 3);
+	pWind->SetPen(RED, 1);
 	pWind->DrawLine(0, WindHeight - StatusBarHeight , WindWidth, WindHeight - StatusBarHeight);	
 }
 ///////////////////////////////////////////////////////////////////////////////////
 void GUI::ClearDrawingArea() const
 {
+	//    DARKOLIVEGREEN  DARKRED  DARKSALMON   DARKSEAGREEN   DARKTURQUOISE
 	// Clearing the Drawing area
-	pWind->SetPen(KHAKI, 3);
-	pWind->SetBrush(KHAKI);
-	pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
+
+	//up left 
+	pWind->SetPen(SALMON, 3);
+	pWind->SetBrush(SALMON);
+	pWind->DrawRectangle(0, MenuBarHeight, WindWidth/2, (WindHeight-100)/2);
+
+	//up right 
+	pWind->SetPen(CADETBLUE, 3);
+	pWind->SetBrush(CADETBLUE);
+	pWind->DrawRectangle(WindWidth/2, (WindHeight-100)/2 , WindWidth, MenuBarHeight );	
+
+	//down left 
+	pWind->SetPen(DARKSEAGREEN, 3);
+	pWind->SetBrush(DARKTURQUOISE);	
+	pWind->DrawRectangle(0, WindHeight-StatusBarHeight, WindWidth/2,  (WindHeight-100)/2 );
+	
+	//down right  
+	pWind->SetPen(DARKRED, 3);
+	pWind->SetBrush(DARKRED);
+	pWind->DrawRectangle(WindWidth/2, WindHeight-StatusBarHeight, WindWidth,  (WindHeight-100)/2 );
+	
 }
 ///////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawRestArea() const
@@ -100,26 +119,17 @@ void GUI::DrawRestArea() const
 
 	// 1- Drawing the brown square of the Rest
 	pWind->SetPen(DARKBLUE);
-	pWind->SetBrush(BROWN);
+	pWind->SetBrush(YELLOW);
 	pWind->DrawCircle(WindWidth/2, (WindHeight-100)/2,200);
 
 	// 2- Drawing the 2 brown crossed lines (for making 4 regions)
+
 	pWind->SetPen(BROWN, 3);
 	pWind->DrawLine(0, YHalfDrawingArea, WindWidth, YHalfDrawingArea);
 	pWind->DrawLine(WindWidth/2, MenuBarHeight, WindWidth/2, WindHeight-StatusBarHeight);
 
-	// 3- Drawing the 2 white crossed lines (inside the Rest)
-	pWind->SetPen(BLACK);
-	pWind->DrawLine(WindWidth/2, YHalfDrawingArea - RestWidth/2, WindWidth/2, YHalfDrawingArea + RestWidth/2);
-	pWind->DrawLine(WindWidth/2 - RestWidth/2, YHalfDrawingArea, WindWidth/2 + RestWidth/2, YHalfDrawingArea);
-
-	// 4- Drawing the 4 white squares inside the Rest (one for each tower)
-	pWind->SetPen(DARKBLUE);
-	pWind->SetBrush(DARKSLATEBLUE);
-	pWind->DrawCircle(540, 215, 50 );
-	pWind->DrawCircle(540,335,50);
-	pWind->DrawCircle(660,215,50);
-	pWind->DrawCircle(660,335,50);
+	
+	
 
 	// 5- Writing the letter of each region (A, B, C, D)
 	pWind->SetPen(FORESTGREEN);
@@ -130,9 +140,9 @@ void GUI::DrawRestArea() const
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), YHalfDrawingArea + 5*L/12, "C"); 
 
 	// 6- Drawing circle to count the current step
-	pWind->SetPen(DARKBLUE);
-	pWind->SetBrush(BLACK);
-	pWind->DrawCircle(600,275,20);
+	pWind->SetPen(BLACK);
+	pWind->SetBrush(DARKRED);
+	pWind->DrawCircle(600,275,50);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a private function
@@ -254,14 +264,13 @@ PROG_MODE	GUI::getGUIMode() const
 	return Mode;
 }
 ///////////////////////////////////////////////////////////////
-void GUI::DrawTimeStepCenter(int TS)
+void GUI::DrawTimeStepCenter(string TS)
 {
 
 	
 	// Drawing current step
-	pWind->SetPen(DARKBLUE);
-	pWind->SetBrush(GREY);
+	pWind->SetPen(DARKMAGENTA);
 	pWind->SetFont(20,BOLD, MODERN);
-	pWind->DrawInteger(592,265,TS);
+	pWind->DrawString(580,265,"00:"+TS);
 
 }

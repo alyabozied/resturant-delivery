@@ -104,7 +104,7 @@ void Restaurant::simulate()   // Phase one simulation function and it is named s
 		itoa(currstep,timestep,10);			
 		pGUI->waitForClick();
 		pGUI->UpdateInterface();
-		pGUI->DrawTimeStepCenter(currstep);
+		pGUI->DrawTimeStepCenter(timestep);
 		pGUI->ResetDrawingList();
 		currstep++;
 		DeleteMax();	
