@@ -93,7 +93,7 @@ void Restaurant::simulate()   // Phase one simulation function and it is named s
 		return;
 	}
 	int currstep = 1 ;
-	pGUI->PrintMessage("");
+	pGUI->PrintMessage("Lol xD","Lol xD ta7tha","Lol xD ta7t el 2 ely fato","Lol xD ta7tohom kolohom","Lol xD aktar wa7da ta7t till now","Lol xD ta7t aktar wa7da ta7t");
 	bool FlagOrd=true;
 	while(!EventsQueue.isEmpty() || FlagOrd )
 	{

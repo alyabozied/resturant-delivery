@@ -92,7 +92,7 @@ public:
 	string GetString() const ; // reads a string (keyboard input) from the user
 
 	// Output Functions  ---------------------------
-	void PrintMessage(string msg) const; // prints a message in the status bar
+	void PrintMessage(string msg="",string msg1="",string msg2="",string msg3="",string msg4="",string msg5="") const; // prints a message in the status bar
 
 
 	void UpdateInterface();
