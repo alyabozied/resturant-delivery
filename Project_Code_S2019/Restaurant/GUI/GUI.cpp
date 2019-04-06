@@ -121,9 +121,9 @@ void GUI::DrawRestArea() const
 {
 	int L = RestWidth / 2;
 
-	// 1- Drawing the brown square of the Rest
+	// 1- Drawing the Circle of the Rest
 	pWind->SetPen(DARKBLUE);
-	pWind->SetBrush(YELLOW);
+	pWind->SetBrush(WHITE);
 	pWind->DrawCircle(WindWidth/2, (WindHeight-100)/2,200);
 
 	// 2- Drawing the 2 brown crossed lines (for making 4 regions)
@@ -145,7 +145,7 @@ void GUI::DrawRestArea() const
 
 	// 6- Drawing circle to count the current step
 	pWind->SetPen(BLACK);
-	pWind->SetBrush(DARKRED);
+	pWind->SetBrush(VIOLETRED);
 	pWind->DrawCircle(600,275,50);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -273,7 +273,7 @@ void GUI::DrawTimeStepCenter(string TS)
 
 	
 	// Drawing current step
-	pWind->SetPen(DARKMAGENTA);
+	pWind->SetPen(BLANCHEDALMOND);
 	pWind->SetFont(20,BOLD, MODERN);
 	pWind->DrawString(580,265,"00:"+TS);
 
