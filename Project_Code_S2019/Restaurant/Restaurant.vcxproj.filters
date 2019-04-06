@@ -11,9 +11,6 @@
     <Filter Include="CMUGraphicsLib\JPEG">
       <UniqueIdentifier>{1ad3911a-04b1-47f3-b64a-9a3d38c2bac7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GUI">
-      <UniqueIdentifier>{559142ee-442b-4ced-bf25-ef443ab73559}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Restaurant">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
@@ -23,6 +20,9 @@
     </Filter>
     <Filter Include="Generic_DS">
       <UniqueIdentifier>{f9c05740-74ef-4242-8f5c-c406c492135c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generic_DS\GUI">
+      <UniqueIdentifier>{559142ee-442b-4ced-bf25-ef443ab73559}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -85,7 +85,7 @@
       <Filter>CMUGraphicsLib</Filter>
     </ClInclude>
     <ClInclude Include="GUI\GUI.h">
-      <Filter>GUI</Filter>
+      <Filter>Generic_DS\GUI</Filter>
     </ClInclude>
     <ClInclude Include="Rest\Motorcycle.h">
       <Filter>Restaurant</Filter>
@@ -122,6 +122,12 @@
     </ClInclude>
     <ClInclude Include="InOutFile.h">
       <Filter>Restaurant</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic_DS\list.h">
+      <Filter>Generic_DS\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic_DS\RealList.h">
+      <Filter>Generic_DS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -232,7 +238,7 @@
       <Filter>CMUGraphicsLib</Filter>
     </ClCompile>
     <ClCompile Include="GUI\GUI.cpp">
-      <Filter>GUI</Filter>
+      <Filter>Generic_DS\GUI</Filter>
     </ClCompile>
     <ClCompile Include="Rest\Motorcycle.cpp">
       <Filter>Restaurant</Filter>

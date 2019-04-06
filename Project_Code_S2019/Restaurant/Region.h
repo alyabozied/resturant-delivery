@@ -26,10 +26,14 @@ public:
 	void InsertFOrder(Order*); //a Functions to insert Frozen orders
 	void InsertVOrder(Order*); // a funtion to inset VIP orders 
 	void InsertNOrder(Order*);  // a function to insert normal orders 
+	int Get_NMotorC()const;
+	int Get_VMotorC()const;
+	int Get_FMotorC()const;
 
 	// Getters for the counters
 	int getVcount();
 	int getNcount();
+	int getFcount();
 	bool Fisempty();
 
 	// Functions used to dequeue the orders

@@ -99,6 +99,29 @@ void Region::DeleteMotors()
 }
 
 
+int Region::Get_FMotorC()const
+{
+	return F_Motors;
+}
+
+
+
+int Region::Get_NMotorC()const
+{
+	return N_Motors;
+}
+
+
+
+int Region::Get_VMotorC()const
+{
+	return V_Motors;
+}
+
+int Region::getFcount()
+{
+	return FOrderQueue.Get_count();
+}
 
 
 

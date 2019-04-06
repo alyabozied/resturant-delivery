@@ -32,6 +32,7 @@ public:
 	bool ReadFile();
 	void AddtoQueue(Order* po);
 	Order* getOrder();
+	void PrintStatuesBar();
 	
 	/// ==> 
 	///  DEMO-related functions. Should be removed in phases 1&2

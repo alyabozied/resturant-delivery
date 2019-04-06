@@ -64,6 +64,7 @@ void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3,string msg
 	
 	pWind->SetPen(DARKRED);
 	pWind->SetFont(18, BOLD , BY_NAME, "Arial");   
+
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1), msg); // You may need to change these coordinates later 
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+20, msg1); // You may need to change these coordinates later 
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+40, msg2); // You may need to change these coordinates later 

@@ -15,6 +15,7 @@ void CancelationEvent::Execute(Restaurant* pRest)
 	Queue<Order*>tmpQ;
 	Order* tmp;
 	bool flag =false;
+	char tempnum[4];
 	for (int i = 0; i < 4; i++)
 	{
 
@@ -26,11 +27,12 @@ void CancelationEvent::Execute(Restaurant* pRest)
 		
 		if(tmp->GetID() == getOrderID())
 			{
+				//pRest->pGUI->PrintMessage("Order with ID : "+string(itoa(getOrderID(),tempnum,4))+"has cancled has order " );
 				delete tmp;
 				tmp=nullptr;
 				flag=true;
 				break;
-		}
+			}
 		else
 			tmpQ.enqueue(tmp);
 
