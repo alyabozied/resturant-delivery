@@ -3,7 +3,7 @@ class LinkedList
 {
 private :
 Node<T>* headPtr; 
-int itemCount; 
+int itemCount;
 Node<T>* getNodeAt( int position) const ;
 public :
 LinkedList();
@@ -12,18 +12,44 @@ LinkedList( const LinkedList<T>& aList);
 bool isEmpty() const ;
 int getLength() const ;
 bool insert( int newPosition, const T& newEntry);
-bool remove( int position);
+bool remove( int position , T& item);
 void clear();
-
 T getEntry( int position) const ;
-
-void setEntry( int position, const T& newEntry)
+T itemAt(int postion);
+int search(T item);
 };
 
 
 template < class T>
 LinkedList<T>::LinkedList() : headPtr( nullptr), itemCount(0)
 {
+}
+
+template <class T>
+int LinkedList<T>::search(T item){
+	Node<T>*P=headPtr;
+	int i =1;
+	while(P){
+		if(*P->getItem()==*item){
+			
+			return i ;
+		}
+		P=P->getNext();
+		i++;
+		
+	}
+	return -1;
+}
+
+template< class T>
+T LinkedList<T>::itemAt(int postion)
+{
+	Node<T>*temp;
+	temp=getNodeAt(postion);
+	if(postion>=1)
+	return temp->getItem();
+
+
 }
 
 
@@ -44,7 +70,8 @@ T LinkedList<T>::getEntry( int position) const
 template < class T>
 Node<T>* LinkedList<T>::getNodeAt( int position) const
 {
-	assert ( (position >= 1) && (position <= itemCount) );
+	if(position<1)
+		return nullptr;
 	Node<T>* curPtr = headPtr;
 	for ( int skip = 1; skip < position; skip++)	
 		curPtr = curPtr->getNext();
@@ -78,7 +105,7 @@ bool LinkedList<T>::insert( int newPosition,const T& newEntry)
 } 
 
 template < class T>
-bool LinkedList<T>::remove( int position)
+bool LinkedList<T>::remove( int position, T& item)
 {
 	bool ableToRemove = (position >= 1) && (position <= itemCount);
 
@@ -97,16 +124,17 @@ bool LinkedList<T>::remove( int position)
 			prevPtr->setNext(curPtr->getNext());
 		} 	
 		curPtr->setNext( nullptr );
+		item=curPtr->getItem();
 		delete curPtr;
 		curPtr = nullptr ;
-		itemCount–-; 
+		itemCount--; 
 	} 
 	return ableToRemove;
 } 
 template < class T>
 bool LinkedList<T>::isEmpty()const
 {
-	if(headPtr==NULL)
+	if(headPtr==nullptr)
 		return true;
 	return false;
 }
@@ -115,8 +143,9 @@ bool LinkedList<T>::isEmpty()const
 template < class T>
 void LinkedList<T>::clear()
 {
+	T tmp;
 while (!isEmpty())
-	remove(1);
+	remove(1,tmp);
 } 
 
 template<class T>

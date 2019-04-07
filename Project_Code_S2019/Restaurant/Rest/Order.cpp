@@ -13,6 +13,13 @@ Order::Order(int id, ORD_TYPE r_Type, REGION r_region, int dist, double mon)
 		priorty= - ArrTime;
 	
 }
+Order::Order(int id)
+{
+	if(id<0||id>1000)
+		ID=0;
+	ID=id;
+}
+
 void Order::SetType(ORD_TYPE oType)
 {
 	type=oType;
@@ -47,20 +54,21 @@ int Order::GetDistance() const
 {
 	return Distance;
 }
-bool Order:: operator <(Order v){
+bool Order:: operator <(Order &v){
 	if(priorty<v.priorty)
 		return true;
 	else return false;
 }
 
-bool Order:: operator >(Order v){
+bool Order:: operator >(Order &v){
 	if(priorty>v.priorty)
 		return true;
 	else return false;
 }
 
-bool Order:: operator ==(Order v){
+bool Order:: operator ==(Order& v){
 	if(v.ID==ID)
 		return true;
 	return false;
 }
+

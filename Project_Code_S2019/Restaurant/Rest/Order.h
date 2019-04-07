@@ -23,6 +23,7 @@ protected:
 
 public:
 	Order(int ID, ORD_TYPE r_Type, REGION r_region, int dist, double mon);
+	Order(int);
 	virtual ~Order();
 
 	int GetID();
@@ -32,9 +33,9 @@ public:
 	void SetType(ORD_TYPE);
 	void SetDistance(int d);
 	int GetDistance() const;
-	bool operator <(Order v);
-	bool operator >(Order v);
-	bool operator ==(Order v);
+	bool operator <(Order &v);
+	bool operator >(Order& v);
+	bool operator ==(Order& v);
 	//
 	// TODO: Add More Member Functions As Needed
 	//

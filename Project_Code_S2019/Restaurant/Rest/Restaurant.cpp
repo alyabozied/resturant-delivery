@@ -87,7 +87,6 @@ Restaurant::~Restaurant()
 
 void Restaurant::simulate()   // Phase one simulation function and it is named simulate cause it is the only simulation function in this phase
 {
-	char NM[4], VM [4], FM[4], NOrd [4], VOrd[4], FOrd[4];
 	if(!ReadFile())
 	{
 		pGUI->waitForClick();
@@ -107,9 +106,10 @@ void Restaurant::simulate()   // Phase one simulation function and it is named s
 		pGUI->UpdateInterface();
 		PrintStatuesBar();
 		pGUI->DrawTimeStepCenter(timestep);
-		pGUI->ResetDrawingList();
 		currstep++;
-		DeleteMax();	
+		DeleteMax();		
+		pGUI->ResetDrawingList();
+
 	
 	}
 	//free the space allocated for the motorcycles
@@ -182,7 +182,7 @@ bool Restaurant::LoadGUI()
 		
 		while(R[i].getNcount())
 		{
-		 tmp=R[i].dequeueN();
+		 tmp=R[i].dequeueN(1);
 		 pGUI->AddOrderForDrawing(tmp);
 		 tmpQ.enqueue(tmp);
 		flag=true;
@@ -221,7 +221,7 @@ void Restaurant::DeleteMax()
 		}
 		else if(R[i].getNcount())
 			{
-				deletedOrd=R[i].dequeueN();
+				deletedOrd=R[i].dequeueN(1);
 				delete deletedOrd;
 				deletedOrd=nullptr;
 			}

@@ -124,7 +124,7 @@ void GUI::DrawRestArea() const
 	// 1- Drawing the Circle of the Rest
 	pWind->SetPen(DARKBLUE);
 	pWind->SetBrush(WHITE);
-	pWind->DrawCircle(WindWidth/2, (WindHeight-100)/2,200);
+	pWind->DrawCircle(WindWidth/2, (WindHeight-100)/2,RegionCircle);
 
 	// 2- Drawing the 2 brown crossed lines (for making 4 regions)
 
@@ -135,18 +135,18 @@ void GUI::DrawRestArea() const
 	
 	
 
-	// 5- Writing the letter of each region (A, B, C, D)
+	// 3- Writing the letter of each region (A, B, C, D)
 	pWind->SetPen(FORESTGREEN);
 	pWind->SetFont(25, BOLD , BY_NAME, "Arial");
-	pWind->DrawString(530 ,  RestStartY + 5*L/12, "A");
-	pWind->DrawString(530 , YHalfDrawingArea + 5*L/12, "D");
+	pWind->DrawString(RestStartX ,  RestStartY + 5*L/12, "A");
+	pWind->DrawString(RestStartX , YHalfDrawingArea + 5*L/12, "D");
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), RestStartY + 5*L/12, "B");
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), YHalfDrawingArea + 5*L/12, "C"); 
 
-	// 6- Drawing circle to count the current step
+	// 4- Drawing circle to count the current step
 	pWind->SetPen(BLACK);
 	pWind->SetBrush(VIOLETRED);
-	pWind->DrawCircle(600,275,50);
+	pWind->DrawCircle(TimestepCircleX,TimestepCircleY,TimestepCircleRaidus);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a private function

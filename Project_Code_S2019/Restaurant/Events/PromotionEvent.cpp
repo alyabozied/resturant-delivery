@@ -12,38 +12,28 @@ void PromotionEvent::Execute(Restaurant* pRest)
 {
 	//This function should delete an order from the normal orders queue increase the totalmoney of the order
 	//then add it to the vip queue
-	Queue<Order*>tmpQ;
-	Order* tmp;
-	bool flag =false;
 
+	Order* tmp=new Order(getOrderID());
+	int index;
 	for (int i = 0; i < 4; i++)
 	{
-
-		while(pRest->GetRegion(i)->getNcount())
-		{
-		tmp=pRest->GetRegion(i)->dequeueN();
+		index =pRest->GetRegion(i)->Sreach(tmp);
 		
-		if(tmp->GetID() == getOrderID())
-			{
-				tmp->SetType(TYPE_VIP);
-				pRest->GetRegion(i)->InsertVOrder(tmp);
-				tmp=nullptr;
-				flag=true;
-				break;
-		}
-		else
-			tmpQ.enqueue(tmp);
-
-		}
-		while (!tmpQ.isEmpty())
+		if(index!=-1)
 		{
-			tmpQ.dequeue(tmp);
-			pRest->GetRegion(i)->InsertNOrder(tmp);
+			delete tmp;
+			tmp=nullptr;
+			tmp=pRest->GetRegion(i)->dequeueN(index);
+			tmp->SetType(TYPE_VIP);
+			pRest->GetRegion(i)->InsertVOrder(tmp);
+			return;
+		
 		}
-		if(flag)
-		return ; 
+	
 	}
-
-
+	
 
 }
+		
+		
+

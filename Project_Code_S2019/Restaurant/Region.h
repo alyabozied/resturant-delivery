@@ -3,6 +3,7 @@
 #include"Rest\Motorcycle.h"
 #include"Rest\Order.h"
 #include"Generic_DS\Queue.h"
+#include"Generic_DS\RealList.h"
 class Region
 {
 protected:
@@ -15,7 +16,7 @@ protected:
 	int N_Motors,V_Motors,F_Motors;
 
 	//Order in Region
-	priorityQueue<Order*>NOrderQueue;
+	LinkedList<Order*>NOrderQueue;
 	priorityQueue<Order*>VOrderQueue;
 	Queue<Order*>FOrderQueue;
 public:
@@ -37,10 +38,11 @@ public:
 	bool Fisempty();
 
 	// Functions used to dequeue the orders
-	Order* dequeueN();
+	Order* dequeueN(int );
 	Order* dequeueV();
 	Order* dequeueF();
 	void DeleteMotors();
+	int Sreach(Order* );
 
 
 	~Region(void);

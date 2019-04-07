@@ -47,7 +47,7 @@ void Region::InsertFOrder(Order* F)
 //insert a Vip order to the list
 void Region::InsertNOrder(Order* N)
 {
-	NOrderQueue.insert(N);
+	NOrderQueue.insert(1,N);
 }
 
 //insert a Normal order to the list
@@ -59,16 +59,25 @@ void Region::InsertVOrder(Order* V)
 
 int Region::getVcount(){ return VOrderQueue.getcount(); }
 
-int Region::getNcount(){ return NOrderQueue.getcount(); }
+int Region::getNcount(){ return NOrderQueue.getLength(); }
 
 bool Region::Fisempty(){ return FOrderQueue.isEmpty();}
 
 
-Order* Region::dequeueN() 
+Order* Region::dequeueN(int postion) 
 { 
-	Order* ord = NOrderQueue.extractMax();
+	Order* ord ;
+	NOrderQueue.remove(postion,ord);
 	return ord; 
 }
+int Region::Sreach(Order* O)
+{
+	return  NOrderQueue.search(O);
+	
+
+
+}
+
 
 Order* Region::dequeueV() 
 { 
