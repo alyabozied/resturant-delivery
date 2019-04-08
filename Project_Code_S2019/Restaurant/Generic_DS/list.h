@@ -200,9 +200,9 @@ template<class T>
 std::vector<T> LinkedList<T>::ToVector(){
 	std::vector<T> n;
 	Node<T>* p=headPtr;
-	while(P){
+	while(p){
 		n.push_back(p->getItem());
 		p=p->getNext();
 	}
-
+	return n;
 }
