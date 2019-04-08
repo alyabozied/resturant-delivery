@@ -1,5 +1,6 @@
 #include "GUI.h"
 
+
 //////////////////////////////////////////////////////////////////////////////////////////
 GUI::GUI()
 {
@@ -273,8 +274,26 @@ void GUI::DrawTimeStepCenter(string TS)
 
 	
 	// Drawing current step
+	string tmp;
+	char tmp1[5];
+	for (int i = 0; i < int(TS.size()); i++)
+	{
+		tmp1[i]=TS[i];
+	}
+	int timestep = atoi(tmp1);
+	if(timestep>60)
+	{
+		_itoa_s(timestep-60,tmp1,10);
+	for (int i = 0; i < int(TS.size()); i++)
+	{
+		TS[i]=tmp1[i];
+	}
+		tmp="01:"+TS;
+	}
+	else
+		tmp="00:"+TS;
 	pWind->SetPen(BLANCHEDALMOND);
 	pWind->SetFont(40,BOLD, ROMAN);
-	pWind->DrawString(WindWidth/2-35, (WindHeight-100)/2-20,"00:"+TS);
+	pWind->DrawString(WindWidth/2-35, (WindHeight-100)/2-20,tmp);
 
 }

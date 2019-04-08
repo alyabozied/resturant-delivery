@@ -112,7 +112,7 @@ void Restaurant::simulate()   // Phase one simulation function and it is named s
 		ExecuteEvents(currstep);
 		FlagOrd=LoadGUI();
 		char timestep[10];
-		itoa(currstep,timestep,10);			
+		_itoa_s(currstep,timestep,10);			
 		pGUI->waitForClick();
 		pGUI->UpdateInterface();
 		PrintStatuesBar();
@@ -120,7 +120,7 @@ void Restaurant::simulate()   // Phase one simulation function and it is named s
 		currstep++;
 		DeleteMax();
 		pGUI->ResetDrawingList();
-		LoadGUI();
+		FlagOrd=LoadGUI();
 		pGUI->waitForClick();
 		PrintStatuesBar();
 		pGUI->UpdateInterface();

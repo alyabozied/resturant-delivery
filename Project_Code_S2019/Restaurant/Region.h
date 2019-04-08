@@ -44,7 +44,7 @@ public:
 	Order* dequeueV();
 	Order* dequeueF();
 	void DeleteMotors();
-	int Sreach(Order* );
+	std::vector <Order*> getVectorNord();
 
 
 	~Region(void);

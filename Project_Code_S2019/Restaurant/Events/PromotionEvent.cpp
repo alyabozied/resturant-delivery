@@ -12,27 +12,23 @@ void PromotionEvent::Execute(Restaurant* pRest)
 {
 	//This function should delete an order from the normal orders queue increase the totalmoney of the order
 	//then add it to the vip queue
-	Order* tmp=new Order(getOrderID());
-	int index;
+	Order*tmp;
+	std::vector<Order*>tmpvec;
 	for (int i = 0; i < 4; i++)
 	{
-		index =pRest->GetRegion(i)->Sreach(tmp);
-		
-		if(index!=-1)
+		tmpvec=pRest->GetRegion(i)->getVectorNord();
+		for (int j = 0; j < int(tmpvec.size()); j++)
 		{
-			delete tmp;
-			tmp=nullptr;
-			tmp=pRest->GetRegion(i)->dequeueN(index);
+			if(tmpvec[j]->GetID() == getOrderID())
+			{
+			tmp=pRest->GetRegion(i)->dequeueN(j+1);	
 			tmp->SetType(TYPE_VIP);
 			pRest->GetRegion(i)->InsertVOrder(tmp);
-			return;
-		
-		}
-	
-	}
-	
+			return ;
+			}
 
-}
-		
+		}
+	}
+}		
 		
 

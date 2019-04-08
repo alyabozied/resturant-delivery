@@ -70,13 +70,6 @@ Order* Region::dequeueN(int postion)
 	NOrderQueue.remove(postion,ord);
 	return ord; 
 }
-int Region::Sreach(Order* O)
-{
-	return  NOrderQueue.search(O);
-	
-
-
-}
 
 
 Order* Region::dequeueV() 
@@ -130,6 +123,10 @@ int Region::Get_VMotorC()const
 int Region::getFcount()
 {
 	return FOrderQueue.Get_count();
+}
+std::vector<Order*> Region::getVectorNord()
+{
+	return NOrderQueue.ToVector();
 }
 
 
