@@ -1,13 +1,24 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_NONSTDC_NO_DEPRECATE
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <conio.h>
+#include <stdio.h>
+#include <math.h>
+#include <io.h>
+#include <fcntl.h>
+#include <malloc.h>
+#include <sys/stat.h>
+#include <stdlib.h>
 #include <cstdlib>
 #include <time.h>
 #include <iostream>
 #include <fstream>
-using namespace std;
-
 #include "Restaurant.h"
 #include "..\Events\ArrivalEvent.h"
 #include "..\Events\CancelationEvent.h"
 #include "..\Events\PromotionEvent.h"
+using namespace std;
 
 
 Restaurant::Restaurant() 

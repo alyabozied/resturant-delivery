@@ -14,7 +14,6 @@ protected:
 	priorityQueue<Motorcycle*>servFMotorQ;
 	priorityQueue<Motorcycle*>serNMotorQ;
 	priorityQueue<Motorcycle*>servVMotorQ;
-
 	//Number of MotorCycle in Region
 	int N_Motors,V_Motors,F_Motors;
 
