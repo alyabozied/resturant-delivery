@@ -1,4 +1,6 @@
+#include <vector>
 template < class T>
+
 class LinkedList 
 {
 private :
@@ -15,6 +17,7 @@ int getLength() const ;
 bool insert( int newPosition, const T& newEntry);
 bool remove( int position , T& item);
 void clear();
+std::vector<T> ToVector();
 T getEntry( int position) const ;
 int search(T item);
 };
@@ -193,3 +196,13 @@ LinkedList<T>::LinkedList( const LinkedList<T>& LIST)
 			tailPtr->setNext( nullptr ); 
 		} 
 } 
+template<class T>
+std::vector<T> LinkedList<T>::ToVector(){
+	std::vector<T> n;
+	Node<T>* p=headPtr;
+	while(P){
+		n.push_back(p->getItem());
+		p=p->getNext();
+	}
+
+}
