@@ -78,6 +78,16 @@ Region* Restaurant::GetRegion(int index)
 }
 
 
+int Restaurant::GetAutoProm()const
+{
+	return AutoProm;
+}
+
+void Restaurant::SetAutoProm(int x)
+{
+	AutoProm = AutoProm > 0 ? AutoProm : 10;
+}
+
 
 //function to read inputs from a file
 bool Restaurant::ReadFile()
