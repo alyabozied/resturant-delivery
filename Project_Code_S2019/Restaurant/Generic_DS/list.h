@@ -20,6 +20,7 @@ bool remove( int position , T& item);
 void clear();
 T getEntry( int position) const ;
 int search(T item);
+std::vector<T> ToVector();
 };
 
 
