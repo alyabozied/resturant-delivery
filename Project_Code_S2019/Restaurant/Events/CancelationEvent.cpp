@@ -12,20 +12,24 @@ void CancelationEvent::Execute(Restaurant* pRest)
 {
 	//This function should delete an order from the normal orders queue
 		
-	Order* tmp=new Order(this->getOrderID());
-	int index;
+
+
+	std::vector<Order*>tmpvec;
 	for (int i = 0; i < 4; i++)
 	{
-		index =pRest->GetRegion(i)->Sreach(tmp);
-		if(index!=-1)
+		tmpvec=pRest->GetRegion(i)->getVectorNord();
+
+		for (int j = 0; j < int(tmpvec.size()); j++)
 		{
-			delete tmp;
-			tmp= nullptr;
-			tmp = pRest->GetRegion(i)->dequeueN(index);
-			delete tmp;
-			tmp = nullptr;
-			return;	
+
+			if(tmpvec[j]->GetID() == getOrderID())
+			{
+			pRest->GetRegion(i)->dequeueN(j+1);	
+			return ;
+			}
+
 		}
+		
 		
 	}
 	
