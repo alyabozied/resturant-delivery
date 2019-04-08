@@ -100,11 +100,10 @@
     <ClInclude Include="Events\CancelationEvent.h" />
     <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Events\PromotionEvent.h" />
-    <ClInclude Include="Generic_DS\list.h" />
     <ClInclude Include="Generic_DS\Node.h" />
     <ClInclude Include="Generic_DS\PriorityQueue.h" />
     <ClInclude Include="Generic_DS\Queue.h" />
-    <ClInclude Include="Generic_DS\RealList.h" />
+    <ClInclude Include="Generic_DS\list.h" />
     <ClInclude Include="GUI\GUI.h" />
     <ClInclude Include="InOutFile.h" />
     <ClInclude Include="Region.h" />

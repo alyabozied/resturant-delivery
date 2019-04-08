@@ -3,14 +3,21 @@
 #include"Rest\Motorcycle.h"
 #include"Rest\Order.h"
 #include"Generic_DS\Queue.h"
+<<<<<<< HEAD
+#include"Generic_DS\List.h"
+=======
 #include"Generic_DS\list.h"
+>>>>>>> daa869ce7a94a8505d762bd6fb5fcd17f2be1586
 class Region
 {
 protected:
 	//List of Motocylyes REgion
-	priorityQueue<Motorcycle*>FMotorQueue;
-	priorityQueue<Motorcycle*>NMotorQueue;
-	priorityQueue<Motorcycle*>VMotorQueue;
+	priorityQueue<Motorcycle*>idelFMotorQ;
+	priorityQueue<Motorcycle*>idelNMotorQ;
+	priorityQueue<Motorcycle*>idelVMotorQ;
+	priorityQueue<Motorcycle*>servFMotorQ;
+	priorityQueue<Motorcycle*>serNMotorQ;
+	priorityQueue<Motorcycle*>servVMotorQ;
 
 	//Number of MotorCycle in Region
 	int N_Motors,V_Motors,F_Motors;

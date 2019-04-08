@@ -124,9 +124,6 @@
       <Filter>Restaurant</Filter>
     </ClInclude>
     <ClInclude Include="Generic_DS\list.h">
-      <Filter>Generic_DS\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Generic_DS\RealList.h">
       <Filter>Generic_DS</Filter>
     </ClInclude>
   </ItemGroup>

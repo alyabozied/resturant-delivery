@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 GUI::GUI()
 {
-	pWind = new window(WindWidth+15,WindHeight,0,0); 
+	pWind = new window(WindWidth +15,WindHeight,0,0); 
 	pWind->ChangeTitle("The Restautant");
 
 	OrderCount = 0;
@@ -63,19 +63,19 @@ void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3,string msg
 	ClearStatusBar();	//First clear the status bar
 	
 	pWind->SetPen(DARKRED);
-	pWind->SetFont(18, BOLD , BY_NAME, "Arial");   
+	pWind->SetFont(25, ITALICIZED|BOLD , BY_NAME, "ROMAN");   
 
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1), msg); // You may need to change these coordinates later 
-	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+25, msg1); // You may need to change these coordinates later 
-	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+50, msg2); // You may need to change these coordinates later 
-	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+75, msg3); // You may need to change these coordinates later 
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+30, msg1); // You may need to change these coordinates later 
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+60, msg2); // You may need to change these coordinates later 
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+90, msg3); // You may need to change these coordinates later 
 	                                                  // to be able to write multi-line
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawString(const int iX, const int iY, const string Text)
 {
 	pWind->SetPen(DARKRED);
-	pWind->SetFont(18, BOLD , BY_NAME, "Arial");   
+	pWind->SetFont(18, BOLD , BY_NAME, "ROMAN");   
 	pWind->DrawString(iX, iY, Text);
 }
 
@@ -137,16 +137,16 @@ void GUI::DrawRestArea() const
 
 	// 3- Writing the letter of each region (A, B, C, D)
 	pWind->SetPen(FORESTGREEN);
-	pWind->SetFont(25, BOLD , BY_NAME, "Arial");
-	pWind->DrawString(RestStartX ,  RestStartY + 5*L/12, "A");
-	pWind->DrawString(RestStartX , YHalfDrawingArea + 5*L/12, "D");
+	pWind->SetFont(50, BOLD , BY_NAME, "ROMAN");
+	pWind->DrawString(WindWidth/2 - (int)(0.44*L)-20,  RestStartY + 5*L/12, "A");
+	pWind->DrawString(WindWidth/2 - (int)(0.44*L)-20 , YHalfDrawingArea + 5*L/12, "D");
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), RestStartY + 5*L/12, "B");
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), YHalfDrawingArea + 5*L/12, "C"); 
 
 	// 4- Drawing circle to count the current step
 	pWind->SetPen(BLACK);
 	pWind->SetBrush(VIOLETRED);
-	pWind->DrawCircle(TimestepCircleX,TimestepCircleY,TimestepCircleRaidus);
+	pWind->DrawCircle(WindWidth/2,(WindHeight-100)/2,TimestepCircleRaidus);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a private function
@@ -202,7 +202,7 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a pri
 	// Drawing the Order
 	pWind->SetPen(clr);
 	pWind->SetBrush(clr);
-	pWind->SetFont(20,BOLD, MODERN);
+	pWind->SetFont(40,BOLD, ROMAN);
 	pWind->DrawInteger(x,y,pO->GetID());
 }
 
@@ -274,7 +274,7 @@ void GUI::DrawTimeStepCenter(string TS)
 	
 	// Drawing current step
 	pWind->SetPen(BLANCHEDALMOND);
-	pWind->SetFont(20,BOLD, MODERN);
-	pWind->DrawString(580,265,"00:"+TS);
+	pWind->SetFont(40,BOLD, ROMAN);
+	pWind->DrawString(WindWidth/2-35, (WindHeight-100)/2-20,"00:"+TS);
 
 }

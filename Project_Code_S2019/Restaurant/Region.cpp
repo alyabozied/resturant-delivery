@@ -12,7 +12,7 @@ void Region::FillMotors(int NMotors, int VMotors, int FMotors, Motorcycle **NM ,
 	//insert Normal Motorcycles to its list from Unorders array to an Ordered Piriorty list and set the Number of the MotorCycles
 	for (int i = 0; i < NMotors; i++)
 	{
-		NMotorQueue.insert(NM[i]);
+		idelNMotorQ.insert(NM[i]);
 	}
 
 	N_Motors=NMotors;
@@ -21,7 +21,7 @@ void Region::FillMotors(int NMotors, int VMotors, int FMotors, Motorcycle **NM ,
 
 	for (int i = 0; i < VMotors; i++)
 	{
-		VMotorQueue.insert(VM[i]);
+		idelVMotorQ.insert(VM[i]);
 	}
 
 	V_Motors=VMotors;
@@ -30,7 +30,7 @@ void Region::FillMotors(int NMotors, int VMotors, int FMotors, Motorcycle **NM ,
 
 	for (int i = 0; i < FMotors; i++)
 	{
-		FMotorQueue.insert(FM[i]);
+		idelFMotorQ.insert(FM[i]);
 	}
 
 	F_Motors=FMotors;
@@ -47,7 +47,7 @@ void Region::InsertFOrder(Order* F)
 //insert a Vip order to the list
 void Region::InsertNOrder(Order* N)
 {
-	NOrderQueue.insert(1,N);
+	NOrderQueue.insert(NOrderQueue.getLength()+1,N);
 }
 
 //insert a Normal order to the list
@@ -93,17 +93,17 @@ Order* Region::dequeueF()
 }
 void Region::DeleteMotors()
 {
-	while (NMotorQueue.getcount() != 0)
+	while (idelNMotorQ.getcount() != 0)
 	{
-		delete NMotorQueue.extractMax();
+		delete idelNMotorQ.extractMax();
 	}
-	while (VMotorQueue.getcount() != 0)
+	while (idelVMotorQ.getcount() != 0)
 	{
-		delete VMotorQueue.extractMax();
+		delete idelVMotorQ.extractMax();
 	}
-	while (FMotorQueue.getcount() != 0)
+	while (idelFMotorQ.getcount() != 0)
 	{
-		delete FMotorQueue.extractMax();
+		delete idelFMotorQ.extractMax();
 	}
 }
 

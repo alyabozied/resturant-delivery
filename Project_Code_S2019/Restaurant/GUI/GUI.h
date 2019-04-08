@@ -20,7 +20,7 @@ private:
 	// Some Static Constant Data Members: ---------------------
 
 	static const int	
-		WindWidth=1200, WindHeight=650,		//Window width and height
+		WindWidth=1400, WindHeight=650,		//Window width and height
 		StatusBarHeight = 150,	//Status Bar Height
 		MenuBarHeight = 50,		//Menu Bar Height (distance from top of window to bottom line of menu bar)
 		MenuItemWidth = 80,		//Width of each item in menu bar menu
@@ -36,8 +36,6 @@ private:
 		RestStartY = YHalfDrawingArea - RestWidth/2, //The y coordinate of the upper left corner of the Rest
 		RestEndY = YHalfDrawingArea + RestWidth/2,   //The y coordinate of the lower right corner of the Rest
 
-		TimestepCircleX=600,
-		TimestepCircleY=275,
 		TimestepCircleRaidus=50,
 		RegionCircle=200,
 		FontSize = 20,	//font size used to draw orders ID on Interface

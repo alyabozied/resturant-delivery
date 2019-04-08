@@ -3,6 +3,7 @@ class LinkedList
 {
 private :
 Node<T>* headPtr; 
+Node<T>* tailPtr; 
 int itemCount;
 Node<T>* getNodeAt( int position) const ;
 public :
@@ -15,13 +16,12 @@ bool insert( int newPosition, const T& newEntry);
 bool remove( int position , T& item);
 void clear();
 T getEntry( int position) const ;
-T itemAt(int postion);
 int search(T item);
 };
 
 
 template < class T>
-LinkedList<T>::LinkedList() : headPtr( nullptr), itemCount(0)
+LinkedList<T>::LinkedList() : headPtr( nullptr), itemCount(0),tailPtr(nullptr)
 {
 }
 
@@ -41,16 +41,7 @@ int LinkedList<T>::search(T item){
 	return -1;
 }
 
-template< class T>
-T LinkedList<T>::itemAt(int postion)
-{
-	Node<T>*temp;
-	temp=getNodeAt(postion);
-	if(postion>=1)
-	return temp->getItem();
 
-
-}
 
 
 
@@ -88,10 +79,15 @@ bool LinkedList<T>::insert( int newPosition,const T& newEntry)
 		Node<T>* newNodePtr = new Node<T>(newEntry);
 		if (newPosition == 1)
 		{
-		newNodePtr->setNext(headPtr);
-		headPtr = newNodePtr;
+			newNodePtr->setNext(headPtr);
+			headPtr = newNodePtr;
+			tailPtr = newNodePtr;
 		}
-
+		else if( newPosition ==itemCount+1) 
+		{
+			tailPtr->setNext(newNodePtr);
+			tailPtr=newNodePtr;
+		}
 		else
 		{
 		
@@ -116,7 +112,15 @@ bool LinkedList<T>::remove( int position, T& item)
 		{
 			curPtr = headPtr; 
 			headPtr = headPtr->getNext();
-		}	
+		}
+		else if(position == itemCount)
+		{
+			Node<T>*tmp = getNodeAt(position-1);
+			tmp->setNext(nullptr);
+			delete tailPtr;
+			tailPtr=tmp;
+		}
+
 		else
 		{
 			Node<T>* prevPtr = getNodeAt(position - 1);
@@ -169,20 +173,23 @@ LinkedList<T>::LinkedList( const LinkedList<T>& LIST)
 	Node<T>* origChainPtr = LIST->headPtr
 	
 		if (origChainPtr == nullptr )
-			headPtr = nullptr ; 
+		{
+			headPtr = nullptr ;
+			tailPtr = nullptr ;
+		}
 		else
 		{
 			headPtr = new Node<T>();
-			headPtr->setItem(origChainPtr ->getItem());
-			Node<T>* newChainPtr = headPtr; 
+			tailPtr = headPtr;
+			headPtr->setItem(origChainPtr->getItem());
 			while (origPtr != nullptr )
 			{
 				origChainPtr = origChainPtr ->getNext(); 
 				T nextItem = origChainPtr->getItem();
 				Node<T>* newNodePtr = new Node<T>(nextItem);
-				newChainPtr->setNext(newNodePtr);
-				newChainPtr = newChainPtr->getNext();
+				tailPtr->setNext(newNodePtr);
+				tailPtr = tailPtr->getNext();
 			} 
-			newChainPtr->setNext( nullptr ); 
+			tailPtr->setNext( nullptr ); 
 		} 
 } 

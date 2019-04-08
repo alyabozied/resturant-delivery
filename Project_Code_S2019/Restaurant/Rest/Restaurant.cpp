@@ -97,7 +97,7 @@ void Restaurant::simulate()   // Phase one simulation function and it is named s
 	bool FlagOrd=true;
 	while(!EventsQueue.isEmpty() || FlagOrd )
 	{
-		Order *ord;
+		Order *ord=nullptr;
 		ExecuteEvents(currstep);
 		FlagOrd=LoadGUI();
 		char timestep[10];
@@ -107,7 +107,13 @@ void Restaurant::simulate()   // Phase one simulation function and it is named s
 		PrintStatuesBar();
 		pGUI->DrawTimeStepCenter(timestep);
 		currstep++;
-		DeleteMax();		
+		DeleteMax();
+		pGUI->ResetDrawingList();
+		LoadGUI();
+		pGUI->waitForClick();
+		PrintStatuesBar();
+		pGUI->UpdateInterface();
+		pGUI->DrawTimeStepCenter(timestep);
 		pGUI->ResetDrawingList();
 
 	
@@ -125,18 +131,18 @@ void Restaurant::PrintStatuesBar()
 {
 
 	char NM[4], VM [4], FM[4], NOrd [4], VOrd[4], FOrd[4];
-	string RN1 ="Region1 NMotors-> "+string(itoa(R[0].Get_NMotorC(),NM,4))+" , Region1 NOrders->"+string(itoa(R[0].getNcount(),NOrd,4));			
-	string RV1 =" , Region1VMotors-> "+string(itoa(R[0].Get_VMotorC(),VM,4))+" , Region1 VOrders->"+string(itoa(R[0].getVcount(),VOrd,4));			
-	string RF1 =" , Region1 FMotors-> "+string(itoa(R[0].Get_FMotorC(),FM,4))+" , Region1 FOrders->"+string(itoa(R[0].getFcount(),FOrd,4));			
-	string RN2 ="Region2 NMotors-> "+string(itoa(R[1].Get_NMotorC(),NM,4))+" , Region2 NOrders->"+string(itoa(R[1].getNcount(),NOrd,4));			
-	string RV2 =" , Region2 VMotors-> "+string(itoa(R[1].Get_VMotorC(),VM,4))+" , Region2 VOrders->"+string(itoa(R[1].getVcount(),VOrd,4));			
-	string RF2 =" , Region2 FMotors-> "+string(itoa(R[1].Get_FMotorC(),FM,4))+" , Region2 FOrders->"+string(itoa(R[1].getFcount(),FOrd,4));			
-	string RN3 ="Region3 NMotors-> "+string(itoa(R[2].Get_NMotorC(),NM,4))+" , Region3 NOrders->"+string(itoa(R[2].getNcount(),NOrd,4));			
- 	string RV3 =" , Region3 VMotors-> "+string(itoa(R[2].Get_VMotorC(),VM,4))+" , Region3 VOrders->"+string(itoa(R[2].getVcount(),VOrd,4));		
-	string RF3 =" , Region3 FMotors-> "+string(itoa(R[2].Get_FMotorC(),FM,4))+" , Region3 FOrders->"+string(itoa(R[2].getFcount(),FOrd,4));		
-	string RN4 ="Region4 NMotors-> "+string(itoa(R[3].Get_NMotorC(),NM,4))+" , Region4 NOrders->"+string(itoa(R[3].getNcount(),NOrd,4));			
-	string RV4=" , Region4 VMotors-> "+string(itoa(R[3].Get_VMotorC(),VM,4))+" , Region4 VOrders->"+string(itoa(R[3].getVcount(),VOrd,4));			
-	string RF4 =" , Region4 FMotors-> "+string(itoa(R[3].Get_FMotorC(),FM,4))+" , Region4 FOrders->"+string(itoa(R[3].getFcount(),FOrd,4));
+	string RN1 ="Region1 NMotors-> "+string(itoa(R[0].Get_NMotorC(),NM,10))+" , Region1 NOrders->"+string(itoa(R[0].getNcount(),NOrd,10));			
+	string RV1 =" , Region1VMotors-> "+string(itoa(R[0].Get_VMotorC(),VM,10))+" , Region1 VOrders->"+string(itoa(R[0].getVcount(),VOrd,10));			
+	string RF1 =" , Region1 FMotors-> "+string(itoa(R[0].Get_FMotorC(),FM,10))+" , Region1 FOrders->"+string(itoa(R[0].getFcount(),FOrd,10));			
+	string RN2 ="Region2 NMotors-> "+string(itoa(R[1].Get_NMotorC(),NM,10))+" , Region2 NOrders->"+string(itoa(R[1].getNcount(),NOrd,10));			
+	string RV2 =" , Region2 VMotors-> "+string(itoa(R[1].Get_VMotorC(),VM,10))+" , Region2 VOrders->"+string(itoa(R[1].getVcount(),VOrd,10));			
+	string RF2 =" , Region2 FMotors-> "+string(itoa(R[1].Get_FMotorC(),FM,10))+" , Region2 FOrders->"+string(itoa(R[1].getFcount(),FOrd,10));			
+	string RN3 ="Region3 NMotors-> "+string(itoa(R[2].Get_NMotorC(),NM,10))+" , Region3 NOrders->"+string(itoa(R[2].getNcount(),NOrd,10));			
+ 	string RV3 =" , Region3 VMotors-> "+string(itoa(R[2].Get_VMotorC(),VM,10))+" , Region3 VOrders->"+string(itoa(R[2].getVcount(),VOrd,10));		
+	string RF3 =" , Region3 FMotors-> "+string(itoa(R[2].Get_FMotorC(),FM,10))+" , Region3 FOrders->"+string(itoa(R[2].getFcount(),FOrd,10));		
+	string RN4 ="Region4 NMotors-> "+string(itoa(R[3].Get_NMotorC(),NM,10))+" , Region4 NOrders->"+string(itoa(R[3].getNcount(),NOrd,10));			
+	string RV4=" , Region4 VMotors-> "+string(itoa(R[3].Get_VMotorC(),VM,10))+" , Region4 VOrders->"+string(itoa(R[3].getVcount(),VOrd,10));			
+	string RF4 =" , Region4 FMotors-> "+string(itoa(R[3].Get_FMotorC(),FM,10))+" , Region4 FOrders->"+string(itoa(R[3].getFcount(),FOrd,10));
 	pGUI->PrintMessage(RN1+RV1+RF1,RN2+RV2+RF2,RN3+RV3+RF3,RN4+RV4+RF4);
 
 

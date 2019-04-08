@@ -1,0 +1,9 @@
+diff a/Project_Code_S2019/Restaurant/Events/PromotionEvent.cpp b/Project_Code_S2019/Restaurant/Events/PromotionEvent.cpp	(rejected hunks)
+@@ -26,7 +26,6 @@
+ 			tmp->SetType(TYPE_VIP);
+ 			pRest->GetRegion(i)->InsertVOrder(tmp);
+ 			return;
+-		
+ 		}
+ 	
+ 	}

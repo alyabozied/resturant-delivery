@@ -7,7 +7,7 @@ private:
   //an array to store the data
   T* tree;
   //count:var. for number of objects,size:var for size of the array
-  long long count,size;
+  int count,size;
   //utility functions
   void shiftup(int index);
   void shiftdown(int index);
