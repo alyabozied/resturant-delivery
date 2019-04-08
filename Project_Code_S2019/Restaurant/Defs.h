@@ -38,7 +38,6 @@ enum PROG_MODE	//mode of the program interface
 };
 
 
-
 #define MaxPossibleOrdCnt 999	//arbitrary value
 
 

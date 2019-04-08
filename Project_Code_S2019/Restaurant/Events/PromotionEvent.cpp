@@ -12,7 +12,6 @@ void PromotionEvent::Execute(Restaurant* pRest)
 {
 	//This function should delete an order from the normal orders queue increase the totalmoney of the order
 	//then add it to the vip queue
-
 	Order* tmp=new Order(getOrderID());
 	int index;
 	for (int i = 0; i < 4; i++)

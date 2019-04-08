@@ -1,122 +1,188 @@
-
-#include "Node.h"
-#pragma once
-template<class T>
-class list{
-private:
-	Node<T>* head;
-	int count;
-	Node<T>*tail;
-	void deleteptr(Node<T>*ptr);
-public:
-	list();
-	~list();
-	void insert(T item);
-	T gethead();
-	T* search(T item);
-	int size();
-	void deletenode(T item);
-
+template < class T>
+class LinkedList 
+{
+private :
+Node<T>* headPtr; 
+int itemCount;
+Node<T>* getNodeAt( int position) const ;
+public :
+LinkedList();
+LinkedList( const LinkedList<T>& aList);
+~LinkedList();
+bool isEmpty() const ;
+int getLength() const ;
+bool insert( int newPosition, const T& newEntry);
+bool remove( int position , T& item);
+void clear();
+T getEntry( int position) const ;
+T itemAt(int postion);
+int search(T item);
 };
-template<class T>
-list<T>::list(){
-count=0;
-head=nullptr;
-tail=nullptr;
-}
-template<class T>
-int list<T>::size(){
-return count;
+
+
+template < class T>
+LinkedList<T>::LinkedList() : headPtr( nullptr), itemCount(0)
+{
 }
 
-
-
-template<class T>
-void list<T>::insert(T item){
-Node<T>* N=new Node<T>;
-	if(count==0){
-		head=N;
-		tail=N;
-	}
-	else{
-	tail->setNext(N);
-	tail=N;
-	}
-	
-	N->setItem(item);
-	count++;
-}
-
-template<class T>
-T list<T>:: gethead(){
-	if(count==0)
-		return 0 ;
-	Node<T>*R=head;
-	T value=head->getItem();
-	head=head->getNext();
-	delete R;
-	count--;
-	return value;
-
-}
-
-template<class T>
-void list<T>::deletenode(T item){
-	Node<T>*P=head;
-	Node<T>*pervous=head;
+template <class T>
+int LinkedList<T>::search(T item){
+	Node<T>* P=headPtr;
+	int i =1;
 	while(P){
-		if(P->getItem()==item){
-			if(P==head&&P==tail){
-				delete P;
-				count--;
-				return;
-			}
-			else if(P==head){
-				head=head->getNext();
-				count--;
-				delete P;
-				return;
-			}	
-			else if(tail==P){
-				tail=pervous;
-				count--;
-				delete P;
-				return;
-			}
-			else{
-				pervous->setNext(P->getNext());
-				count--;
-				delete P;
-				return;
-			}
-		}
-		pervous=P;
-		P=P->getNext();
-	}
-
-}
-template <class T>
-void list<T>::deleteptr(Node<T>*ptr){
-	if(!ptr->getNext())
-		delete ptr;
-	else deleteptr(ptr->getNext());
-}
-
-template <class T>
-list<T>::~list(){
-	if(count!=0)
-	deleteptr(head);
-}
-
-template <class T>
-T* list<T>::search(T item){
-	Node<T>*P=head;
-	
-	while(P){
-		if(*P->getItem()==item){
-			return P;
+		if(*P->getItem()==*item){
+			
+			return i ;
 		}
 		P=P->getNext();
+		i++;
 		
 	}
+	return -1;
 }
+
+template< class T>
+T LinkedList<T>::itemAt(int postion)
+{
+	Node<T>*temp;
+	temp=getNodeAt(postion);
+	if(postion>=1)
+	return temp->getItem();
+
+
+}
+
+
+
+template < class T>
+T LinkedList<T>::getEntry( int position) const
+{
+	bool ableToGet = (position >= 1) && (position <= itemCount);
+	if (ableToGet)	
+	{
+		Node<T>* nodePtr = getNodeAt(position);
+		return nodePtr->getItem();
+	}
+}
+
+
+
+template < class T>
+Node<T>* LinkedList<T>::getNodeAt( int position) const
+{
+	if(position<1)
+		return nullptr;
+	Node<T>* curPtr = headPtr;
+	for ( int skip = 1; skip < position; skip++)	
+		curPtr = curPtr->getNext();
+	return curPtr ;
+}
+
+
+template < class T>
+bool LinkedList<T>::insert( int newPosition,const T& newEntry)
+{
+	bool ableToInsert = (newPosition >= 1) &&(newPosition <= itemCount + 1);
+	if (ableToInsert)
+	{
+		Node<T>* newNodePtr = new Node<T>(newEntry);
+		if (newPosition == 1)
+		{
+		newNodePtr->setNext(headPtr);
+		headPtr = newNodePtr;
+		}
+
+		else
+		{
+		
+			Node<T>* prevPtr = getNodeAt(newPosition - 1);	
+			newNodePtr->setNext(prevPtr->getNext());
+			prevPtr->setNext(newNodePtr);
+		} 
+		itemCount++; 
+	} 
+		return ableToInsert;
+} 
+
+template < class T>
+bool LinkedList<T>::remove( int position, T& item)
+{
+	bool ableToRemove = (position >= 1) && (position <= itemCount);
+
+	if (ableToRemove)
+	{
+		Node<T>* curPtr = nullptr ;
+		if (position == 1)
+		{
+			curPtr = headPtr; 
+			headPtr = headPtr->getNext();
+		}	
+		else
+		{
+			Node<T>* prevPtr = getNodeAt(position - 1);
+			curPtr = prevPtr->getNext();
+			prevPtr->setNext(curPtr->getNext());
+		} 	
+		curPtr->setNext( nullptr );
+		item=curPtr->getItem();
+		delete curPtr;
+		curPtr = nullptr ;
+		itemCount--; 
+	} 
+	return ableToRemove;
+} 
+template < class T>
+bool LinkedList<T>::isEmpty()const
+{
+	if(headPtr==nullptr)
+		return true;
+	return false;
+}
+
+
+template < class T>
+void LinkedList<T>::clear()
+{
+	T tmp;
+while (!isEmpty())
+	remove(1,tmp);
+} 
+
+template<class T>
+LinkedList<T>::~LinkedList()
+{
+	clear();
+
+}
+template<class T>
+int LinkedList<T>::getLength()const
+{
+	return itemCount;
+}
+
+
+
+template < class T>
+LinkedList<T>::LinkedList( const LinkedList<T>& LIST)
+{
+	itemCount = LIST->itemCount;
+	Node<T>* origChainPtr = LIST->headPtr
+	
+		if (origChainPtr == nullptr )
+			headPtr = nullptr ; 
+		else
+		{
+			headPtr = new Node<T>();
+			headPtr->setItem(origChainPtr ->getItem());
+			Node<T>* newChainPtr = headPtr; 
+			while (origPtr != nullptr )
+			{
+				origChainPtr = origChainPtr ->getNext(); 
+				T nextItem = origChainPtr->getItem();
+				Node<T>* newNodePtr = new Node<T>(nextItem);
+				newChainPtr->setNext(newNodePtr);
+				newChainPtr = newChainPtr->getNext();
+			} 
+			newChainPtr->setNext( nullptr ); 
+		} 
+} 
