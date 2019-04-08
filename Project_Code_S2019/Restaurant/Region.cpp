@@ -67,8 +67,9 @@ bool Region::Fisempty(){ return FOrderQueue.isEmpty();}
 Order* Region::dequeueN(int postion) 
 { 
 	Order* ord ;
-	NOrderQueue.remove(postion,ord);
-	return ord; 
+	if(NOrderQueue.remove(postion,ord))
+		return ord; 
+	return nullptr;
 }
 int Region::Sreach(Order* O)
 {

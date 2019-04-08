@@ -40,10 +40,10 @@ private:
 		RegionCircle=200,
 		FontSize = 20,	//font size used to draw orders ID on Interface
 		OrderWidth = 2*FontSize,	//width of the order to be drawn on GUI
-		OrderHeight = FontSize,		//height of the order to be drawn on GUI
+		OrderHeight = FontSize + 8,		//height of the order to be drawn on GUI
 
 
-		MaxHorizOrders	= ((WindWidth-RestWidth)/2 ) / (OrderWidth+1),		//The max no. of orders the can be drwan in on Horizontal line in a region
+		MaxHorizOrders	= ((WindWidth-RestWidth)/2 ) / (OrderWidth + 20),		//The max no. of orders the can be drwan in on Horizontal line in a region
 		MaxVerticalOrders = (DrawingAreaHeight /2)/(OrderHeight + 1),   //The max no. of orders the can be drwan in on Horizontal line in a region
 
 
@@ -58,7 +58,6 @@ private:
 	////////
 
 	int OrderCount;		//the total number of orders to be drawn
-	
 	Order * OrdListForDrawing[MaxPossibleOrdCnt]; // This Array of Pointers is used for drawing elements in the GUI
 	//NOTES: 
 	//Orders are assumed to be sorted by arrival time

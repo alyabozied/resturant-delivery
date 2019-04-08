@@ -17,10 +17,7 @@ private:
 	GUI *pGUI;
 	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
 	Region R[4];
-	//Queue<Order*> Queue1;	//Important: This is just for demo
-	
-	// TODO: Add More Data Members As Needed
-	//
+	int AutoProm;
 
 public:
 	Restaurant();
@@ -33,16 +30,11 @@ public:
 	void AddtoQueue(Order* po);
 	Order* getOrder();
 	void PrintStatuesBar();
+	void SetAutoProm(int);
+	int GetAutoProm() const;
 	
-	/// ==> 
-	///  DEMO-related functions. Should be removed in phases 1&2
-	//void Just_A_Demo();	
 	
 
-
-	//
-	// TODO: Add More Member Functions As Needed
-	//
 	void simulate(); // The end of this phase isa
 	bool LoadGUI();
 	void DeleteMax();

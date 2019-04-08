@@ -11,16 +11,10 @@ protected:
 	ORD_TYPE type;		//order type: Normal, Frozen, VIP
 	REGION Region;  //Region of this order
 	int Distance;	//The distance (in meters) between the order location and the resturant 
-	                
 	double totalMoney;	//Total order money
-
 	int ArrTime, ServTime, FinishTime;	//arrival, service start, and finish times
 	int priorty;
 	
-	//
-	// TODO: Add More Data Members As Needed
-	//
-
 public:
 	Order(int ID, ORD_TYPE r_Type, REGION r_region, int dist, double mon);
 	Order(int);

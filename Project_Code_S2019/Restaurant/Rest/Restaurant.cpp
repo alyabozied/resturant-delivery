@@ -90,6 +90,17 @@ bool Restaurant::ReadFile()
 
 
 
+void Restaurant::SetAutoProm(int s)
+{
+	AutoProm = s > 0 ? s : 10;
+}
+
+int Restaurant::GetAutoProm() const
+{
+	return AutoProm;
+}
+
+
 
 Restaurant::~Restaurant()
 {
@@ -105,12 +116,12 @@ void Restaurant::simulate()   // Phase one simulation function and it is named s
 	}
 	int currstep = 1 ;
 	PrintStatuesBar();
-	bool FlagOrd=true;
+	bool FlagOrd = true;
 	while(!EventsQueue.isEmpty() || FlagOrd )
 	{
 		Order *ord=nullptr;
 		ExecuteEvents(currstep);
-		FlagOrd=LoadGUI();
+		FlagOrd = LoadGUI();
 		char timestep[10];
 		itoa(currstep,timestep,10);			
 		pGUI->waitForClick();
@@ -120,7 +131,7 @@ void Restaurant::simulate()   // Phase one simulation function and it is named s
 		currstep++;
 		DeleteMax();
 		pGUI->ResetDrawingList();
-		LoadGUI();
+		FlagOrd = LoadGUI();
 		pGUI->waitForClick();
 		PrintStatuesBar();
 		pGUI->UpdateInterface();
@@ -238,7 +249,7 @@ void Restaurant::DeleteMax()
 		}
 		else if(R[i].getNcount())
 			{
-				deletedOrd=R[i].dequeueN(1);
+				deletedOrd = R[i].dequeueN(1);
 				delete deletedOrd;
 				deletedOrd=nullptr;
 			}

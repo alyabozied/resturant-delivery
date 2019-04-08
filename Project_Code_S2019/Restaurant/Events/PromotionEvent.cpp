@@ -22,7 +22,7 @@ void PromotionEvent::Execute(Restaurant* pRest)
 		{
 			delete tmp;
 			tmp=nullptr;
-			tmp=pRest->GetRegion(i)->dequeueN(index);
+			tmp = pRest->GetRegion(i)->dequeueN(index);
 			tmp->SetType(TYPE_VIP);
 			pRest->GetRegion(i)->InsertVOrder(tmp);
 			return;

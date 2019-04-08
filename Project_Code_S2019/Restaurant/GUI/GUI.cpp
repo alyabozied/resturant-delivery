@@ -151,16 +151,16 @@ void GUI::DrawRestArea() const
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a private function
 {
-
 	if (RegionCount > MaxRegionOrderCount) 
 		return; //no more orders can be drawn in this region
 
-	int DrawDistance = RegionCount;
+	int DrawDistance = RegionCount * (OrderWidth + 13);
 	int YPos = 1;
-	if(RegionCount>=MaxHorizOrders )	//max no. of orders to draw in one line
+	if( RegionCount >= MaxHorizOrders)	//max no. of orders to draw in one line
 	{
-		DrawDistance = (RegionCount-1)%MaxHorizOrders + 1;
-		YPos = (RegionCount-1) / MaxHorizOrders + 1; 
+		DrawDistance = ((RegionCount) % MaxHorizOrders ) * (OrderWidth + 13) ;
+		DrawDistance = (DrawDistance == 0) ? MaxHorizOrders * (OrderWidth + 13) :DrawDistance;
+		YPos = (RegionCount - 1) / MaxHorizOrders + 1; 
 	}
 
 	color clr = OrdersClrs[pO->GetType()];
@@ -174,25 +174,25 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a pri
 	case A_REG:
 		refX = (WindWidth/2 - 200);
 		refY = YHalfDrawingArea - OrderHeight; //
-		x = refX - DrawDistance*OrderWidth - DrawDistance; //(Distance)
-		y = refY - YPos*OrderHeight - YPos; // YPos
+		x = refX - DrawDistance ; //(Distance)
+		y = refY - YPos*OrderHeight ; // YPos
 		break;
 	case B_REG:
-		refX = (WindWidth/2 + 200);
+		refX = (WindWidth/2 + 150);
 		refY = YHalfDrawingArea - OrderHeight; //
-		x = refX + (DrawDistance-1)*OrderWidth + DrawDistance; //(Distance)
+		x = refX + DrawDistance; //(Distance)
 		y = refY - YPos*OrderHeight - YPos; // YPos
 		break;
 	case C_REG:
-		refX = (WindWidth/2 + 200);
+		refX = (WindWidth/2 + 150);
 		refY = YHalfDrawingArea + OrderHeight; //
-		x = refX + (DrawDistance-1)*OrderWidth + DrawDistance; //(Distance)
+		x = refX + DrawDistance; //(Distance)
 		y = refY + (YPos-1)*OrderHeight + YPos; // YPos
 		break;
 	case D_REG:
 		refX = (WindWidth/2 - 200);
 		refY = YHalfDrawingArea + OrderHeight; //
-		x = refX - DrawDistance*OrderWidth - DrawDistance; //(Distance)
+		x = refX - DrawDistance; //(Distance)
 		y = refY + (YPos-1)*OrderHeight + YPos; // YPos
 		break;
 	default:
@@ -202,8 +202,18 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a pri
 	// Drawing the Order
 	pWind->SetPen(clr);
 	pWind->SetBrush(clr);
-	pWind->SetFont(40,BOLD, ROMAN);
-	pWind->DrawInteger(x,y,pO->GetID());
+	pWind->SetFont(30,BOLD, ROMAN);
+	int temp = pO->GetID();
+	if(temp < 99)
+	{
+		temp += 100;
+		char c[4];
+		itoa(temp,c,10);
+		c[0] = '0';
+		pWind->DrawString(x,y,c);
+	}
+	else 
+		pWind->DrawInteger(x, y, temp);
 }
 
 
@@ -213,12 +223,17 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a pri
 // [Input Parameters]:
 //    orders [ ] : array of Order pointers (ALL orders from all regions in one array)
 //    TotalOrders : the size of the array (total no. of orders)
+
+
 void GUI::DrawOrders() const
 {
 
 	//Prepare counter for each region
 	int RegionsCounts[REG_CNT]={0};	//initlaize all counters to zero
-
+	int twodigit[REG_CNT] = {0};
+	int onedigit[REG_CNT] = {0};
+	int tempone = 1;
+	int temptwo = 0;
 	for(int i=0; i<OrderCount; i++)
 	{
 		int orderRegion = OrdListForDrawing[i]->GetRegion();
@@ -270,11 +285,16 @@ PROG_MODE	GUI::getGUIMode() const
 ///////////////////////////////////////////////////////////////
 void GUI::DrawTimeStepCenter(string TS)
 {
-
-	
+	string s = "00";
+	string min = "00";
+	min[1] = (stoi(TS) / 60) + '0';
+	if(stoi(TS) % 60 < 10)
+		s = "0" + to_string(stoi(TS) % 60);
+	else
+		s = to_string(stoi(TS) % 60);
 	// Drawing current step
 	pWind->SetPen(BLANCHEDALMOND);
 	pWind->SetFont(40,BOLD, ROMAN);
-	pWind->DrawString(WindWidth/2-35, (WindHeight-100)/2-20,"00:"+TS);
+	pWind->DrawString(WindWidth/2-38, (WindHeight-100)/2-20,min + ":" + s);
 
 }

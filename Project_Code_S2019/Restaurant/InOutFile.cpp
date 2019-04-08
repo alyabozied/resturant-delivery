@@ -74,6 +74,7 @@ bool InOutFile::Read()
 	InputFile >> AutoS;
 	InputFile >> NumEvnts;
 	
+	pRest->SetAutoProm(AutoS);
 	//reads the different types of events
 	while (!InputFile.eof())
 	{

@@ -26,16 +26,10 @@ void ArrivalEvent::Execute(Restaurant* pRest)
 	Order* pOrd = new Order(OrderID,OrdType,OrdRegion, OrdDistance, OrdMoney);
 	//filling the order to the lists in its region
 	if(OrdType == TYPE_NRM)
-	{
-	pRest->GetRegion(OrdRegion)->InsertNOrder(pOrd);
-	}
+		pRest->GetRegion(OrdRegion)->InsertNOrder(pOrd);
 	else if(OrdType == TYPE_FROZ)
-	pRest->GetRegion(OrdRegion)->InsertFOrder(pOrd);
+		pRest->GetRegion(OrdRegion)->InsertFOrder(pOrd);
 	else
-	pRest->GetRegion(OrdRegion)->InsertVOrder(pOrd);
+		pRest->GetRegion(OrdRegion)->InsertVOrder(pOrd);
 
-	///For the sake of demo, this function will just create an order and add it to DemoQueue
-	///Remove the next code lines in phase 1&2
-	
-	//pRest->AddtoDemoQueue(pOrd);
 }

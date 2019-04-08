@@ -21,7 +21,9 @@ void CancelationEvent::Execute(Restaurant* pRest)
 		{
 			delete tmp;
 			tmp= nullptr;
-			pRest->GetRegion(i)->dequeueN(index);
+			tmp = pRest->GetRegion(i)->dequeueN(index);
+			delete tmp;
+			tmp = nullptr;
 			return;	
 		}
 		
