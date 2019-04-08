@@ -67,16 +67,8 @@ bool Region::Fisempty(){ return FOrderQueue.isEmpty();}
 Order* Region::dequeueN(int postion) 
 { 
 	Order* ord ;
-	if(NOrderQueue.remove(postion,ord))
-		return ord; 
-	return nullptr;
-}
-int Region::Sreach(Order* O)
-{
-	return  NOrderQueue.search(O);
-	
-
-
+	NOrderQueue.remove(postion,ord);
+	return ord; 
 }
 
 
@@ -131,6 +123,10 @@ int Region::Get_VMotorC()const
 int Region::getFcount()
 {
 	return FOrderQueue.Get_count();
+}
+std::vector<Order*> Region::getVectorNord()
+{
+	return NOrderQueue.ToVector();
 }
 
 

@@ -216,7 +216,6 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a pri
 		pWind->DrawInteger(x, y, temp);
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////////
 /* A function to draw a list of orders and ensure there is no overflow in the drawing*/
 // To use this function, you must prepare its input parameters as specified
