@@ -3,11 +3,7 @@
 #include"Rest\Motorcycle.h"
 #include"Rest\Order.h"
 #include"Generic_DS\Queue.h"
-<<<<<<< HEAD
 #include"Generic_DS\List.h"
-=======
-#include"Generic_DS\list.h"
->>>>>>> daa869ce7a94a8505d762bd6fb5fcd17f2be1586
 class Region
 {
 protected:
