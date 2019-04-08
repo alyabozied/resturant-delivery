@@ -113,15 +113,17 @@ bool LinkedList<T>::remove( int position, T& item)
 		Node<T>* curPtr = nullptr ;
 		if (position == 1)
 		{
+			if(itemCount == 1)
+				tailPtr = nullptr;
 			curPtr = headPtr; 
 			headPtr = headPtr->getNext();
 		}
 		else if(position == itemCount)
 		{
-			Node<T>*tmp = getNodeAt(position-1);
-			tmp->setNext(nullptr);
-			delete tailPtr;
-			tailPtr=tmp;
+			Node<T>*prevPtr = getNodeAt(position-1);
+			curPtr = prevPtr->getNext();
+			prevPtr->setNext(curPtr->getNext());
+			tailPtr = prevPtr;
 		}
 
 		else
