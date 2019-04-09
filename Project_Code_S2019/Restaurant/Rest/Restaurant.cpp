@@ -108,11 +108,7 @@ Restaurant::~Restaurant()
 
 void Restaurant::simulate()   // Phase one simulation function and it is named simulate cause it is the only simulation function in this phase
 {
-	if(!ReadFile())
-	{
-		pGUI->waitForClick();
-		return;
-	}
+	while(!ReadFile()){}
 	int currstep = 1 ;
 	PrintStatuesBar();
 	bool FlagOrd=true;

@@ -9,9 +9,9 @@ GUI::GUI()
 	OrderCount = 0;
 
 	//Set color for each order type
-	OrdersClrs[TYPE_NRM] = 	DARKBLUE;	//normal-order color
-	OrdersClrs[TYPE_FROZ] = VIOLET;		//Frozen-order color
-	OrdersClrs[TYPE_VIP] = 	RED;		//VIP-order color					
+	OrdersClrs[TYPE_NRM] = 	PTHALOWBLUE;	//normal-order color
+	OrdersClrs[TYPE_FROZ] = MAGENTA;		//Frozen-order color
+	OrdersClrs[TYPE_VIP] = 	RED;	//VIP-order color					
 
 	ClearStatusBar();
 	ClearDrawingArea(); 
@@ -61,7 +61,7 @@ string GUI::GetString() const
 void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3,string msg4,string msg5) const	//Prints a message on status bar
 {
 	ClearStatusBar();	//First clear the status bar
-	pWind->SetPen(YELLOW);
+	pWind->SetPen(YELLOWPALE);
 	pWind->SetFont(25, BOLD, BY_NAME, "SWISS");   
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1), msg); 
 
@@ -71,18 +71,18 @@ void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3,string msg
 	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 25, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 25);
 
 
-	pWind->SetPen(YELLOW);
+	pWind->SetPen(YELLOWPALE);
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+30, msg1); 
 	pWind->SetPen(LIGHTYELLOW);
 	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 55, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 55);
 
-	pWind->SetPen(YELLOW);
+	pWind->SetPen(YELLOWPALE);
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+60, msg2); 
 	pWind->SetPen(LIGHTYELLOW);
 	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 85, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 85);
 
 
-	pWind->SetPen(YELLOW);
+	pWind->SetPen(YELLOWPALE);
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+90, msg3);  
 	                                                  
 }
@@ -161,7 +161,7 @@ void GUI::DrawRestArea() const
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), YHalfDrawingArea + 5*L/12, "C"); 
 
 	// 4- Drawing circle to count the current step
-	pWind->SetPen(PTHALOWBLUE, 2);
+	pWind->SetPen(DARKBLUE, 3);
 	pWind->SetBrush(YELLOW);
 	pWind->DrawCircle(WindWidth/2,(WindHeight-100)/2,TimestepCircleRaidus);
 }
@@ -309,7 +309,7 @@ void GUI::DrawTimeStepCenter(string TS)
 	else
 		s = to_string(stoi(TS) % 60);
 	// Drawing current step
-	pWind->SetPen(PTHALOWBLUE);
+	pWind->SetPen(DARKBLUE);
 	pWind->SetFont(40,BOLD, ROMAN);
 	pWind->DrawString(WindWidth/2-40, (WindHeight-100)/2-20,min + ":" + s);
 
