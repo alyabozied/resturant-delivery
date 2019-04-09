@@ -61,14 +61,29 @@ string GUI::GetString() const
 void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3,string msg4,string msg5) const	//Prints a message on status bar
 {
 	ClearStatusBar();	//First clear the status bar
-	
-	pWind->SetPen(BLACK);
+	pWind->SetPen(YELLOW);
 	pWind->SetFont(25, BOLD, BY_NAME, "SWISS");   
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1), msg); 
 
-	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1), msg); // You may need to change these coordinates later 
-	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+30, msg1); // You may need to change these coordinates later 
-	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+60, msg2); // You may need to change these coordinates later 
-	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+90, msg3); // You may need to change these coordinates later 
+	if(msg1 == "")
+		return;
+	pWind->SetPen(LIGHTYELLOW);
+	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 25, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 25);
+
+
+	pWind->SetPen(YELLOW);
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+30, msg1); 
+	pWind->SetPen(LIGHTYELLOW);
+	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 55, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 55);
+
+	pWind->SetPen(YELLOW);
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+60, msg2); 
+	pWind->SetPen(LIGHTYELLOW);
+	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 85, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 85);
+
+
+	pWind->SetPen(YELLOW);
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+90, msg3);  
 	                                                  
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -83,7 +98,7 @@ void GUI::DrawString(const int iX, const int iY, const string Text)
 void GUI::ClearStatusBar() const
 {
 	pWind->SetPen(DARKBLUE, 2);
-	pWind->SetBrush(WHITE);
+	pWind->SetBrush(VIOLETYELL);
 	pWind->DrawRectangle(0, WindHeight - StatusBarHeight , WindWidth, WindHeight);	
 
 	pWind->SetPen(DARKBLUE, 1);
@@ -102,17 +117,17 @@ void GUI::ClearDrawingArea() const
 
 	//up right 
 	pWind->SetPen(DARKBLUE, 1);
-	pWind->SetBrush(CYBERYELLOW);
+	pWind->SetBrush(ROYALYELLOW);
 	pWind->DrawRectangle(WindWidth/2, (WindHeight-100)/2 , WindWidth, MenuBarHeight );	
 
 	//down left 
 	pWind->SetPen(DARKBLUE, 1);
-	pWind->SetBrush(WHITE);	
+	pWind->SetBrush(ROYALYELLOW);	
 	pWind->DrawRectangle(0, WindHeight-StatusBarHeight, WindWidth/2,  (WindHeight-100)/2 );
 	
 	//down right  
 	pWind->SetPen(DARKBLUE, 1);
-	pWind->SetBrush(WHITE);
+	pWind->SetBrush(ROYALYELLOW);
 	pWind->DrawRectangle(WindWidth/2, WindHeight-StatusBarHeight, WindWidth,  (WindHeight-100)/2 );
 	
 }

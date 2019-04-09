@@ -126,6 +126,9 @@
     <ClInclude Include="Generic_DS\list.h">
       <Filter>Generic_DS</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Restaurant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Demo_Main.cpp" />
@@ -272,5 +275,15 @@
     <Text Include="CMUgraphicsLib\Readme.txt">
       <Filter>CMUGraphicsLib</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Restaurant.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="C:\Users\hp\Downloads\restaurant_512_DUD_icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
