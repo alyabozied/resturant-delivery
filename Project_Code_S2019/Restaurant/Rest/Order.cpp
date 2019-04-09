@@ -1,8 +1,8 @@
 #include "Order.h"
 
-Order::Order(int id, ORD_TYPE r_Type, REGION r_region, int dist, double mon)
+Order::Order(int id, ORD_TYPE r_Type, REGION r_region, double dist, double mon)
 {
-	ID = (id>0&&id<1000)?id:0;	//1<ID<999
+	ID = (id>0&&id<1000)?id:0;	
 	type = r_Type;
 	Region = r_region;
 	Distance = dist;

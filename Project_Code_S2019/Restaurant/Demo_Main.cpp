@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Rest\Restaurant.h"
 #include "GUI\GUI.h"
+#include"vld.h"
 using namespace std;
 
 int main()

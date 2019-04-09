@@ -16,7 +16,7 @@ protected:
 	int priorty;
 	
 public:
-	Order(int ID, ORD_TYPE r_Type, REGION r_region, int dist, double mon);
+	Order(int ID, ORD_TYPE r_Type, REGION r_region, double dist, double mon);
 	Order(int);
 	virtual ~Order();
 

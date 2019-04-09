@@ -33,8 +33,8 @@ bool InOutFile::Read()
 	//time of auto promotion and number of events
 	int	AutoS, NumEvnts;
 	// the timestep,ID, Distance of different orders
-	int	TimeStp, ID, DST;
-	double MON = 0, EXMON = 0;
+	int	TimeStp, ID;
+	double MON = 0, EXMON = 0, DST;
 	char  EVNT, TYP, REG;
 	Order* pOrd = nullptr;
 	Event* pEv = nullptr;

@@ -149,7 +149,7 @@ const color CYBERYELLOW = color(255, 211,0);
 const color ROYALYELLOW = color(250, 218, 94);
 const color YELLOWOCRE = color(255, 218, 26);
 const color PTHALOWBLUE = color(0, 81, 186);
-const color YELLOWPALE = color(255, 201, 1);
+const color ETSHAWY = color(255, 201, 1);
 const color VIOLETYELL = color(101, 0, 129);
 /////////////////////////////////////////////
 const color BROWN = color(165, 42, 42);

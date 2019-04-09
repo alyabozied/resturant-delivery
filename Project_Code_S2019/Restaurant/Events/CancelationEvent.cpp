@@ -24,7 +24,7 @@ void CancelationEvent::Execute(Restaurant* pRest)
 
 			if(tmpvec[j]->GetID() == getOrderID())
 			{
-			pRest->GetRegion(i)->dequeueN(j+1);	
+			delete pRest->GetRegion(i)->dequeueN(j+1);	
 			return ;
 			}
 

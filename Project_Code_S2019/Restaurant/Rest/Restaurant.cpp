@@ -176,7 +176,7 @@ bool Restaurant::LoadGUI()
 	{
 		while(R[i].getVcount() != 0)
 		{
-		 tmp=R[i].dequeueV();
+		tmp=R[i].dequeueV();
 		pGUI->AddOrderForDrawing(tmp);
 		tmpQ.enqueue(tmp);
 		flag=true;
@@ -208,7 +208,7 @@ bool Restaurant::LoadGUI()
 		 tmp=R[i].dequeueN(1);
 		 pGUI->AddOrderForDrawing(tmp);
 		 tmpQ.enqueue(tmp);
-		flag=true;
+	    flag=true;
 
 		}
 		while(!tmpQ.isEmpty())

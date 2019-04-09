@@ -61,7 +61,7 @@ string GUI::GetString() const
 void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3,string msg4,string msg5) const	//Prints a message on status bar
 {
 	ClearStatusBar();	//First clear the status bar
-	pWind->SetPen(YELLOWPALE);
+	pWind->SetPen(ETSHAWY);
 	pWind->SetFont(25, BOLD, BY_NAME, "SWISS");   
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1), msg); 
 
@@ -71,18 +71,18 @@ void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3,string msg
 	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 25, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 25);
 
 
-	pWind->SetPen(YELLOWPALE);
+	pWind->SetPen(ETSHAWY);
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+30, msg1); 
 	pWind->SetPen(LIGHTYELLOW);
 	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 55, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 55);
 
-	pWind->SetPen(YELLOWPALE);
+	pWind->SetPen(ETSHAWY);
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+60, msg2); 
 	pWind->SetPen(LIGHTYELLOW);
 	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 85, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 85);
 
 
-	pWind->SetPen(YELLOWPALE);
+	pWind->SetPen(ETSHAWY);
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+90, msg3);  
 	                                                  
 }
@@ -140,7 +140,7 @@ void GUI::DrawRestArea() const
 	pWind->DrawLine(0,MenuBarHeight, WindWidth, MenuBarHeight);
 	// 1- Drawing the Circle of the Rest
 	pWind->SetPen(DARKBLUE, 3);
-	pWind->SetBrush(YELLOWPALE);
+	pWind->SetBrush(ETSHAWY);
 	pWind->DrawCircle(WindWidth/2, (WindHeight-100)/2,RegionCircle);
 
 	// 2- Drawing the 2 crossed lines (for making 4 regions)
