@@ -62,14 +62,14 @@ void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3,string msg
 {
 	ClearStatusBar();	//First clear the status bar
 	
-	pWind->SetPen(DARKRED);
-	pWind->SetFont(25, ITALICIZED|BOLD , BY_NAME, "ROMAN");   
+	pWind->SetPen(BLACK);
+	pWind->SetFont(25, BOLD, BY_NAME, "SWISS");   
 
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1), msg); // You may need to change these coordinates later 
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+30, msg1); // You may need to change these coordinates later 
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+60, msg2); // You may need to change these coordinates later 
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+90, msg3); // You may need to change these coordinates later 
-	                                                  // to be able to write multi-line
+	                                                  
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawString(const int iX, const int iY, const string Text)
@@ -82,11 +82,11 @@ void GUI::DrawString(const int iX, const int iY, const string Text)
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::ClearStatusBar() const
 {
-	pWind->SetPen(RED, 2);
+	pWind->SetPen(DARKBLUE, 2);
 	pWind->SetBrush(WHITE);
 	pWind->DrawRectangle(0, WindHeight - StatusBarHeight , WindWidth, WindHeight);	
 
-	pWind->SetPen(RED, 1);
+	pWind->SetPen(DARKBLUE, 1);
 	pWind->DrawLine(0, WindHeight - StatusBarHeight , WindWidth, WindHeight - StatusBarHeight);	
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -96,23 +96,23 @@ void GUI::ClearDrawingArea() const
 	// Clearing the Drawing area
 
 	//up left 
-	pWind->SetPen(SALMON, 3);
-	pWind->SetBrush(SALMON);
+	pWind->SetPen(DARKBLUE, 1);
+	pWind->SetBrush(ROYALYELLOW);
 	pWind->DrawRectangle(0, MenuBarHeight, WindWidth/2, (WindHeight-100)/2);
 
 	//up right 
-	pWind->SetPen(CADETBLUE, 3);
-	pWind->SetBrush(CADETBLUE);
+	pWind->SetPen(DARKBLUE, 1);
+	pWind->SetBrush(CYBERYELLOW);
 	pWind->DrawRectangle(WindWidth/2, (WindHeight-100)/2 , WindWidth, MenuBarHeight );	
 
 	//down left 
-	pWind->SetPen(DARKSEAGREEN, 3);
-	pWind->SetBrush(DARKTURQUOISE);	
+	pWind->SetPen(DARKBLUE, 1);
+	pWind->SetBrush(WHITE);	
 	pWind->DrawRectangle(0, WindHeight-StatusBarHeight, WindWidth/2,  (WindHeight-100)/2 );
 	
 	//down right  
-	pWind->SetPen(DARKRED, 3);
-	pWind->SetBrush(DARKRED);
+	pWind->SetPen(DARKBLUE, 1);
+	pWind->SetBrush(WHITE);
 	pWind->DrawRectangle(WindWidth/2, WindHeight-StatusBarHeight, WindWidth,  (WindHeight-100)/2 );
 	
 }
@@ -120,15 +120,17 @@ void GUI::ClearDrawingArea() const
 void GUI::DrawRestArea() const
 {
 	int L = RestWidth / 2;
-
+	// drawing a line after the menu bar
+	pWind->SetPen(DARKBLUE, 2);
+	pWind->DrawLine(0,MenuBarHeight, WindWidth, MenuBarHeight);
 	// 1- Drawing the Circle of the Rest
-	pWind->SetPen(DARKBLUE);
-	pWind->SetBrush(WHITE);
+	pWind->SetPen(DARKBLUE, 3);
+	pWind->SetBrush(YELLOWPALE);
 	pWind->DrawCircle(WindWidth/2, (WindHeight-100)/2,RegionCircle);
 
-	// 2- Drawing the 2 brown crossed lines (for making 4 regions)
+	// 2- Drawing the 2 crossed lines (for making 4 regions)
 
-	pWind->SetPen(BROWN, 3);
+	pWind->SetPen(DARKBLUE, 3);
 	pWind->DrawLine(0, YHalfDrawingArea, WindWidth, YHalfDrawingArea);
 	pWind->DrawLine(WindWidth/2, MenuBarHeight, WindWidth/2, WindHeight-StatusBarHeight);
 
@@ -136,16 +138,16 @@ void GUI::DrawRestArea() const
 	
 
 	// 3- Writing the letter of each region (A, B, C, D)
-	pWind->SetPen(FORESTGREEN);
-	pWind->SetFont(50, BOLD , BY_NAME, "ROMAN");
+	pWind->SetPen(VIOLETYELL);
+	pWind->SetFont(50, BOLD , BY_NAME, "SWISS");
 	pWind->DrawString(WindWidth/2 - (int)(0.44*L)-20,  RestStartY + 5*L/12, "A");
 	pWind->DrawString(WindWidth/2 - (int)(0.44*L)-20 , YHalfDrawingArea + 5*L/12, "D");
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), RestStartY + 5*L/12, "B");
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), YHalfDrawingArea + 5*L/12, "C"); 
 
 	// 4- Drawing circle to count the current step
-	pWind->SetPen(BLACK);
-	pWind->SetBrush(VIOLETRED);
+	pWind->SetPen(PTHALOWBLUE, 2);
+	pWind->SetBrush(YELLOW);
 	pWind->DrawCircle(WindWidth/2,(WindHeight-100)/2,TimestepCircleRaidus);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -292,8 +294,8 @@ void GUI::DrawTimeStepCenter(string TS)
 	else
 		s = to_string(stoi(TS) % 60);
 	// Drawing current step
-	pWind->SetPen(BLANCHEDALMOND);
+	pWind->SetPen(PTHALOWBLUE);
 	pWind->SetFont(40,BOLD, ROMAN);
-	pWind->DrawString(WindWidth/2-38, (WindHeight-100)/2-20,min + ":" + s);
+	pWind->DrawString(WindWidth/2-40, (WindHeight-100)/2-20,min + ":" + s);
 
 }

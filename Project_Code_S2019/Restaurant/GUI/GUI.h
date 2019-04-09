@@ -1,14 +1,11 @@
 #ifndef __GUI_H_
 #define __GUI_H_
-
 #include "..\CMUgraphicsLib\CMUgraphics.h"
 #include "..\Defs.h"
 
 #include "..\Rest\Order.h"
-
 #include <string>
 using namespace std;
-
 class GUI
 {
 
@@ -37,7 +34,7 @@ private:
 		RestEndY = YHalfDrawingArea + RestWidth/2,   //The y coordinate of the lower right corner of the Rest
 
 		TimestepCircleRaidus=50,
-		RegionCircle=200,
+		RegionCircle=180,
 		FontSize = 20,	//font size used to draw orders ID on Interface
 		OrderWidth = 2*FontSize,	//width of the order to be drawn on GUI
 		OrderHeight = FontSize + 8,		//height of the order to be drawn on GUI

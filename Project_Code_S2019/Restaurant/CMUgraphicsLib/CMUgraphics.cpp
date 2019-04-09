@@ -740,7 +740,8 @@ void window::SetFont(const int iSize, const unsigned short usStyle, const fontfa
 	  case SWISS:  
 		lf.lfPitchAndFamily = FF_SWISS; 
 		break;
-
+	  case 	DECOR:
+		  lf.lfPitchAndFamily = FF_DECORATIVE;
 	  default:	 
 	    lf.lfPitchAndFamily = FF_DONTCARE; 
 		break;

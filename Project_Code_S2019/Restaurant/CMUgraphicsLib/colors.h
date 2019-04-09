@@ -144,6 +144,14 @@ const color SANDYBROWN = color(244, 164, 96);
 const color TAN = color(210, 180, 140);
 const color CHOCOLATE = color(210, 105, 30);
 const color FIREBRICK = color(178, 34, 34);
+///////////////////////////////////////////
+const color CYBERYELLOW = color(255, 211,0);
+const color ROYALYELLOW = color(250, 218, 94);
+const color YELLOWOCRE = color(255, 218, 26);
+const color PTHALOWBLUE = color(0, 81, 186);
+const color YELLOWPALE = color(255, 201, 1);
+const color VIOLETYELL = color(101, 0, 129);
+/////////////////////////////////////////////
 const color BROWN = color(165, 42, 42);
 const color DARKSALMON = color(233, 150, 122);
 const color SALMON = color(250, 128, 114);

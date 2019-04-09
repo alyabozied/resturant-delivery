@@ -58,6 +58,7 @@ enum fontfamily {
 	MODERN,		// monospace with or without serifs
 	ROMAN,		// variable width with serifs
 	SCRIPT,		// like handwriting
+	DECOR,
 	SWISS		  // variable width without serifs
 };
 
