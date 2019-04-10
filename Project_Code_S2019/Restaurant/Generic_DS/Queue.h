@@ -1,5 +1,7 @@
 #ifndef __QUEUE_H_
 #define __QUEUE_H_
+#include<vector>
+
 
 /*This code is an updated version from "Data Abstraction & Problem Solving with C++,WALLS AND MIRRORS ,SIXTH EDITION"*/
 
@@ -59,6 +61,7 @@ public :
 	bool dequeue(T& frntEntry);  
 	bool peekFront(T& frntEntry)  const;
 	int Get_count()const;
+	std::vector<T>ToVector();
 	~Queue();
 };
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -178,6 +181,24 @@ int Queue<T>::Get_count() const
 	return count;
 }
 ///////////////////////////////////////////////////////////////////////////////////
+
+
+template <typename T>
+std::vector<T> Queue<T>::ToVector(){
+		std::vector<T> n;
+		Node<T>* p=frontPtr;
+	while(p){
+		n.push_back(p->getItem());
+		p=p->getNext();
+	}
+	return n;
+
+
+
+
+}
+
+
 
 template <typename T>
 Queue<T>::~Queue()

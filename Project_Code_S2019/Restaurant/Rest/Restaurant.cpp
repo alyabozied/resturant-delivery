@@ -168,55 +168,30 @@ void Restaurant::PrintStatuesBar()
 
 bool Restaurant::LoadGUI()
 {
-
-	Queue<Order*> tmpQ;
-	Order* tmp;
+	vector<Order*>tmpvec;
 	bool flag=false; //active orders 
-	for (int i = 0; i < 4; i++)
+	for (int j = 0; j < 4; j++)
 	{
-		while(R[i].getVcount() != 0)
+		tmpvec=R[j].getVectorVord();
+		for (int i = 0; i < int(tmpvec.size()); i++)
 		{
-		tmp=R[i].dequeueV();
-		pGUI->AddOrderForDrawing(tmp);
-		tmpQ.enqueue(tmp);
+		pGUI->AddOrderForDrawing(tmpvec[i]);
 		flag=true;
 		}
-		while(!tmpQ.isEmpty())
+		tmpvec=R[j].getVectorFord();
+		for (int i = 0; i < int(tmpvec.size()); i++)
 		{
-			tmpQ.dequeue(tmp);
-			R[i].InsertVOrder(tmp);
-		}
-
-
-
-		while(!R[i].Fisempty())
-		{
-		 tmp=R[i].dequeueF();
-		 pGUI->AddOrderForDrawing(tmp);
-		 tmpQ.enqueue(tmp);
+		pGUI->AddOrderForDrawing(tmpvec[i]);
 		flag=true;
 		}
-		while(!tmpQ.isEmpty())
-		{
-			tmpQ.dequeue(tmp);
-			R[i].InsertFOrder(tmp);
-		}
-
 		
-		while(R[i].getNcount())
+		tmpvec=R[j].getVectorNord();
+		for (int i = 0; i < int(tmpvec.size()); i++)
 		{
-		 tmp=R[i].dequeueN(1);
-		 pGUI->AddOrderForDrawing(tmp);
-		 tmpQ.enqueue(tmp);
-	    flag=true;
-
+		pGUI->AddOrderForDrawing(tmpvec[i]);
+		flag=true;
 		}
-		while(!tmpQ.isEmpty())
-		{
-			tmpQ.dequeue(tmp);
-			R[i].InsertNOrder(tmp);
-		}
-
+		
 	}
 
 	return flag;

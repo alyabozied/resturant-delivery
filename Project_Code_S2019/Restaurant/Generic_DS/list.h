@@ -19,7 +19,6 @@ bool insert( int newPosition, const T& newEntry);
 bool remove( int position , T& item);
 void clear();
 T getEntry( int position) const ;
-int search(T item);
 std::vector<T> ToVector();
 };
 
@@ -28,26 +27,6 @@ template < class T>
 LinkedList<T>::LinkedList() : headPtr( nullptr), itemCount(0),tailPtr(nullptr)
 {
 }
-
-template <class T>
-int LinkedList<T>::search(T item){
-	Node<T>* P=headPtr;
-	int i =1;
-	while(P){
-		if(*P->getItem()==*item){
-			
-			return i ;
-		}
-		P=P->getNext();
-		i++;
-		
-	}
-	return -1;
-}
-
-
-
-
 
 template < class T>
 T LinkedList<T>::getEntry( int position) const

@@ -71,6 +71,18 @@ Order* Region::dequeueN(int postion)
 	return ord; 
 }
 
+std::vector<Order*> Region::getVectorVord()
+{
+	return VOrderQueue.ToVector();
+}
+
+std::vector<Order*> Region::getVectorFord()
+{
+	return FOrderQueue.ToVector();
+}
+
+
+
 
 Order* Region::dequeueV() 
 { 

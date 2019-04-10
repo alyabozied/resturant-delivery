@@ -45,6 +45,8 @@ public:
 	Order* dequeueF();
 	void DeleteMotors();
 	std::vector <Order*> getVectorNord();
+	std::vector <Order*> getVectorVord();
+	std::vector <Order*> getVectorFord();
 
 
 	~Region(void);
