@@ -33,6 +33,7 @@ double Order::GetMoney() const { return totalMoney; }
 int Order::GetArrTime() const {return ArrTime;}
 int Order::GetFinishTime() const {return FinishTime; }
 int Order::GetServTime() const { return ServTime; }
+int Order::GetWaitingTime() const { return WaintingTime; }
 double Order::GetPriority() const { return priorty; }
 
 
@@ -44,6 +45,7 @@ void Order::SetMoney(double m){ totalMoney = (m > 0) ? m : 0; }
 void Order::SetArrTime(int t){ ArrTime = (t > 0) ? t : 0; }
 void Order::SetFinishTime(int t){ FinishTime = (t > 0) ? t : 0; }
 void Order::SetServTime(int t){ ServTime = (t > 0) ? t : 0; }
+void Order::SetWaitingTime(int t){ WaintingTime = (t > 0) ? t : 0; }
 void Order::SetPriority(double p){ priorty = p; }
 
 

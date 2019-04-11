@@ -19,11 +19,15 @@ void CancelationEvent::Execute(Restaurant* pRest)
 		int Cnt = pRest->GetRegion(i)->GetNOrdCnt();
 
 		for (int j = 0; j < Cnt; j++)
+		{
 			if(TmpArr[j]->GetID() == getOrderID())
 			{
 				delete pRest->GetRegion(i)->dequeueN(j+1);	
+				delete  []TmpArr;
 				return ;
 			}
+		}
+		delete []TmpArr; 
 	}
 
 }

@@ -179,8 +179,9 @@ LinkedList<T>::LinkedList( const LinkedList<T>& LIST)
 		} 
 } 
 template<class T>
+// remember to delete it after using it
 const T* LinkedList<T>::ToArray(){
-	T n[MaxPossibleOrdCnt];
+	T* n = new T[itemCount];
 	Node<T>* p = headPtr;
 	int Cnt = 0;
 	while(p)

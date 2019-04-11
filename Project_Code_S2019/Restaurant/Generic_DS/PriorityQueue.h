@@ -158,9 +158,10 @@ int priorityQueue<T>::search(T item){
 
 
 template <typename T>
+// remember to delete it after using it
 const T* priorityQueue<T>::ToArray(){
 
-	T n[MaxPossibleOrdCnt];
+	T* n = new T[count];
 	for (int i = 0; i < count; i++)
 	{
 		n[i] = tree[i];

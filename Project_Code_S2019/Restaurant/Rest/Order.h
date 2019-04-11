@@ -12,7 +12,7 @@ protected:
 	REGION Region;         //Region of this order
 	double Distance;	   //The distance (in meters) between the order location and the resturant 
 	double totalMoney;	   //Total order money
-	int ArrTime, ServTime, FinishTime;	    //arrival, service start, and finish times
+	int ArrTime, ServTime, FinishTime, WaintingTime;	    //arrival, service start, finish, and waiting times
 	double priorty;
 	
 public:
@@ -30,6 +30,7 @@ public:
 	int GetArrTime() const;
 	int GetServTime() const;
 	int GetFinishTime() const;
+	int GetWaitingTime() const;
 	double GetPriority() const;
 
 	void SetID(int);
@@ -40,6 +41,7 @@ public:
 	void SetArrTime(int);
 	void SetServTime(int);
 	void SetFinishTime(int);
+	void SetWaitingTime(int);
 	void SetPriority(double);
 
 

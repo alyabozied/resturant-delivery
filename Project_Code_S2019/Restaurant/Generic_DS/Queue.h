@@ -183,8 +183,9 @@ int Queue<T>::Get_count() const
 
 
 template <typename T>
+// remember to delete it after using it
 const T* Queue<T>::ToArray(){
-	T n[MaxPossibleOrdCnt];
+	T* n = new T[count];
 	Node<T>* p=frontPtr;
 	int Cnt = 0;
 	while(p){

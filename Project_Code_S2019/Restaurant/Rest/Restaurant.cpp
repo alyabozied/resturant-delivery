@@ -138,6 +138,7 @@ void Restaurant::simulate()
 	{
 		Order *ord=nullptr;
 		ExecuteEvents(currstep);
+
 		//load gui returns true if there is still orders not served
 		FlagOrd=LoadGUI();
 		char timestep[10];
@@ -195,7 +196,7 @@ bool Restaurant::LoadGUI()
 	Order*const* tmpArr;
 
 	//flag if true means there is still orders waiting to be seved
-	bool flag=false;
+	bool flag = false;
 	Order*tmpOrd;
 	for (int j = 0; j < 4; j++)
 	{
@@ -203,30 +204,32 @@ bool Restaurant::LoadGUI()
 		int OrderCnt = R[j].GetVOrdCnt();
 		for (int i = 0; i < OrderCnt; i++)
 		{
-			tmpOrd=R[j].dequeueV();
+			tmpOrd = R[j].dequeueV();
 			pGUI->AddOrderForDrawing(tmpOrd);
 			R[j].InsertVOrder(tmpOrd);
 			flag=true;
 		}
 
 		//load the gui with the frozen orders
-		tmpArr=R[j].GetArrFOrd();
+		tmpArr = R[j].GetArrFOrd();
 		OrderCnt = R[j].GetFOrdCnt();
 		for (int i = 0; i < OrderCnt; i++)
 		{
 			pGUI->AddOrderForDrawing(tmpArr[i]);
 			flag=true;
 		}
-		
+		delete []tmpArr;
+		tmpArr = nullptr;
 		//load the gui with normal orders
-		tmpArr=R[j].GetArrNOrd();
+		tmpArr = R[j].GetArrNOrd();
 		OrderCnt = R[j].GetNOrdCnt();
 		for (int i = 0; i < OrderCnt; i++)
 		{
 			pGUI->AddOrderForDrawing(tmpArr[i]);
 			flag=true;
 		}
-		
+		delete tmpArr;
+		tmpArr = nullptr;
 	}
 
 	return flag;

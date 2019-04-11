@@ -3,6 +3,7 @@
 
 
 #include "..\Defs.h"
+#include "Order.h"
 
 #pragma once
 class Motorcycle	
@@ -12,7 +13,10 @@ class Motorcycle
 	double speed;		//meters it can move in one clock tick (in one timestep)
 	REGION	region;	    //region of the motorcycle
 	STATUS	status;	    //idle or in-service
-	int ArrivalTime;	//will be used for priority
+	Order* AssignedOrd;	//to hold the assigned order untill it is delivered then the order info can be printed,
+						//also implicitly has the service time of the motorcycle by dividing the distance over speed
+	int ArrivalTime;	//will be used for priority, when will the motorcycle arrive 
+
 public:
 	Motorcycle();
 	Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type);
@@ -20,14 +24,21 @@ public:
 	//Setters and Getters for All Date Members
 
 	int GetID()const;
-	double GetSpeed()const;
 	ORD_TYPE GetType()const;
+	double GetSpeed()const;
+	REGION GetRegion()const;
 	STATUS GetStatus()const;
+	Order* GetAssignedOrd();
+	int GetArrivalTime();
+
 
 	void SetID(int);
-	void SetSpeed(double);
 	void SetType(ORD_TYPE);
+	void SetSpeed(double);
+	void SetRegion(REGION);
 	void SetStatus(STATUS);
+	void SetAssignedOrd(Order*);
+
 	
 	//overloads for the priority checking
 	bool operator <(Motorcycle M);

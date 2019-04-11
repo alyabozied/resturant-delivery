@@ -27,10 +27,12 @@ void PromotionEvent::Execute(Restaurant* pRest)
 				tmp=pRest->GetRegion(i)->dequeueN(j+1);	
 				tmp->SetType(TYPE_VIP);
 				pRest->GetRegion(i)->InsertVOrder(tmp);
+				delete []TmpArr;
 				return ;
 			}
 
 		}
+		delete []TmpArr;
 	}
 }		
 		
