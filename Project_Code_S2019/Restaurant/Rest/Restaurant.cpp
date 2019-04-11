@@ -45,18 +45,45 @@ void Restaurant::RunSimulation()
 
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//								different setters and getters								  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
+int Restaurant::GetAutoProm()const
+{
+	return AutoProm;
+}
 
-//////////////////////////////////  Event handling functions   /////////////////////////////
-void Restaurant::AddEvent(Event* pE)	//adds a new event to the queue of events
+void Restaurant::SetAutoProm(int x)
+{
+	AutoProm = AutoProm > 0 ? AutoProm : 10;
+}
+
+Region* Restaurant::GetRegion(int index)
+{
+	return &R[index];
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//									Event handling functions								  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+//adds a new event to the queue of events
+void Restaurant::AddEvent(Event* pE)	
 {
 	EventsQueue.enqueue(pE);
 }
 
 //Executes ALL events that should take place at current timestep
-void Restaurant::ExecuteEvents(int CurrentTimeStep)
+void Restaurant::ExecuteEvents(int CurrentTimeStep)  
 {
 	Event *pE;
 	while( EventsQueue.peekFront(pE) )	//as long as there are more events
@@ -71,25 +98,14 @@ void Restaurant::ExecuteEvents(int CurrentTimeStep)
 
 }
 
-//get region
-Region* Restaurant::GetRegion(int index)
-{
-	return &R[index];
-}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//									input reading function									  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-int Restaurant::GetAutoProm()const
-{
-	return AutoProm;
-}
-
-void Restaurant::SetAutoProm(int x)
-{
-	AutoProm = AutoProm > 0 ? AutoProm : 10;
-}
-
-
-//function to read inputs from a file
 bool Restaurant::ReadFile()
 {
 	InOutFile loadfile(this, pGUI);
@@ -99,32 +115,45 @@ bool Restaurant::ReadFile()
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//								a simple simulation function								  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-Restaurant::~Restaurant()
+void Restaurant::simulate()  
 {
-		delete pGUI;
-}
-
-void Restaurant::simulate()   // Phase one simulation function and it is named simulate cause it is the only simulation function in this phase
-{
+	//prompt the user again and again till a valid file name is entered
 	while(!ReadFile()){}
+
 	int currstep = 1 ;
+
+	//print the different info about the different regions
 	PrintStatuesBar();
+
+	//flag to check if there is still an order not served so simulation doesn't stop
 	bool FlagOrd=true;
+
 	while(!EventsQueue.isEmpty() || FlagOrd )
 	{
 		Order *ord=nullptr;
 		ExecuteEvents(currstep);
+		//load gui returns true if there is still orders not served
 		FlagOrd=LoadGUI();
 		char timestep[10];
-		_itoa_s(currstep,timestep,10);			
+		_itoa_s(currstep,timestep,10);
+		
+		//functions needed for the interface
 		pGUI->waitForClick();
 		pGUI->UpdateInterface();
 		PrintStatuesBar();
 		pGUI->DrawTimeStepCenter(timestep);
 		currstep++;
+
+		//delete the order whose time has come
 		DeleteMax();
+
+		//update the interface after deleting the orders whose time has come
 		pGUI->ResetDrawingList();
 		FlagOrd=LoadGUI();
 		pGUI->waitForClick();
@@ -135,11 +164,6 @@ void Restaurant::simulate()   // Phase one simulation function and it is named s
 
 	
 	}
-	//free the space allocated for the motorcycles
-	for (int i = 0; i < 4; i++)
-	{
-		GetRegion(i)->DeleteMotors();
-	}
 	pGUI->PrintMessage("generation done, click to END program");
 	pGUI->waitForClick();
 
@@ -148,18 +172,18 @@ void Restaurant::PrintStatuesBar()
 {
 
 	char NM[4], VM [4], FM[4], NOrd [4], VOrd[4], FOrd[4];
-	string RN1 ="Region1 NMotors: "+string(itoa(R[0].Get_NMotorC(),NM,10))+",    Region1 NOrders: "+string(itoa(R[0].getNcount(),NOrd,10));			
-	string RV1 =",    Region1 VMotors: "+string(itoa(R[0].Get_VMotorC(),VM,10))+",    Region1 VOrders: "+string(itoa(R[0].getVcount(),VOrd,10));			
-	string RF1 =",    Region1 FMotors: "+string(itoa(R[0].Get_FMotorC(),FM,10))+",    Region1 FOrders: "+string(itoa(R[0].getFcount(),FOrd,10));			
-	string RN2 ="Region2 NMotors: "+string(itoa(R[1].Get_NMotorC(),NM,10))+",    Region2 NOrders: "+string(itoa(R[1].getNcount(),NOrd,10));			
-	string RV2 =",    Region2 VMotors: "+string(itoa(R[1].Get_VMotorC(),VM,10))+",    Region2 VOrders: "+string(itoa(R[1].getVcount(),VOrd,10));			
-	string RF2 =",    Region2 FMotors: "+string(itoa(R[1].Get_FMotorC(),FM,10))+",    Region2 FOrders: "+string(itoa(R[1].getFcount(),FOrd,10));			
-	string RN3 ="Region3 NMotors: "+string(itoa(R[2].Get_NMotorC(),NM,10))+",    Region3 NOrders: "+string(itoa(R[2].getNcount(),NOrd,10));			
- 	string RV3 =",    Region3 VMotors: "+string(itoa(R[2].Get_VMotorC(),VM,10))+",    Region3 VOrders: "+string(itoa(R[2].getVcount(),VOrd,10));		
-	string RF3 =",    Region3 FMotors: "+string(itoa(R[2].Get_FMotorC(),FM,10))+",    Region3 FOrders: "+string(itoa(R[2].getFcount(),FOrd,10));		
-	string RN4 ="Region4 NMotors: "+string(itoa(R[3].Get_NMotorC(),NM,10))+",    Region4 NOrders: "+string(itoa(R[3].getNcount(),NOrd,10));			
-	string RV4 =",    Region4 VMotors: "+string(itoa(R[3].Get_VMotorC(),VM,10))+",    Region4 VOrders: "+string(itoa(R[3].getVcount(),VOrd,10));			
-	string RF4 =",    Region4 FMotors: "+string(itoa(R[3].Get_FMotorC(),FM,10))+",    Region4 FOrders: "+string(itoa(R[3].getFcount(),FOrd,10));
+	string RN1 ="RegionA NMotors: "+string(itoa(R[0].Get_NMotorCnt(),NM,10))+",    RegionA NOrders: "+string(itoa(R[0].GetNOrdCnt(),NOrd,10));			
+	string RV1 =",    RegionA VMotors: "+string(itoa(R[0].Get_VMotorCnt(),VM,10))+",    RegionA VOrders: "+string(itoa(R[0].GetVOrdCnt(),VOrd,10));			
+	string RF1 =",    RegionA FMotors: "+string(itoa(R[0].Get_FMotorCnt(),FM,10))+",    RegionA FOrders: "+string(itoa(R[0].GetFOrdCnt(),FOrd,10));			
+	string RN2 ="RegionB NMotors: "+string(itoa(R[1].Get_NMotorCnt(),NM,10))+",    RegionB NOrders: "+string(itoa(R[1].GetNOrdCnt(),NOrd,10));			
+	string RV2 =",    RegionB VMotors: "+string(itoa(R[1].Get_VMotorCnt(),VM,10))+",    RegionB VOrders: "+string(itoa(R[1].GetVOrdCnt(),VOrd,10));			
+	string RF2 =",    RegionB FMotors: "+string(itoa(R[1].Get_FMotorCnt(),FM,10))+",    RegionB FOrders: "+string(itoa(R[1].GetFOrdCnt(),FOrd,10));			
+	string RN3 ="RegionC NMotors: "+string(itoa(R[2].Get_NMotorCnt(),NM,10))+",    RegionC NOrders: "+string(itoa(R[2].GetNOrdCnt(),NOrd,10));			
+ 	string RV3 =",    RegionC VMotors: "+string(itoa(R[2].Get_VMotorCnt(),VM,10))+",    RegionC VOrders: "+string(itoa(R[2].GetVOrdCnt(),VOrd,10));		
+	string RF3 =",    RegionC FMotors: "+string(itoa(R[2].Get_FMotorCnt(),FM,10))+",    RegionC FOrders: "+string(itoa(R[2].GetFOrdCnt(),FOrd,10));		
+	string RN4 ="RegionD NMotors: "+string(itoa(R[3].Get_NMotorCnt(),NM,10))+",    RegionD NOrders: "+string(itoa(R[3].GetNOrdCnt(),NOrd,10));			
+	string RV4 =",    RegionD VMotors: "+string(itoa(R[3].Get_VMotorCnt(),VM,10))+",    RegionD VOrders: "+string(itoa(R[3].GetVOrdCnt(),VOrd,10));			
+	string RF4 =",    RegionD FMotors: "+string(itoa(R[3].Get_FMotorCnt(),FM,10))+",    RegionD FOrders: "+string(itoa(R[3].GetFOrdCnt(),FOrd,10));
 	pGUI->PrintMessage(RN1+RV1+RF1,RN2+RV2+RF2,RN3+RV3+RF3,RN4+RV4+RF4);
 
 
@@ -168,28 +192,38 @@ void Restaurant::PrintStatuesBar()
 
 bool Restaurant::LoadGUI()
 {
-	vector<Order*>tmpvec;
-	bool flag=false; //active orders 
+	Order*const* tmpArr;
+
+	//flag if true means there is still orders waiting to be seved
+	bool flag=false;
+
 	for (int j = 0; j < 4; j++)
 	{
-		tmpvec=R[j].getVectorVord();
-		for (int i = 0; i < int(tmpvec.size()); i++)
+		//load the gui with the VIP orders
+		tmpArr = R[j].GetArrVOrd();
+		int OrderCnt = R[j].GetVOrdCnt();
+		for (int i = 0; i < OrderCnt; i++)
 		{
-		pGUI->AddOrderForDrawing(tmpvec[i]);
-		flag=true;
+			pGUI->AddOrderForDrawing(tmpArr[i]);
+			flag=true;
 		}
-		tmpvec=R[j].getVectorFord();
-		for (int i = 0; i < int(tmpvec.size()); i++)
+
+		//load the gui with the frozen orders
+		tmpArr = R[j].GetArrFOrd();
+		OrderCnt = R[j].GetFOrdCnt();
+		for (int i = 0; i < OrderCnt; i++)
 		{
-		pGUI->AddOrderForDrawing(tmpvec[i]);
-		flag=true;
+			pGUI->AddOrderForDrawing(tmpArr[i]);
+			flag=true;
 		}
 		
-		tmpvec=R[j].getVectorNord();
-		for (int i = 0; i < int(tmpvec.size()); i++)
+		//load the gui with normal orders
+		tmpArr=R[j].GetArrNOrd();
+		OrderCnt = R[j].GetNOrdCnt();
+		for (int i = 0; i < OrderCnt; i++)
 		{
-		pGUI->AddOrderForDrawing(tmpvec[i]);
-		flag=true;
+			pGUI->AddOrderForDrawing(tmpArr[i]);
+			flag=true;
 		}
 		
 	}
@@ -201,23 +235,28 @@ bool Restaurant::LoadGUI()
 
 void Restaurant::DeleteMax()
 {
-	Order*deletedOrd=nullptr;
+	Order *deletedOrd = nullptr;
 	for (int i = 0; i < 4; i++)
 	{
-		if(R[i].getVcount())
+		// delete the first vip order in each region if exists
+		if(R[i].GetVOrdCnt())
 		{
 			deletedOrd=R[i].dequeueV();
 			delete deletedOrd;
 			deletedOrd=nullptr;
 		}
-		else if(!R[i].Fisempty())
+
+		//delete the first frozen order in each region in case exists and no vip's
+		else if(!R[i].FOrdisEmpty())
 		{
 			deletedOrd=	R[i].dequeueF();
 			delete deletedOrd;
 			deletedOrd=nullptr;
 
 		}
-		else if(R[i].getNcount())
+
+		//delete the first waiting order in each region case exists and no vip's or frozen
+		else if(R[i].GetNOrdCnt())
 			{
 				deletedOrd=R[i].dequeueN(1);
 				delete deletedOrd;
@@ -227,3 +266,8 @@ void Restaurant::DeleteMax()
 
 }
 
+
+Restaurant::~Restaurant()
+{
+		delete pGUI;
+}

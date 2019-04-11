@@ -14,6 +14,11 @@ Motorcycle::Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type)
 	SetType(Type);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//									setters and getters										  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 int Motorcycle::GetID()const
 {
@@ -54,11 +59,12 @@ void Motorcycle::SetType(ORD_TYPE T)
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//							overloads to check the priority									  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
-Motorcycle::~Motorcycle()
-{
-
-}
 bool Motorcycle:: operator <(Motorcycle M)
 {
 	if(speed < M.speed)
@@ -80,4 +86,9 @@ bool Motorcycle:: operator ==(Motorcycle M)
 	return false;
 }
 
+
+Motorcycle::~Motorcycle()
+{
+
+}
 	

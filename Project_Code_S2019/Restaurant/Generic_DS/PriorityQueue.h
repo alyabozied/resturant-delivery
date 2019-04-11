@@ -1,5 +1,5 @@
 #pragma once
-#include"vector"
+#include "../Defs.h"
 template <typename T>
 class priorityQueue
 {
@@ -27,7 +27,7 @@ public:
   int  search(T item);
   T getmax()const;
   int getcount()const;
-  std::vector<T> ToVector();
+  const T* ToArray();
   //dustructor for pervent memory leak
   ~priorityQueue();
 
@@ -158,13 +158,13 @@ int priorityQueue<T>::search(T item){
 
 
 template <typename T>
-std::vector<T> priorityQueue<T>::ToVector(){
+const T* priorityQueue<T>::ToArray(){
 
-		std::vector<T> n;
-		for (int i = 0; i < count; i++)
-		{
-		n.push_back(tree[i]);
-		}
+	T n[MaxPossibleOrdCnt];
+	for (int i = 0; i < count; i++)
+	{
+		n[i] = tree[i];
+	}
 	return n;
 	
 }

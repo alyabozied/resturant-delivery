@@ -1,4 +1,4 @@
-#include <vector>
+#include"..\Defs.h"
 template < class T>
 
 
@@ -19,7 +19,7 @@ bool insert( int newPosition, const T& newEntry);
 bool remove( int position , T& item);
 void clear();
 T getEntry( int position) const ;
-std::vector<T> ToVector();
+const T* ToArray();
 };
 
 
@@ -179,13 +179,14 @@ LinkedList<T>::LinkedList( const LinkedList<T>& LIST)
 		} 
 } 
 template<class T>
-std::vector<T> LinkedList<T>::ToVector(){
-	std::vector<T> n;
-	Node<T>* p=headPtr;
-	while(p){
-		n.push_back(p->getItem());
-		p=p->getNext();
+const T* LinkedList<T>::ToArray(){
+	T n[MaxPossibleOrdCnt];
+	Node<T>* p = headPtr;
+	int Cnt = 0;
+	while(p)
+	{
+		n[Cnt++] = p->getItem();
+		p = p->getNext();
 	}
 	return n;
-
 }

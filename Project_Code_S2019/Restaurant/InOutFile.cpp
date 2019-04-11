@@ -40,34 +40,26 @@ bool InOutFile::Read()
 	Event* pEv = nullptr;
 	
 	InputFile >> SpeedN >> SpeedF >> SpeedV;
-	//array of motors to store them
-	Motorcycle**NMotors, **FMotors, **VMotors; 
+
 	for (int i = 0; i < REG_CNT; i++)
 	{
+		Region* R = pRest->GetRegion(i);
 		InputFile >> Norm >> Frzn >> VIP;
-			NMotors = new Motorcycle*[Norm];
-			FMotors = new Motorcycle*[Frzn];
-			VMotors = new Motorcycle*[VIP];
 		//creating normal motorcycles
 		for (int j = 0; j < Norm; j++)
 		{
-			NMotors[j] = new Motorcycle(j, SpeedN, IDLE, TYPE_NRM);
+			R->InsertNMotor(j, SpeedN, IDLE, TYPE_NRM);
 		}
 		//creating frozen motorcycles 
 		for (int k = 0; k < Frzn; k++)
 		{
-			FMotors[k]=new Motorcycle(k+Norm, SpeedF, IDLE, TYPE_FROZ);
+			R->InsertFMotor(k+Norm, SpeedF, IDLE, TYPE_FROZ);
 		}
 		//creating VIP motocycles
 		for (int l = 0; l < VIP; l++)
 		{
-			VMotors[l]=new Motorcycle(Norm+TYPE_FROZ+l, SpeedV, IDLE, TYPE_VIP);
+			R->InsertVMotor(Norm+TYPE_FROZ+l, SpeedV, IDLE, TYPE_VIP);
 		}
-		//setting the motorcycles for the specified region
-		pRest->GetRegion(i)->FillMotors(Norm,VIP,Frzn,NMotors,VMotors,FMotors);
-		delete []NMotors;
-		delete []FMotors;
-		delete []VMotors;
 	}
 	
 

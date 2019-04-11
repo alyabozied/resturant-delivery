@@ -3,6 +3,7 @@
 #include "Events\ArrivalEvent.h"
 #include "Events\CancelationEvent.h"
 #include "Events\PromotionEvent.h"
+#include "GUI\GUI.h"
 #include <fstream>
 #include <iostream>
 #include <string>

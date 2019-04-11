@@ -225,7 +225,7 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a pri
 	{
 		temp += 100;
 		char c[4];
-		itoa(temp,c,10);
+		_itoa_s(temp,c,10);
 		c[0] = '0';
 		pWind->DrawString(x,y,c);
 	}

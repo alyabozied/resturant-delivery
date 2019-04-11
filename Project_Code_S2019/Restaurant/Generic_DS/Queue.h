@@ -1,7 +1,6 @@
 #ifndef __QUEUE_H_
 #define __QUEUE_H_
-#include<vector>
-
+#include"../Defs.h"
 
 /*This code is an updated version from "Data Abstraction & Problem Solving with C++,WALLS AND MIRRORS ,SIXTH EDITION"*/
 
@@ -61,7 +60,7 @@ public :
 	bool dequeue(T& frntEntry);  
 	bool peekFront(T& frntEntry)  const;
 	int Get_count()const;
-	std::vector<T>ToVector();
+	const T* ToArray();
 	~Queue();
 };
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -184,18 +183,15 @@ int Queue<T>::Get_count() const
 
 
 template <typename T>
-std::vector<T> Queue<T>::ToVector(){
-		std::vector<T> n;
-		Node<T>* p=frontPtr;
+const T* Queue<T>::ToArray(){
+	T n[MaxPossibleOrdCnt];
+	Node<T>* p=frontPtr;
+	int Cnt = 0;
 	while(p){
-		n.push_back(p->getItem());
-		p=p->getNext();
+		n[Cnt++] = p->getItem();
+		p = p->getNext();
 	}
 	return n;
-
-
-
-
 }
 
 

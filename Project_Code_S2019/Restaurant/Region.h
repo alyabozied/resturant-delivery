@@ -14,39 +14,41 @@ protected:
 	priorityQueue<Motorcycle*>servFMotorQ;
 	priorityQueue<Motorcycle*>serNMotorQ;
 	priorityQueue<Motorcycle*>servVMotorQ;
+
 	//Number of MotorCycle in Region
-	int N_Motors,V_Motors,F_Motors;
+	int N_MotorsCnt,V_MotorsCnt,F_MotorsCnt;
 
 	//Order in Region
 	LinkedList<Order*>NOrderQueue;
 	priorityQueue<Order*>VOrderQueue;
 	Queue<Order*>FOrderQueue;
+
 public:
 	Region(void);
-	//Function to Fill the Number of MotorCycles and the Lists of the MotorCycles by taking the Number and take 
-	//an array of Pointers to each Type (Pirority Doesn't matter in this array because the Fill will handle it) 
-	void FillMotors(int ,int , int, Motorcycle**, Motorcycle**, Motorcycle** );
-	void InsertFOrder(Order*); //a Functions to insert Frozen orders
-	void InsertVOrder(Order*); // a funtion to inset VIP orders 
-	void InsertNOrder(Order*);  // a function to insert normal orders 
-	int Get_NMotorC()const;
-	int Get_VMotorC()const;
-	int Get_FMotorC()const;
+	void InsertFMotor(int, double, STATUS, ORD_TYPE);	//function to insert frozen motorcycle
+	void InsertVMotor(int, double, STATUS, ORD_TYPE);	//function to insert fast motorcycle
+	void InsertNMotor(int, double, STATUS, ORD_TYPE);   //function to insert normal motorcycle
+	void InsertFOrder(Order*);							//a Functions to insert Frozen orders
+	void InsertVOrder(Order*);						    //a funtion to inset VIP orders 
+	void InsertNOrder(Order*);							//a function to insert normal orders 
+	int Get_NMotorCnt()const;							//function to get the number of normal motors
+	int Get_VMotorCnt()const;							//function to get the number of fast motors
+	int Get_FMotorCnt()const;							//function to get the number of frozen motors
 
 	// Getters for the counters
-	int getVcount();
-	int getNcount();
-	int getFcount();
-	bool Fisempty();
+	int GetVOrdCnt();
+	int GetNOrdCnt();
+	int GetFOrdCnt();
+	bool FOrdisEmpty();
 
 	// Functions used to dequeue the orders
 	Order* dequeueN(int );
 	Order* dequeueV();
 	Order* dequeueF();
 	void DeleteMotors();
-	std::vector <Order*> getVectorNord();
-	std::vector <Order*> getVectorVord();
-	std::vector <Order*> getVectorFord();
+	Order*const* GetArrNOrd();
+	Order*const* GetArrVOrd();
+	Order*const* GetArrFOrd();
 
 
 	~Region(void);

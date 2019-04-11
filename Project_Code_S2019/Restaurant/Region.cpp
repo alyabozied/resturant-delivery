@@ -4,64 +4,95 @@
 Region::Region(void)
 {
 	
-	N_Motors = V_Motors = F_Motors = 0;
+	N_MotorsCnt = V_MotorsCnt = F_MotorsCnt = 0;
 }
 
-void Region::FillMotors(int NMotors, int VMotors, int FMotors, Motorcycle **NM , Motorcycle **VM, Motorcycle **FM)
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//					functions to insert different types motorcycles							  //
+//					        	 read from the input file									  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Region::InsertFMotor(int id, double speed, STATUS s, ORD_TYPE t)
 {
-	//insert Normal Motorcycles to its list from Unorders array to an Ordered Piriorty list and set the Number of the MotorCycles
-	for (int i = 0; i < NMotors; i++)
-	{
-		idelNMotorQ.insert(NM[i]);
-	}
-
-	N_Motors=NMotors;
-
-	//insert VIP Motorcycles to its list from Unorders array to an Ordered Piriorty list 
-
-	for (int i = 0; i < VMotors; i++)
-	{
-		idelVMotorQ.insert(VM[i]);
-	}
-
-	V_Motors=VMotors;
-
-	//insert Frozen Motorcycles to its list from Unorders array to an Ordered Piriorty list 
-
-	for (int i = 0; i < FMotors; i++)
-	{
-		idelFMotorQ.insert(FM[i]);
-	}
-
-	F_Motors=FMotors;
-
+	Motorcycle* M = new Motorcycle (id, speed, s, t);
+	F_MotorsCnt++;
+	idelFMotorQ.insert(M);
 }
 
-
-//insert a Frozen Order to the list 
-void Region::InsertFOrder(Order* F)
+void Region::InsertNMotor(int id, double speed, STATUS s, ORD_TYPE t)
 {
-	FOrderQueue.enqueue(F);
+	Motorcycle* M = new Motorcycle (id, speed, s, t);
+	N_MotorsCnt++;
+	idelNMotorQ.insert(M);
 }
 
-//insert a Vip order to the list
-void Region::InsertNOrder(Order* N)
+void Region::InsertVMotor(int id, double speed, STATUS s, ORD_TYPE t)
 {
-	NOrderQueue.insert(NOrderQueue.getLength()+1,N);
+	Motorcycle* M = new Motorcycle (id, speed, s, t);
+	V_MotorsCnt++;
+	idelVMotorQ.insert(M);
 }
 
-//insert a Normal order to the list
-void Region::InsertVOrder(Order* V)
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//					functions to insert different types orders								  //
+//					         in the convinient list											  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void Region::InsertFOrder(Order* F){ FOrderQueue.enqueue(F);}
+void Region::InsertNOrder(Order* N){ NOrderQueue.insert(NOrderQueue.getLength()+1,N);}
+void Region::InsertVOrder(Order* V){ VOrderQueue.insert(V); }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//					functions to get the number of not served								  //
+//							orders of different types									      //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+int Region::GetVOrdCnt(){ return VOrderQueue.getcount(); }
+int Region::GetNOrdCnt(){ return NOrderQueue.getLength();}
+int Region::GetFOrdCnt(){ return FOrderQueue.Get_count();}
+bool Region::FOrdisEmpty(){ return FOrderQueue.isEmpty();}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//					functions to return an array of the different							  //
+//							      types of orders										      //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+Order* const* Region::GetArrVOrd()
 {
-	VOrderQueue.insert(V);
+	return VOrderQueue.ToArray();
 }
 
+Order* const* Region::GetArrFOrd()
+{
+	return FOrderQueue.ToArray();
+}
 
-int Region::getVcount(){ return VOrderQueue.getcount(); }
+Order*const* Region::GetArrNOrd()
+{
+	return NOrderQueue.ToArray();
+}
 
-int Region::getNcount(){ return NOrderQueue.getLength(); }
-
-bool Region::Fisempty(){ return FOrderQueue.isEmpty();}
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//					functions to delete the convinient order								  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 Order* Region::dequeueN(int postion) 
@@ -70,19 +101,6 @@ Order* Region::dequeueN(int postion)
 	NOrderQueue.remove(postion,ord);
 	return ord; 
 }
-
-std::vector<Order*> Region::getVectorVord()
-{
-	return VOrderQueue.ToVector();
-}
-
-std::vector<Order*> Region::getVectorFord()
-{
-	return FOrderQueue.ToVector();
-}
-
-
-
 
 Order* Region::dequeueV() 
 { 
@@ -96,6 +114,14 @@ Order* Region::dequeueF()
 	FOrderQueue.dequeue(ord);
 	return  ord;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//					functions to deallocate the motocycles									  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 void Region::DeleteMotors()
 {
 	while (idelNMotorQ.getcount() != 0)
@@ -110,40 +136,47 @@ void Region::DeleteMotors()
 	{
 		delete idelFMotorQ.extractMax();
 	}
+	while (servFMotorQ.getcount() != 0)
+	{
+		delete servFMotorQ.extractMax();
+	}
+	while (serNMotorQ.getcount() != 0)
+	{
+		delete serNMotorQ.extractMax();
+	}
+	while (servVMotorQ.getcount() != 0)
+	{
+		delete servVMotorQ.extractMax();
+	}
+
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//					functions to return the number of the motorcycles						  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
-int Region::Get_FMotorC()const
+
+int Region::Get_FMotorCnt()const
 {
-	return F_Motors;
+	return F_MotorsCnt;
 }
 
 
-
-int Region::Get_NMotorC()const
+int Region::Get_NMotorCnt()const
 {
-	return N_Motors;
+	return N_MotorsCnt;
 }
 
 
-
-int Region::Get_VMotorC()const
+int Region::Get_VMotorCnt()const
 {
-	return V_Motors;
+	return V_MotorsCnt;
 }
-
-int Region::getFcount()
-{
-	return FOrderQueue.Get_count();
-}
-std::vector<Order*> Region::getVectorNord()
-{
-	return NOrderQueue.ToVector();
-}
-
-
 
 
 Region::~Region(void)
 {
+	DeleteMotors();
 }
