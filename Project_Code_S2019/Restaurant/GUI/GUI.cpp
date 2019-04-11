@@ -58,7 +58,7 @@ string GUI::GetString() const
 // ================================== OUTPUT FUNCTIONS ===================================
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3,string msg4,string msg5) const	//Prints a message on status bar
+void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3) const	//Prints a message on status bar
 {
 	ClearStatusBar();	//First clear the status bar
 	pWind->SetPen(ETSHAWY);

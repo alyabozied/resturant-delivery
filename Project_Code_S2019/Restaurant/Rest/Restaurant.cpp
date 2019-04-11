@@ -196,20 +196,21 @@ bool Restaurant::LoadGUI()
 
 	//flag if true means there is still orders waiting to be seved
 	bool flag=false;
-
+	Order*tmpOrd;
 	for (int j = 0; j < 4; j++)
 	{
 		//load the gui with the VIP orders
-		tmpArr = R[j].GetArrVOrd();
 		int OrderCnt = R[j].GetVOrdCnt();
 		for (int i = 0; i < OrderCnt; i++)
 		{
-			pGUI->AddOrderForDrawing(tmpArr[i]);
+			tmpOrd=R[j].dequeueV();
+			pGUI->AddOrderForDrawing(tmpOrd);
+			R[j].InsertVOrder(tmpOrd);
 			flag=true;
 		}
 
 		//load the gui with the frozen orders
-		tmpArr = R[j].GetArrFOrd();
+		tmpArr=R[j].GetArrFOrd();
 		OrderCnt = R[j].GetFOrdCnt();
 		for (int i = 0; i < OrderCnt; i++)
 		{
@@ -246,8 +247,8 @@ void Restaurant::DeleteMax()
 			deletedOrd=nullptr;
 		}
 
-		//delete the first frozen order in each region in case exists and no vip's
-		else if(!R[i].FOrdisEmpty())
+		//delete the first frozen order in each region in case exists 
+		 if(!R[i].FOrdisEmpty())
 		{
 			deletedOrd=	R[i].dequeueF();
 			delete deletedOrd;
@@ -255,8 +256,8 @@ void Restaurant::DeleteMax()
 
 		}
 
-		//delete the first waiting order in each region case exists and no vip's or frozen
-		else if(R[i].GetNOrdCnt())
+		//delete the first waiting order in each region case exists 
+		 if(R[i].GetNOrdCnt())
 			{
 				deletedOrd=R[i].dequeueN(1);
 				delete deletedOrd;
