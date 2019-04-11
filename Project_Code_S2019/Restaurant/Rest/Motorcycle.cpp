@@ -58,7 +58,21 @@ void Motorcycle::SetType(ORD_TYPE T)
 	type = (T >-1 && T < TYPE_CNT) ? T : TYPE_NRM;
 }
 
-
+void Motorcycle:: SetAssignedOrd(Order*O){
+	AssignedOrd=O;
+}
+REGION Motorcycle:: GetRegion()const{
+	return region;
+}	
+Order* Motorcycle:: GetAssignedOrd(){
+	return AssignedOrd;
+}
+void Motorcycle:: SetRegion(REGION R){
+	region=R;
+}
+int  Motorcycle:: GetArrivalTime(){
+	return ArrivalTime;
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
 //							overloads to check the priority									  //
@@ -91,4 +105,4 @@ Motorcycle::~Motorcycle()
 {
 
 }
-	
+
