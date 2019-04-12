@@ -107,7 +107,7 @@ Order*const* Region::GetArrNOrd()
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-Order* Region::dequeueN(int postion) 
+Order* Region::GetNOrder(int postion) 
 { 
 	Order* ord ;
 	NOrderQueue.remove(postion,ord);

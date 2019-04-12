@@ -48,7 +48,7 @@ public:
 	bool FOrdisEmpty();
 
 	// Functions used to dequeue the orders
-	Order* dequeueN(int );
+	Order* GetNOrder(int );
 	Order* dequeueV();
 	Order* dequeueF();
 	void DeleteMotors();

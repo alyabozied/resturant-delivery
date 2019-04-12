@@ -272,7 +272,7 @@ void Restaurant::DeleteMax()
 		//delete the first waiting order in each region case exists 
 		 if(R[i].GetNOrdCnt())
 			{
-				deletedOrd=R[i].dequeueN(1);
+				deletedOrd=R[i].GetNOrder(1);
 				delete deletedOrd;
 				deletedOrd=nullptr;
 			}

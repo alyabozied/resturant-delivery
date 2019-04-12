@@ -22,7 +22,7 @@ void CancelationEvent::Execute(Restaurant* pRest)
 		{
 			if(TmpArr[j]->GetID() == getOrderID())
 			{
-				delete pRest->GetRegion(i)->dequeueN(j+1);	
+				delete pRest->GetRegion(i)->GetNOrder(j+1);	
 				delete  []TmpArr;
 				return ;
 			}
