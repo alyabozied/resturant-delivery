@@ -59,9 +59,9 @@ string GUI::GetString() const
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::ClearToolBar() const
 {
-	//Clear Status bar by drawing a filled white rectangle
-	pWind->SetPen(WHITE, 1);
-	pWind->SetBrush(WHITE);
+	//Clear Status bar by drawing a filled yellow rectangle
+	pWind->SetPen(ROYALYELLOW, 1);
+	pWind->SetBrush(ROYALYELLOW);
 	pWind->DrawRectangle(0, 0, WindWidth, MenuBarHeight);
 }
 
@@ -72,16 +72,16 @@ void GUI::ClearToolBar() const
 void GUI::CreateDrawToolBar()const
 {
 
-
+	ClearToolBar();
 	string MenuItemImages[MODE_CNT];
-	MenuItemImages[MODE_INTR] = "MENUEBAR//BAKR_MODE.jpg";     //icon for first mode 
-  	MenuItemImages[MODE_STEP]="MENUEBAR//HISHAM_MODE.jpg";         //icon for second mode 
-	MenuItemImages[MODE_SLNT]="MENUEBAR//ALI_MODE.jpg";        //icon for third mode 
-	MenuItemImages[MODE_Phaseone]="MENUEBAR//ALAA_MODE.jpg";        //icon for phase one mode 
-	MenuItemImages[MODE_EXIT]="MENUEBAR//exit.jpg";        //icon for phase one mode 
+	MenuItemImages[MODE_INTR] = "MENUEBAR//INTER_MODE.jpg";     //icon for first mode 
+  	MenuItemImages[MODE_STEP]="MENUEBAR//SLEEP_MODE.jpg";         //icon for second mode 
+	MenuItemImages[MODE_SLNT]="MENUEBAR//SILENT_MODE.jpg";        //icon for third mode 
+	MenuItemImages[MODE_Phaseone]="MENUEBAR//PHASE_ONE.jpg";        //icon for phase one mode 
+	MenuItemImages[MODE_EXIT]="MENUEBAR//EXIT.jpg";        //icon for phase one mode 
 	// Prepare images for each menu item and add it to the list (DONE)
 	//Draw menu item one image at a time
-	pWind->SetPen(ETSHAWY,2);
+	pWind->SetPen(VIOLETYELL,2);
 	for(int i=0; i<MODE_CNT; i++)
 	{
 		pWind->DrawImage(MenuItemImages[i], i*MenuItemWidth, 0, MenuItemWidth, MenuBarHeight);

@@ -20,7 +20,7 @@ private:
 		WindWidth=1400, WindHeight=650,		//Window width and height
 		StatusBarHeight = 150,	//Status Bar Height
 		MenuBarHeight = 50,		//Menu Bar Height (distance from top of window to bottom line of menu bar)
-		MenuItemWidth = 80,		//Width of each item in menu bar menu
+		MenuItemWidth = 70,		//Width of each item in menu bar menu
 		
 		DrawingAreaHeight = WindHeight - MenuBarHeight - StatusBarHeight,		
 		YHalfDrawingArea = MenuBarHeight + DrawingAreaHeight/2, //The y coordinate of half the Drawing area

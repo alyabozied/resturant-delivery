@@ -1,5 +1,4 @@
 #include "InputFile.h"
-
 InputFile::InputFile(Restaurant* R, GUI* G):pRest(R), pGUI(G)
 {
 
@@ -15,7 +14,8 @@ bool InputFile::Read()
 {
 	pGUI->PrintMessage("Enter the file name: ");
 	FileName = pGUI->GetString();
-	FileInput.open(FileName + ".txt");
+	FileName = FileName + ".txt";
+	FileInput.open("../Restaurant/InputFiles/"+FileName);
 	if(!FileInput.is_open())
 	{
 		pGUI->PrintMessage("an error occured loading the file there may not exist a file with this name");
