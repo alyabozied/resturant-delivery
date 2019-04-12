@@ -202,7 +202,6 @@ hInstance(GetModuleHandle(0)), iWindowWidth(iWindWidth), iWindowHeight(iWindHeig
 
 	iMouseX = -1;
 	iMouseY = -1;
-	wndcWindow.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
 	wndcWindow.style = 0;
 	wndcWindow.lpfnWndProc = WindowProc;
 	wndcWindow.cbClsExtra = 0;

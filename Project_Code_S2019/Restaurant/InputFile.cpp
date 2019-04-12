@@ -15,7 +15,7 @@ bool InputFile::Read()
 	pGUI->PrintMessage("Enter the file name: ");
 	FileName = pGUI->GetString();
 	FileName = FileName + ".txt";
-	FileInput.open("../Restaurant/InputFiles/"+FileName);
+	FileInput.open("../Samples/"+FileName);
 	if(!FileInput.is_open())
 	{
 		pGUI->PrintMessage("an error occured loading the file there may not exist a file with this name");

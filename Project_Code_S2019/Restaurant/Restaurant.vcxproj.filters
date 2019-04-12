@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="CMUGraphicsLib">
       <UniqueIdentifier>{b270f77a-ae90-4739-be74-f6543b0fd219}</UniqueIdentifier>
     </Filter>
@@ -122,9 +118,6 @@
     </ClInclude>
     <ClInclude Include="Generic_DS\list.h">
       <Filter>Generic_DS</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Restaurant</Filter>
     </ClInclude>
     <ClInclude Include="InputFile.h">
       <Filter>Restaurant</Filter>
@@ -281,15 +274,5 @@
     <Text Include="CMUgraphicsLib\Readme.txt">
       <Filter>CMUGraphicsLib</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Restaurant.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="C:\Users\hp\Downloads\restaurant_512_DUD_icon.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
 </Project>

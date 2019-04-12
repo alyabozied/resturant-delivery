@@ -5,7 +5,6 @@ This file was last modified on 05.16.1999
 
 #ifndef CMUGRAPHICS_H
 #define CMUGRAPHICS_H
-#include "..\resource.h"
 #include <string>
 #ifndef WINDOWS_H
   #define WINDOWS_H

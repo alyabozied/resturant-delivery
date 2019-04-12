@@ -108,7 +108,6 @@
     <ClInclude Include="InputFile.h" />
     <ClInclude Include="OutputFile.h" />
     <ClInclude Include="Region.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Rest\Motorcycle.h" />
     <ClInclude Include="Rest\Order.h" />
     <ClInclude Include="Rest\Restaurant.h" />
@@ -165,12 +164,6 @@
   <ItemGroup>
     <Text Include="CMUgraphicsLib\Manual.txt" />
     <Text Include="CMUgraphicsLib\Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Restaurant.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="C:\Users\hp\Downloads\restaurant_512_DUD_icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
