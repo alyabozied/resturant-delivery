@@ -21,8 +21,8 @@ public:
   void insert(T item);
   //get max and delete it
   T extractMax();
-  //changePriority of an object
-  void changePriority(T item,int priorty);
+  //changepriority of an object
+  void changepriority(T item,int priority);
   void remove(T item);
   int  search(T item);
   T getmax()const;
@@ -128,12 +128,12 @@ void priorityQueue<T>::remove(T item){
 }
 
 template <typename T>
-void priorityQueue<T>::changePriority(T item,int priorty){
+void priorityQueue<T>::changepriority(T item,int priority){
 	int index=search(item);
 	if(index == -1)
 		return;
-	tree[index] = priorty;
-	if(*priorty > *tree[index])
+	tree[index] = priority;
+	if(*priority > *tree[index])
 		shiftdown(index);
 	else 
 		shiftup(index);

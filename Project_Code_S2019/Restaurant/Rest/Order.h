@@ -13,8 +13,8 @@ protected:
 	REGION Region;              //Region of this order
 	double Distance;	        //The distance (in meters) between the order location and the resturant 
 	double totalMoney;	        //Total order money
-	int ArrTime, ServTime, FinishTime, WaintingTime;	    //arrival, service start, finish, and waiting times
-	double priorty;
+	int ArrTime, ServTime, FinishTime, WaitingTime;	    //arrival, service start, finish, and waiting times
+	double priority;
 	Motorcycle* AssignedMotor; //to calculate the serving and finish time
 	
 	
@@ -34,7 +34,7 @@ public:
 	int GetServTime() const;
 	int GetFinishTime() const;
 	int GetWaitingTime() const;
-	double GetPriority() const;
+	double Getpriority() const;
 	Motorcycle* GetMotor() const;
 
 	void SetID(int);
@@ -54,7 +54,7 @@ public:
 	bool operator >(Order& v);
 	bool operator ==(Order& v);
 	
-	void ChangePriority(int timestp);
+	void Changepriority(int timestp);
 	void AssignMotor(Motorcycle*);
 
 };

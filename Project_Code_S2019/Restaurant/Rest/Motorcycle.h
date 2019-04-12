@@ -48,7 +48,7 @@ public:
 	
 
 	//the priority changes if the motor is idle or serving
-	void ChangePriority(int timestp);
+	void Changepriority(int timestp);
 
 	virtual ~Motorcycle();
 };

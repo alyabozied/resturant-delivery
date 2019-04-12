@@ -12,7 +12,7 @@ Motorcycle::Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type)
 	SetSpeed(Speed);
 	SetStatus(Status);
 	SetType(Type);
-	ChangePriority(0); //zero is the time of construction of the motorcycles
+	Changepriority(0); //zero is the time of construction of the motorcycles
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ bool Motorcycle:: operator ==(Motorcycle M)
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Motorcycle::ChangePriority(int timestp)
+void Motorcycle::Changepriority(int timestp)
 {
 	if(status == IDLE)
 		priority = speed;

@@ -10,9 +10,9 @@ Order::Order(int arrt,int id, ORD_TYPE r_Type, REGION r_region, double dist, dou
 	SetMoney(mon);
 	AssignedMotor = nullptr;
 	if(r_Type == TYPE_VIP)
-		priorty = 4 * mon - ArrTime  - 2 * dist;
+		priority = 4 * mon - ArrTime  - 2 * dist;
 	else  
-		priorty= - ArrTime;
+		priority= - ArrTime;
 	;
 }
 
@@ -36,8 +36,8 @@ double Order::GetMoney() const { return totalMoney; }
 int Order::GetArrTime() const {return ArrTime;}
 int Order::GetFinishTime() const {return FinishTime; }
 int Order::GetServTime() const { return ServTime; }
-int Order::GetWaitingTime() const { return WaintingTime; }
-double Order::GetPriority() const { return priorty; }
+int Order::GetWaitingTime() const { return WaitingTime; }
+double Order::Getpriority() const { return priority; }
 Motorcycle* Order::GetMotor() const { return AssignedMotor; }
 
 
@@ -50,7 +50,7 @@ void Order::SetMoney(double m){ totalMoney = (m > 0) ? m : 0; }
 void Order::SetArrTime(int t){ ArrTime = (t > 0) ? t : 0; }
 void Order::SetFinishTime(int t){ FinishTime = (t > 0) ? t : 0; }
 void Order::SetServTime(int t){ ServTime = (t > 0) ? t : 0; }
-void Order::SetWaitingTime(int t){ WaintingTime = (t > 0) ? t : 0; }
+void Order::SetWaitingTime(int t){ WaitingTime = (t > 0) ? t : 0; }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,14 +61,14 @@ void Order::SetWaitingTime(int t){ WaintingTime = (t > 0) ? t : 0; }
 
 bool Order:: operator <(Order &v)
 {
-	if(priorty<v.priorty)
+	if(priority<v.priority)
 		return true;
 	else return false;
 }
 
 bool Order:: operator >(Order &v)
 {
-	if(priorty>v.priorty)
+	if(priority>v.priority)
 		return true;
 	else return false;
 }
@@ -87,10 +87,10 @@ bool Order:: operator ==(Order& v)
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Order::ChangePriority(int Currtimestp)
+void Order::Changepriority(int Currtimestp)
 {
 	SetWaitingTime(Currtimestp - ArrTime);
-	priorty = ArrTime + ServTime + WaintingTime;
+	priority = ArrTime + ServTime + WaitingTime;
 }
 
 
