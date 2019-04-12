@@ -47,11 +47,11 @@ void priorityQueue<T>::shiftdown(int index){
     int r = 2*index + 2; // right = 2*i + 2 
   
     // If left child is larger than root 
-	if (l < getcount() && tree[l] > tree[largest]) 
+	if (l < getcount() && *tree[l] > *tree[largest]) 
         largest = l; 
   
     // If right child is larger than largest so far 
-	if (r < getcount() && tree[r] > tree[largest]) 
+	if (r < getcount() && *tree[r] > *tree[largest]) 
         largest = r; 
   
     // If largest is not root 
@@ -67,7 +67,7 @@ void priorityQueue<T>::shiftdown(int index){
 template <typename T>
 void priorityQueue<T>:: shiftup(int index)
 {
-	if(tree[(index-1)/2]<tree[index])
+	if(*tree[(index-1)/2] < *tree[index])
 	{
 			swap(index,(index-1)/2);
 			shiftup((index-1)/2);
@@ -76,7 +76,7 @@ void priorityQueue<T>:: shiftup(int index)
 }
 template <class T>
 int priorityQueue<T>::maximum(int index1,int index2){
-	if(tree[index1]>tree[index2])
+	if(*tree[index1] > *tree[index2])
 		return index1;
 	return index2;
 }
@@ -119,10 +119,10 @@ void priorityQueue<T>::remove(T item){
 	int index=search(item);
 	if(index==-1)
 		return;
-	T removeditem=tree[index];
+	T removeditem = tree[index];
 	swap(index,count);
 	count--;
-	if(removeditem>tree[index])
+	if(*removeditem > *tree[index])
 	shiftdown(index);
 	else shiftup(index);
 }
@@ -130,12 +130,13 @@ void priorityQueue<T>::remove(T item){
 template <typename T>
 void priorityQueue<T>::changePriority(T item,int priorty){
 	int index=search(item);
-	if(index==-1)
+	if(index == -1)
 		return;
-	tree[index]=priorty;
-	if(priorty>tree[index])
-	shiftdown(index);
-	else shiftup(index);
+	tree[index] = priorty;
+	if(*priorty > *tree[index])
+		shiftdown(index);
+	else 
+		shiftup(index);
 }
 template <typename T>
 T priorityQueue<T>::getmax()const	{
@@ -150,7 +151,7 @@ template <typename T>
 int priorityQueue<T>::search(T item){
 	for (int i = 0; i <getcount() ; i++)
 	{
-		if(tree[i]==item)
+		if(*tree[i] == *item)
 			return i;
 	}
 	return -1;

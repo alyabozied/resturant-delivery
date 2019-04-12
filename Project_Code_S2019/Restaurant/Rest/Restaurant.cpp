@@ -198,16 +198,23 @@ bool Restaurant::LoadGUI()
 	//flag if true means there is still orders waiting to be seved
 	bool flag = false;
 	Order*tmpOrd;
-	for (int j = 0; j < 4; j++)
+	for (int j = 0; j < REG_CNT; j++)
 	{
 		//load the gui with the VIP orders
 		int OrderCnt = R[j].GetVOrdCnt();
+		// to store the vip orders then put them again in the priorityQ after filling the gui array
+		Queue<Order*> tmpQ;
 		for (int i = 0; i < OrderCnt; i++)
 		{
 			tmpOrd = R[j].dequeueV();
 			pGUI->AddOrderForDrawing(tmpOrd);
-			R[j].InsertVOrder(tmpOrd);
+			tmpQ.enqueue(tmpOrd);
 			flag=true;
+		}
+		while(!tmpQ.isEmpty())
+		{
+			tmpQ.dequeue(tmpOrd);
+			R[j].InsertVOrder(tmpOrd);
 		}
 
 		//load the gui with the frozen orders
