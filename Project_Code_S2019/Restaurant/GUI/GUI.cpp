@@ -74,11 +74,11 @@ void GUI::CreateDrawToolBar()const
 
 
 	string MenuItemImages[MODE_CNT];
-	MenuItemImages[MODE_INTR] = "BAKR_MODE.jpg";     //icon for first mode 
-  	MenuItemImages[MODE_STEP]="HISHAM_MODE.jpg";         //icon for second mode 
-	MenuItemImages[MODE_SLNT]="ALI_MODE.jpg";        //icon for third mode 
-	MenuItemImages[MODE_Phaseone]="ALAA_MODE.jpg";        //icon for phase one mode 
-	MenuItemImages[MODE_EXIT]="exit.jpg";        //icon for phase one mode 
+	MenuItemImages[MODE_INTR] = "MENUEBAR//BAKR_MODE.jpg";     //icon for first mode 
+  	MenuItemImages[MODE_STEP]="MENUEBAR//HISHAM_MODE.jpg";         //icon for second mode 
+	MenuItemImages[MODE_SLNT]="MENUEBAR//ALI_MODE.jpg";        //icon for third mode 
+	MenuItemImages[MODE_Phaseone]="MENUEBAR//ALAA_MODE.jpg";        //icon for phase one mode 
+	MenuItemImages[MODE_EXIT]="MENUEBAR//exit.jpg";        //icon for phase one mode 
 	// Prepare images for each menu item and add it to the list (DONE)
 	//Draw menu item one image at a time
 	pWind->SetPen(ETSHAWY,2);
@@ -98,7 +98,7 @@ void GUI::CreateDrawToolBar()const
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-// ================================== MENUITEMBAR CREATION =============================//
+// ================================== GET USER ACTION  ==========================//
 //////////////////////////////////////////////////////////////////////////////////////////
 
 
