@@ -108,7 +108,7 @@ void Restaurant::ExecuteEvents(int CurrentTimeStep)
 
 bool Restaurant::ReadFile()
 {
-	InOutFile loadfile(this, pGUI);
+	InputFile loadfile(this, pGUI);
 	if(loadfile.Read())
 		return true;
 	return false;

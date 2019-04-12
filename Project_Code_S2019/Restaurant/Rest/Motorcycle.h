@@ -4,7 +4,7 @@
 
 #include "..\Defs.h"
 #include "Order.h"
-
+class Order;
 #pragma once
 class Motorcycle	
 {
@@ -16,6 +16,7 @@ class Motorcycle
 	Order* AssignedOrd;	//to hold the assigned order untill it is delivered then the order info can be printed,
 						//also implicitly has the service time of the motorcycle by dividing the distance over speed
 	int ArrivalTime;	//will be used for priority, when will the motorcycle arrive 
+	int priority;
 
 public:
 	Motorcycle();
@@ -28,8 +29,8 @@ public:
 	double GetSpeed()const;
 	REGION GetRegion()const;
 	STATUS GetStatus()const;
-	Order* GetAssignedOrd();
-	int GetArrivalTime();
+	Order* GetAssignedOrd()const;
+	int GetArrivalTime()const;
 
 
 	void SetID(int);
@@ -45,6 +46,10 @@ public:
 	bool operator >(Motorcycle M);
 	bool operator ==(Motorcycle M);
 	
+
+	//the priority changes if the motor is idle or serving
+	void ChangePriority(int timestp);
+
 	virtual ~Motorcycle();
 };
 

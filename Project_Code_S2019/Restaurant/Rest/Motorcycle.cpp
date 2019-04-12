@@ -12,6 +12,7 @@ Motorcycle::Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type)
 	SetSpeed(Speed);
 	SetStatus(Status);
 	SetType(Type);
+	ChangePriority(0); //zero is the time of construction of the motorcycles
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,22 +56,29 @@ void Motorcycle::SetStatus(STATUS St)
 
 void Motorcycle::SetType(ORD_TYPE T)
 {
-	type = (T >-1 && T < TYPE_CNT) ? T : TYPE_NRM;
+	type = (T > -1 && T < TYPE_CNT) ? T : TYPE_NRM;
 }
 
-void Motorcycle:: SetAssignedOrd(Order*O){
+void Motorcycle:: SetAssignedOrd(Order*O)
+{
 	AssignedOrd=O;
 }
-REGION Motorcycle:: GetRegion()const{
-	return region;
-}	
-Order* Motorcycle:: GetAssignedOrd(){
-	return AssignedOrd;
-}
-void Motorcycle:: SetRegion(REGION R){
+
+void Motorcycle:: SetRegion(REGION R)
+{
 	region=R;
 }
-int  Motorcycle:: GetArrivalTime(){
+
+REGION Motorcycle:: GetRegion()const
+{
+	return region;
+}	
+Order* Motorcycle:: GetAssignedOrd() const
+{
+	return AssignedOrd;
+}
+int  Motorcycle:: GetArrivalTime() const
+{
 	return ArrivalTime;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,16 +87,16 @@ int  Motorcycle:: GetArrivalTime(){
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool Motorcycle:: operator <(Motorcycle M)
+bool Motorcycle:: operator < (Motorcycle M)
 {
-	if(speed < M.speed)
+	if(priority < M.priority)
 		return true;
 	return false;
 }
 
 bool Motorcycle:: operator >(Motorcycle M)
 {
-	if(speed > M.speed)
+	if(priority > M.priority)
 		return true;
 	return false;
 }
@@ -98,6 +106,21 @@ bool Motorcycle:: operator ==(Motorcycle M)
 	if(ID == M.ID)
 		return true;
 	return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//			    changes the priority of the motorcycle after the assignment to be put		  //
+//				in the assigned PQ with the time at which it returns is the priority	      //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Motorcycle::ChangePriority(int timestp)
+{
+	if(status == IDLE)
+		priority = speed;
+	else
+		priority = timestp + 2 * (AssignedOrd->GetDistance() / speed); 
 }
 
 

@@ -23,6 +23,9 @@ protected:
 	priorityQueue<Order*>VOrderQueue;
 	Queue<Order*>FOrderQueue;
 
+	//whole number of orders of different types 
+	int NOrderCount, FOrderCount, VOrderCount;
+
 public:
 	Region(void);
 	void InsertFMotor(int, double, STATUS, ORD_TYPE);	//function to insert frozen motorcycle
@@ -34,8 +37,11 @@ public:
 	int Get_NMotorCnt()const;							//function to get the number of normal motors
 	int Get_VMotorCnt()const;							//function to get the number of fast motors
 	int Get_FMotorCnt()const;							//function to get the number of frozen motors
+	int GetWholeNOrdCount()const;						//will be used at the end of the program to be written in the file
+	int GetWholeVOrdCount()const;						//will be used at the end of the program to be written in the file
+	int GetWholeFOrdCount()const;						//will be used at the end of the program to be written in the file
 
-	// Getters for the counters
+	// Getters for the number of orders currently(at the time step) in the restaurant 
 	int GetVOrdCnt();
 	int GetNOrdCnt();
 	int GetFOrdCnt();

@@ -1,27 +1,22 @@
-#include "InOutFile.h"
+#include "InputFile.h"
 
-InOutFile::InOutFile(Restaurant* R, GUI* G):pRest(R), pGUI(G)
+InputFile::InputFile(Restaurant* R, GUI* G):pRest(R), pGUI(G)
 {
 
 }
 
-InOutFile::~InOutFile()
+InputFile::~InputFile()
 {
 
 }
 
-bool InOutFile::Write()
-{
-	//modified later to output in a file
-	return false;
-}
 
-bool InOutFile::Read()
+bool InputFile::Read()
 {
 	pGUI->PrintMessage("Enter the file name: ");
 	FileName = pGUI->GetString();
-	InputFile.open(FileName + ".txt");
-	if(!InputFile.is_open())
+	FileInput.open(FileName + ".txt");
+	if(!FileInput.is_open())
 	{
 		pGUI->PrintMessage("an error occured loading the file there may not exist a file with this name");
 		return false; 
@@ -39,12 +34,12 @@ bool InOutFile::Read()
 	Order* pOrd = nullptr;
 	Event* pEv = nullptr;
 	
-	InputFile >> SpeedN >> SpeedF >> SpeedV;
+	FileInput >> SpeedN >> SpeedF >> SpeedV;
 
 	for (int i = 0; i < REG_CNT; i++)
 	{
 		Region* R = pRest->GetRegion(i);
-		InputFile >> Norm >> Frzn >> VIP;
+		FileInput >> Norm >> Frzn >> VIP;
 		//creating normal motorcycles
 		for (int j = 0; j < Norm; j++)
 		{
@@ -63,18 +58,18 @@ bool InOutFile::Read()
 	}
 	
 
-	InputFile >> AutoS;
-	InputFile >> NumEvnts;
+	FileInput >> AutoS;
+	FileInput >> NumEvnts;
 	
 	pRest->SetAutoProm(AutoS);
 	//reads the different types of events
-	while (!InputFile.eof())
+	while (!FileInput.eof())
 	{
 		// reads the first character in the line to know the type of the event to take the convinient action
-		InputFile >> EVNT;
+		FileInput >> EVNT;
 		if(toupper(EVNT) == 'R')
 		{
-			InputFile >> TimeStp >> TYP >> ID >> DST >> MON >> REG;
+			FileInput >> TimeStp >> TYP >> ID >> DST >> MON >> REG;
 			
 			// modifies the entered data for ordertype to be of desired datatype
 			if(toupper(TYP) == 'N')
@@ -96,14 +91,14 @@ bool InOutFile::Read()
 		}
 		else if(toupper(EVNT) == 'X')
 		{
-			InputFile >> TimeStp >> ID;
+			FileInput >> TimeStp >> ID;
 			pEv = new CancelationEvent(TimeStp, ID);
 			pRest->AddEvent(pEv);
 
 		}
 		else if(toupper(EVNT) == 'P')
 		{
-			InputFile >> TimeStp >> ID >> EXMON;
+			FileInput >> TimeStp >> ID >> EXMON;
 			pEv = new PromotionEvent(TimeStp, ID, EXMON);
 			pRest->AddEvent(pEv);
 		}
@@ -114,6 +109,7 @@ bool InOutFile::Read()
 		}
 
 	}
+	FileInput.close();
 	return true;
 }
 

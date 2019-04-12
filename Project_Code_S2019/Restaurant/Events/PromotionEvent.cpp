@@ -25,7 +25,7 @@ void PromotionEvent::Execute(Restaurant* pRest)
 			if(TmpArr[j]->GetID() == getOrderID())
 			{
 				tmp=pRest->GetRegion(i)->dequeueN(j+1);	
-				Order* VIP = new Order(tmp->GetID(), TYPE_VIP, tmp->GetRegion(), tmp->GetDistance(), tmp->GetMoney());
+				Order* VIP = new Order(tmp->GetArrTime() ,tmp->GetID(), TYPE_VIP, tmp->GetRegion(), tmp->GetDistance(), tmp->GetMoney());
 				pRest->GetRegion(i)->InsertVOrder(VIP);
 				delete tmp;
 				delete []TmpArr;

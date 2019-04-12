@@ -1,16 +1,19 @@
 #include "Order.h"
 
-Order::Order(int id, ORD_TYPE r_Type, REGION r_region, double dist, double mon)
+Order::Order(int arrt,int id, ORD_TYPE r_Type, REGION r_region, double dist, double mon)
 {
+	SetArrTime(arrt);
 	SetID(id);
 	SetType(r_Type);
 	SetRegion(r_region);
 	SetDistance(dist);
 	SetMoney(mon);
+	AssignedMotor = nullptr;
 	if(r_Type == TYPE_VIP)
 		priorty = 4 * mon - ArrTime  - 2 * dist;
 	else  
 		priorty= - ArrTime;
+	;
 }
 
 Order::Order(int id)
@@ -35,6 +38,8 @@ int Order::GetFinishTime() const {return FinishTime; }
 int Order::GetServTime() const { return ServTime; }
 int Order::GetWaitingTime() const { return WaintingTime; }
 double Order::GetPriority() const { return priorty; }
+Motorcycle* Order::GetMotor() const { return AssignedMotor; }
+
 
 
 void Order::SetID(int id) { ID = (id >= 0 && id < 1000) ? id : 0; }
@@ -46,7 +51,6 @@ void Order::SetArrTime(int t){ ArrTime = (t > 0) ? t : 0; }
 void Order::SetFinishTime(int t){ FinishTime = (t > 0) ? t : 0; }
 void Order::SetServTime(int t){ ServTime = (t > 0) ? t : 0; }
 void Order::SetWaitingTime(int t){ WaintingTime = (t > 0) ? t : 0; }
-void Order::SetPriority(double p){ priorty = p; }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +80,26 @@ bool Order:: operator ==(Order& v)
 	return false;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//			    	changes the priority of the order after the assignment to be 			  //
+//					  put in the assigned PQ with the finish time as priority				  //	
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Order::ChangePriority(int Currtimestp)
+{
+	SetWaitingTime(Currtimestp - ArrTime);
+	priorty = ArrTime + ServTime + WaintingTime;
+}
+
+
+//function to assign a motorcycle for the order
+void Order::AssignMotor(Motorcycle* m)
+{
+	AssignedMotor = m; 
+	SetServTime(Distance / m->GetSpeed());
+}
 Order::~Order()
 {
 }

@@ -120,13 +120,16 @@
     <ClInclude Include="Region.h">
       <Filter>Restaurant</Filter>
     </ClInclude>
-    <ClInclude Include="InOutFile.h">
-      <Filter>Restaurant</Filter>
-    </ClInclude>
     <ClInclude Include="Generic_DS\list.h">
       <Filter>Generic_DS</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Restaurant</Filter>
+    </ClInclude>
+    <ClInclude Include="InputFile.h">
+      <Filter>Restaurant</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputFile.h">
       <Filter>Restaurant</Filter>
     </ClInclude>
   </ItemGroup>
@@ -264,7 +267,10 @@
     <ClCompile Include="Region.cpp">
       <Filter>Restaurant</Filter>
     </ClCompile>
-    <ClCompile Include="InOutFile.cpp">
+    <ClCompile Include="InputFile.cpp">
+      <Filter>Restaurant</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputFile.cpp">
       <Filter>Restaurant</Filter>
     </ClCompile>
   </ItemGroup>

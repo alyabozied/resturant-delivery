@@ -8,18 +8,16 @@
 #include <iostream>
 #include <string>
 
-class InOutFile
+class OutputFile
 {
 	string FileName;
-	ifstream InputFile;
-	ifstream OutputFile;
+	ofstream FileOutput;
 	Restaurant* pRest;
 	GUI* pGUI;
 
 public:
-	InOutFile(Restaurant*, GUI*);
-	~InOutFile();
-	bool Read();
+	OutputFile(Restaurant*, GUI*);
+	~OutputFile();
 	bool Write();
 private:
 

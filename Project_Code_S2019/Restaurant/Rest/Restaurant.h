@@ -4,18 +4,23 @@
 #include "..\CMUgraphicsLib\CMUgraphics.h"
 #include "..\Generic_DS\Queue.h"
 #include "..\Events\Event.h"
-#include "..\InOutFile.h"
+#include "..\InputFile.h"
+#include "..\OutputFile.h"
 #include "..\GUI\GUI.h"
 #include "..\Region.h"
 #include "..\Defs.h"
 #include "Order.h"
 
+
+class OutputFile;
 // it is the maestro of the project
 class Restaurant  
 {	
 private:
+	OutputFile *Out;                        //to write on the file and closes at the end of the program
 	GUI *pGUI;
-	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
+	Queue<Event*> EventsQueue;				//Queue of all events that will be loaded from file
+	priorityQueue <Order*> ServedOrder;     //to store the orders being seved with the finish time as priority to print them
 	Region R[4];
 	int AutoProm;
 

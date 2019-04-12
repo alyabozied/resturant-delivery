@@ -4,7 +4,7 @@
 Region::Region(void)
 {
 	
-	N_MotorsCnt = V_MotorsCnt = F_MotorsCnt = 0;
+	N_MotorsCnt = V_MotorsCnt = F_MotorsCnt = NOrderCount = VOrderCount = FOrderCount =  0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,9 +45,21 @@ void Region::InsertVMotor(int id, double speed, STATUS s, ORD_TYPE t)
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void Region::InsertFOrder(Order* F){ FOrderQueue.enqueue(F);}
-void Region::InsertNOrder(Order* N){ NOrderQueue.insert(NOrderQueue.getLength()+1,N);}
-void Region::InsertVOrder(Order* V){ VOrderQueue.insert(V); }
+void Region::InsertFOrder(Order* F)
+{
+	FOrderCount++;
+	FOrderQueue.enqueue(F);
+}
+void Region::InsertNOrder(Order* N)
+{
+	NOrderCount++;
+	NOrderQueue.insert(NOrderQueue.getLength()+1,N);
+}
+void Region::InsertVOrder(Order* V)
+{
+	VOrderCount++;
+	VOrderQueue.insert(V); 
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,6 +162,16 @@ void Region::DeleteMotors()
 	}
 
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//				functions to return the whole number of different orders					  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+int Region::GetWholeFOrdCount() const{ return FOrderCount; }
+int Region::GetWholeNOrdCount() const{ return NOrderCount; }
+int Region::GetWholeVOrdCount() const{ return VOrderCount; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
