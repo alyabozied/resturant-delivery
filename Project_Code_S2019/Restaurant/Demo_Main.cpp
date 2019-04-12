@@ -1,6 +1,6 @@
 #include "Rest\Restaurant.h"
 using namespace std;
-
+#include <vld.h>
 int main()
 {
 

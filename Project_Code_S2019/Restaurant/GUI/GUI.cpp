@@ -59,9 +59,9 @@ string GUI::GetString() const
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::ClearToolBar() const
 {
-	//Clear Status bar by drawing a filled yellow rectangle
-	pWind->SetPen(ROYALYELLOW, 1);
-	pWind->SetBrush(ROYALYELLOW);
+	//Clear Status bar by drawing a filled rectangle
+	pWind->SetPen(VIOLETYELL, 2);
+	pWind->SetBrush(VIOLETYELL);
 	pWind->DrawRectangle(0, 0, WindWidth, MenuBarHeight);
 }
 
@@ -81,16 +81,16 @@ void GUI::CreateDrawToolBar()const
 	MenuItemImages[MODE_EXIT]="MENUEBAR//EXIT.jpg";        //icon for phase one mode 
 	// Prepare images for each menu item and add it to the list (DONE)
 	//Draw menu item one image at a time
-	pWind->SetPen(VIOLETYELL,2);
+	pWind->SetPen(ROYALYELLOW,2);
 	for(int i=0; i<MODE_CNT; i++)
 	{
 		pWind->DrawImage(MenuItemImages[i], i*MenuItemWidth, 0, MenuItemWidth, MenuBarHeight);
-		pWind->DrawLine(i*MenuItemWidth, 0, i*MenuItemWidth, MenuBarHeight);	 //draw a line between each element in the toolbar
+		//pWind->DrawLine((i+1)*MenuItemWidth - 1, 0, (i+1)*MenuItemWidth - 1, MenuBarHeight);	 //draw a line between each element in the toolbar
 	}
-	//draw a line after last element in the toolbar
-	pWind->DrawLine(MODE_CNT * MenuItemWidth, 0, MODE_CNT * MenuItemWidth, MenuBarHeight);
+	
+	
 	//Draw a line under the toolbar
-	pWind->DrawLine(0, MenuBarHeight, WindWidth, MenuBarHeight);
+	//pWind->DrawLine(0, MenuBarHeight + 2.5, WindWidth, MenuBarHeight + 2.5);
 }
 
 
@@ -176,11 +176,11 @@ void GUI::DrawString(const int iX, const int iY, const string Text)
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::ClearStatusBar() const
 {
-	pWind->SetPen(DARKBLUE, 2);
+	pWind->SetPen(VIOLETYELL, 2);
 	pWind->SetBrush(VIOLETYELL);
 	pWind->DrawRectangle(0, WindHeight - StatusBarHeight , WindWidth, WindHeight);	
 
-	pWind->SetPen(DARKBLUE, 1);
+	pWind->SetPen(ROYALYELLOW, 1);
 	pWind->DrawLine(0, WindHeight - StatusBarHeight , WindWidth, WindHeight - StatusBarHeight);	
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -190,22 +190,22 @@ void GUI::ClearDrawingArea() const
 	// Clearing the Drawing area
 
 	//up left 
-	pWind->SetPen(DARKBLUE, 1);
+	pWind->SetPen(ROYALYELLOW, 1);
 	pWind->SetBrush(ROYALYELLOW);
-	pWind->DrawRectangle(0, MenuBarHeight, WindWidth/2, (WindHeight-100)/2);
+	pWind->DrawRectangle(0, MenuBarHeight , WindWidth/2, (WindHeight-100)/2);
 
 	//up right 
-	pWind->SetPen(DARKBLUE, 1);
+	pWind->SetPen(ROYALYELLOW, 1);
 	pWind->SetBrush(ROYALYELLOW);
-	pWind->DrawRectangle(WindWidth/2, (WindHeight-100)/2 , WindWidth, MenuBarHeight );	
+	pWind->DrawRectangle(WindWidth/2, MenuBarHeight , WindWidth, (WindHeight-100)/2 );	
 
 	//down left 
-	pWind->SetPen(DARKBLUE, 1);
+	pWind->SetPen(ROYALYELLOW, 1);
 	pWind->SetBrush(ROYALYELLOW);	
 	pWind->DrawRectangle(0, WindHeight-StatusBarHeight, WindWidth/2,  (WindHeight-100)/2 );
 	
 	//down right  
-	pWind->SetPen(DARKBLUE, 1);
+	pWind->SetPen(ROYALYELLOW, 1);
 	pWind->SetBrush(ROYALYELLOW);
 	pWind->DrawRectangle(WindWidth/2, WindHeight-StatusBarHeight, WindWidth,  (WindHeight-100)/2 );
 
@@ -215,7 +215,7 @@ void GUI::DrawRestArea() const
 {
 	int L = RestWidth / 2;
 	// drawing a line after the menu bar
-	pWind->SetPen(DARKBLUE, 2);
+	pWind->SetPen(ROYALYELLOW, 2);
 	pWind->DrawLine(0,MenuBarHeight, WindWidth, MenuBarHeight);
 	// 1- Drawing the Circle of the Rest
 	pWind->SetPen(DARKBLUE, 3);
