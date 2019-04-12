@@ -14,23 +14,23 @@ Region::Region(void)
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Region::InsertFMotor(int id, double speed, STATUS s, ORD_TYPE t)
+void Region::InsertFMotor(int id, double speed, STATUS s, ORD_TYPE t, REGION r)
 {
-	Motorcycle* M = new Motorcycle (id, speed, s, t);
+	Motorcycle* M = new Motorcycle (id, speed, s, t, r);
 	F_MotorsCnt++;
 	idelFMotorQ.insert(M);
 }
 
-void Region::InsertNMotor(int id, double speed, STATUS s, ORD_TYPE t)
+void Region::InsertNMotor(int id, double speed, STATUS s, ORD_TYPE t, REGION r)
 {
-	Motorcycle* M = new Motorcycle (id, speed, s, t);
+	Motorcycle* M = new Motorcycle (id, speed, s, t, r);
 	N_MotorsCnt++;
 	idelNMotorQ.insert(M);
 }
 
-void Region::InsertVMotor(int id, double speed, STATUS s, ORD_TYPE t)
+void Region::InsertVMotor(int id, double speed, STATUS s, ORD_TYPE t, REGION r)
 {
-	Motorcycle* M = new Motorcycle (id, speed, s, t);
+	Motorcycle* M = new Motorcycle (id, speed, s, t, r);
 	V_MotorsCnt++;
 	idelVMotorQ.insert(M);
 }

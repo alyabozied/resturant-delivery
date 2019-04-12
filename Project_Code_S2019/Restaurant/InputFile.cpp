@@ -43,17 +43,17 @@ bool InputFile::Read()
 		//creating normal motorcycles
 		for (int j = 0; j < Norm; j++)
 		{
-			R->InsertNMotor(j, SpeedN, IDLE, TYPE_NRM);
+			R->InsertNMotor(j, SpeedN, IDLE, TYPE_NRM,(REGION)i);
 		}
 		//creating frozen motorcycles 
 		for (int k = 0; k < Frzn; k++)
 		{
-			R->InsertFMotor(k+Norm, SpeedF, IDLE, TYPE_FROZ);
+			R->InsertFMotor(k+Norm, SpeedF, IDLE, TYPE_FROZ,(REGION)i);
 		}
 		//creating VIP motocycles
 		for (int l = 0; l < VIP; l++)
 		{
-			R->InsertVMotor(Norm+TYPE_FROZ+l, SpeedV, IDLE, TYPE_VIP);
+			R->InsertVMotor(Norm+TYPE_FROZ+l, SpeedV, IDLE, TYPE_VIP,(REGION)i);
 		}
 	}
 	

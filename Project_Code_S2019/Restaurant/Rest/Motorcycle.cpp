@@ -6,12 +6,13 @@ Motorcycle::Motorcycle()
 	status = IDLE;
 }
 
-Motorcycle::Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type)
+Motorcycle::Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type, REGION r)
 {
 	SetID(ID);
 	SetSpeed(Speed);
 	SetStatus(Status);
 	SetType(Type);
+	SetRegion(r);
 	Changepriority(0); //zero is the time of construction of the motorcycles
 }
 

@@ -55,7 +55,7 @@ public:
 	bool operator ==(Order& v);
 	
 	void Changepriority(int timestp);
-	void AssignMotor(Motorcycle*);
+	void AssignMotor(Motorcycle*, int);
 
 };
 

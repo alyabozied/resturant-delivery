@@ -90,15 +90,17 @@ bool Order:: operator ==(Order& v)
 void Order::Changepriority(int Currtimestp)
 {
 	SetWaitingTime(Currtimestp - ArrTime);
-	priority = ArrTime + ServTime + WaitingTime;
+	SetFinishTime(ArrTime + ServTime + WaitingTime);
+	priority = FinishTime;
 }
 
 
 //function to assign a motorcycle for the order
-void Order::AssignMotor(Motorcycle* m)
+void Order::AssignMotor(Motorcycle* m, int timestp)
 {
 	AssignedMotor = m; 
 	SetServTime(Distance / m->GetSpeed());
+	Changepriority(timestp);
 }
 Order::~Order()
 {

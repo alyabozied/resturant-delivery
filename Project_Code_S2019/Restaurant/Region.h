@@ -28,9 +28,9 @@ protected:
 
 public:
 	Region(void);
-	void InsertFMotor(int, double, STATUS, ORD_TYPE);	//function to insert frozen motorcycle
-	void InsertVMotor(int, double, STATUS, ORD_TYPE);	//function to insert fast motorcycle
-	void InsertNMotor(int, double, STATUS, ORD_TYPE);   //function to insert normal motorcycle
+	void InsertFMotor(int, double, STATUS, ORD_TYPE, REGION);	//function to insert frozen motorcycle
+	void InsertVMotor(int, double, STATUS, ORD_TYPE, REGION);	//function to insert fast motorcycle
+	void InsertNMotor(int, double, STATUS, ORD_TYPE, REGION);   //function to insert normal motorcycle
 	void InsertFOrder(Order*);							//a Functions to insert Frozen orders
 	void InsertVOrder(Order*);						    //a funtion to inset VIP orders 
 	void InsertNOrder(Order*);							//a function to insert normal orders 

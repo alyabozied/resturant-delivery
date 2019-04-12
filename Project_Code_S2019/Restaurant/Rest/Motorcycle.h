@@ -20,7 +20,7 @@ class Motorcycle
 
 public:
 	Motorcycle();
-	Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type);
+	Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type, REGION);
 	
 	//Setters and Getters for All Date Members
 
