@@ -15,7 +15,7 @@ GUI::GUI()
 
 	ClearStatusBar();
 	ClearDrawingArea();
-	ClearToolBar();
+	CreateDrawToolBar();
 	DrawRestArea();
 		
 }
@@ -208,7 +208,7 @@ void GUI::ClearDrawingArea() const
 	pWind->SetPen(DARKBLUE, 1);
 	pWind->SetBrush(ROYALYELLOW);
 	pWind->DrawRectangle(WindWidth/2, WindHeight-StatusBarHeight, WindWidth,  (WindHeight-100)/2 );
-	
+
 }
 ///////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawRestArea() const
@@ -243,7 +243,6 @@ void GUI::DrawRestArea() const
 	pWind->SetPen(DARKBLUE, 3);
 	pWind->SetBrush(YELLOW);
 	pWind->DrawCircle(WindWidth/2,(WindHeight-100)/2,TimestepCircleRaidus);
-	CreateDrawToolBar();
 
 }
 //////////////////////////////////////////////////////////////////////////////////////////
