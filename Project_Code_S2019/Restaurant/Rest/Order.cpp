@@ -10,7 +10,7 @@ Order::Order(int arrt,int id, ORD_TYPE r_Type, REGION r_region, double dist, dou
 	SetMoney(mon);
 	AssignedMotor = nullptr;
 	if(r_Type == TYPE_VIP)
-		priority = 4 * mon - ArrTime  - 2 * dist;
+		priority = 4 * mon -15* ArrTime  - 2 * dist;
 	else  
 		priority= - ArrTime;
 	;
