@@ -40,6 +40,9 @@ void Restaurant::RunSimulation()
 		break;
 	case MODE_Phaseone:
 		simulate();
+		break;
+	case MODE_EXIT :
+		break;
 
 	};
 

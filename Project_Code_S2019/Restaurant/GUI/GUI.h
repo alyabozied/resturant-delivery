@@ -97,7 +97,10 @@ public:
 	void ResetDrawingList();		//resets drawing list (should be called every timestep after drawing)
 
 	PROG_MODE getGUIMode() const;			//returns the mode of the program
-	void DrawTimeStepCenter(string );
+	void DrawTimeStepCenter(string );       //drawing the time step in the middle not in the status bar
+	void CreateDrawToolBar()const ;         //create the menu bar
+	void ClearToolBar()const ;				//clear the tool bar
+	PROG_MODE GetUserAction() const;        // get the action 
 };
 
 #endif

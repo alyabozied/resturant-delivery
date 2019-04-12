@@ -14,9 +14,10 @@ GUI::GUI()
 	OrdersClrs[TYPE_VIP] = 	RED;	//VIP-order color					
 
 	ClearStatusBar();
-	ClearDrawingArea(); 
-	DrawRestArea();  
-	
+	ClearDrawingArea();
+	ClearToolBar();
+	DrawRestArea();
+		
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 GUI::~GUI()
@@ -54,8 +55,86 @@ string GUI::GetString() const
 	}
 }
 
+
 //////////////////////////////////////////////////////////////////////////////////////////
-// ================================== OUTPUT FUNCTIONS ===================================
+void GUI::ClearToolBar() const
+{
+	//Clear Status bar by drawing a filled white rectangle
+	pWind->SetPen(WHITE, 1);
+	pWind->SetBrush(WHITE);
+	pWind->DrawRectangle(0, 0, WindWidth, MenuBarHeight);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// ================================== MENUITEMBAR CREATION =============================//
+//////////////////////////////////////////////////////////////////////////////////////////
+
+void GUI::CreateDrawToolBar()const
+{
+
+
+	string MenuItemImages[MODE_CNT];
+	MenuItemImages[MODE_INTR] = "BAKR_MODE.jpg";     //icon for first mode 
+  	MenuItemImages[MODE_STEP]="HISHAM_MODE.jpg";         //icon for second mode 
+	MenuItemImages[MODE_SLNT]="ALI_MODE.jpg";        //icon for third mode 
+	MenuItemImages[MODE_Phaseone]="ALAA_MODE.jpg";        //icon for phase one mode 
+	MenuItemImages[MODE_EXIT]="exit.jpg";        //icon for phase one mode 
+	// Prepare images for each menu item and add it to the list (DONE)
+	//Draw menu item one image at a time
+	pWind->SetPen(ETSHAWY,2);
+	for(int i=0; i<MODE_CNT; i++)
+	{
+		pWind->DrawImage(MenuItemImages[i], i*MenuItemWidth, 0, MenuItemWidth, MenuBarHeight);
+		pWind->DrawLine(i*MenuItemWidth, 0, i*MenuItemWidth, MenuBarHeight);	 //draw a line between each element in the toolbar
+	}
+	//draw a line after last element in the toolbar
+	pWind->DrawLine(MODE_CNT * MenuItemWidth, 0, MODE_CNT * MenuItemWidth, MenuBarHeight);
+	//Draw a line under the toolbar
+	pWind->DrawLine(0, MenuBarHeight, WindWidth, MenuBarHeight);
+}
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// ================================== MENUITEMBAR CREATION =============================//
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+PROG_MODE GUI::GetUserAction() const
+{	
+	int x,y;
+	pWind->WaitMouseClick(x, y);	//Get the coordinates of the user click
+
+		//[1] If user clicks on the Toolbar
+	if ( y >= 0 && y < MenuBarHeight)
+		{	
+			//Check whick Menu item was clicked
+			//==> This assumes that menu items are lined up horizontally <==
+			int ClickedItemOrder = (x / MenuItemWidth);
+			//Divide x coord of the point clicked by the menu item width (int division)
+			//if division result is 0 ==> first item is clicked, if 1 ==> 2nd item and so on
+
+			switch (ClickedItemOrder)
+			{
+			case MODE_INTR: return MODE_INTR; 
+			case MODE_STEP: return MODE_STEP;
+			case MODE_SLNT: return MODE_SLNT;
+			case MODE_Phaseone: return MODE_Phaseone;
+			case MODE_EXIT: return MODE_EXIT;	
+			default: return MODE_EMPYT;	//A click on empty place in desgin toolbar
+			}
+		}
+
+	return MODE_EMPYT;
+
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// ================================== OUTPUT FUNCTIONS =================================//
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3) const	//Prints a message on status bar
@@ -164,6 +243,8 @@ void GUI::DrawRestArea() const
 	pWind->SetPen(DARKBLUE, 3);
 	pWind->SetBrush(YELLOW);
 	pWind->DrawCircle(WindWidth/2,(WindHeight-100)/2,TimestepCircleRaidus);
+	CreateDrawToolBar();
+
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a private function
@@ -290,9 +371,9 @@ PROG_MODE	GUI::getGUIMode() const
 	PROG_MODE Mode;
 	do
 	{
-		PrintMessage("Please select GUI mode: (1)Interactive, (2)StepByStep, (3)Silent, (4)Phase one ... ");
-		string S = GetString();
-		Mode = (PROG_MODE) (atoi(S.c_str())-1);
+		PrintMessage("Please select one of the menu bar icons ");
+		Mode = GetUserAction();
+
 	}
 	while(Mode< 0 || Mode >= MODE_CNT);
 	
