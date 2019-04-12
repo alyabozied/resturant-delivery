@@ -132,7 +132,7 @@ void Restaurant::simulate()
 	int currstep = 1 ;
 
 	//print the different info about the different regions
-	PrintStatuesBar();
+	PrintStatusBar();
 
 	//flag to check if there is still an order not served so simulation doesn't stop
 	bool FlagOrd=true;
@@ -150,7 +150,7 @@ void Restaurant::simulate()
 		//functions needed for the interface
 		pGUI->waitForClick();
 		pGUI->UpdateInterface();
-		PrintStatuesBar();
+		PrintStatusBar();
 		pGUI->DrawTimeStepCenter(timestep);
 		currstep++;
 
@@ -161,7 +161,7 @@ void Restaurant::simulate()
 		pGUI->ResetDrawingList();
 		FlagOrd=LoadGUI();
 		pGUI->waitForClick();
-		PrintStatuesBar();
+		PrintStatusBar();
 		pGUI->UpdateInterface();
 		pGUI->DrawTimeStepCenter(timestep);
 		pGUI->ResetDrawingList();
@@ -172,7 +172,7 @@ void Restaurant::simulate()
 	pGUI->waitForClick();
 
 }
-void Restaurant::PrintStatuesBar()
+void Restaurant::PrintStatusBar()
 {
 
 	char NM[4], VM [4], FM[4], NOrd [4], VOrd[4], FOrd[4];

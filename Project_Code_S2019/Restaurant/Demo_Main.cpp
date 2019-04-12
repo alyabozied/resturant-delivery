@@ -2,7 +2,6 @@
 using namespace std;
 int main()
 {
-
 	Restaurant* pRest = new Restaurant;
 	pRest->RunSimulation();
 	delete pRest;
