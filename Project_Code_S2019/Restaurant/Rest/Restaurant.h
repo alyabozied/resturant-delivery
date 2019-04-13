@@ -38,6 +38,7 @@ public:
 	void MODEINTR();					//the simple simulation function
 	bool LoadGUI();						//to load the gui array of pointers with orders to draw
 	void AssignOrders(int);					//delete the order which should be deleted in the current time step
+	void PrintOutfile();
 };
 
 #endif

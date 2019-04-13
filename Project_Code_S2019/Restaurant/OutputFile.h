@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include"Region.h"
 
 class OutputFile
 {
@@ -16,10 +17,12 @@ class OutputFile
 	GUI* pGUI;
 
 public:
-	OutputFile(Restaurant*, GUI*);
+	OutputFile(Restaurant*, GUI*&);
 	void OpenFileOut();
+	void PrintFirstLine();
+	void PrintStatstics(Region &R, REGION);
 	~OutputFile();
-	bool Write();
+	bool Write(Order* O);
 private:
 
 };

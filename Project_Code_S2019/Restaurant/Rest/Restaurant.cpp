@@ -29,6 +29,7 @@ Restaurant::Restaurant()
 void Restaurant::RunSimulation()
 {
 	pGUI = new GUI;
+	Out= new OutputFile(this,pGUI);
 	PROG_MODE	mode = pGUI->getGUIMode();
 			switch (mode)	//Add a function for each mode in next phases
 	{
@@ -130,12 +131,11 @@ void Restaurant::MODEINTR()
 	int currstep = 1 ;
 
 	//print the different info about the different regions
+	Out->OpenFileOut();
 	PrintStatusBar();
-
 	//flag to check if there is still an order not served so simulation doesn't stop
 	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
 	
-
 	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
 	{
 		ExecuteEvents(currstep);
@@ -147,7 +147,6 @@ void Restaurant::MODEINTR()
 		pGUI->DrawTimeStepCenter(timestep);
 		PrintStatusBar();
 		//Assign the order whose time has come
-		pGUI->waitForClick();
 		AssignOrders(currstep);
 		//update the interface after deleting the orders whose time has come
 		pGUI->ResetDrawingList();
@@ -163,9 +162,8 @@ void Restaurant::MODEINTR()
 			R[i].Promote(AutoProm, currstep);
 			
 		}
-		pGUI->waitForClick();
 	}
-	
+	PrintOutfile();	
 	pGUI->PrintMessage("generation done, click to END program");
 	pGUI->waitForClick();
 
@@ -271,7 +269,31 @@ void Restaurant::AssignOrders(int timestep)
 }
 
 
+void Restaurant::PrintOutfile()
+{
+	Order*tmp=nullptr;
+	for (int i = 0; i < 4; i++)
+	{
+		if(!R[i].EmptyDelivered());
+		Out->PrintFirstLine();
+		while (!R[i].EmptyDelivered())
+		{
+			Out->Write(R[i].GetDeliveredOrder());
+		}
+		Out->PrintStatstics(R[i],REGION(i));
+	}
+	
+
+
+
+
+
+}
+
+
+
 Restaurant::~Restaurant()
 {
 		delete pGUI;
+		delete Out;
 }
