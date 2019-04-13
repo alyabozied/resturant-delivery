@@ -278,8 +278,8 @@ bool Region::UnAssignMotors(int timestep)
 		while (servVMotorQ.getmax()->IsBack(timestep))
 		{
 			tmpM = servVMotorQ.extractMax();
-			tmpM->GetAssignedOrd()->SetFinishTime(tmpM->GetAssignedOrd()->GetArrTime()+tmpM->GetAssignedOrd()->GetWaitingTime()+2* tmpM->GetAssignedOrd()->GetServTime());
-			delete tmpM->GetAssignedOrd();
+			tmpM->GetAssignedOrd()->Changepriority(timestep);
+			DeliveredOrderQueue.insert(tmpM->GetAssignedOrd());
 			tmpM->SetStatus(IDLE);
 			tmpM->Changepriority(timestep);
 			idelVMotorQ.insert(tmpM);
@@ -293,8 +293,8 @@ bool Region::UnAssignMotors(int timestep)
 		while (servNMotorQ.getmax()->IsBack(timestep))
 		{
 			tmpM = servNMotorQ.extractMax();
-			tmpM->GetAssignedOrd()->SetFinishTime(tmpM->GetAssignedOrd()->GetArrTime()+tmpM->GetAssignedOrd()->GetWaitingTime()+2* tmpM->GetAssignedOrd()->GetServTime());
-			delete tmpM->GetAssignedOrd();
+			tmpM->GetAssignedOrd()->Changepriority(timestep);
+			DeliveredOrderQueue.insert(tmpM->GetAssignedOrd());
 			tmpM->SetStatus(IDLE);
 			tmpM->Changepriority(timestep);
 			idelNMotorQ.insert(tmpM);
@@ -308,8 +308,8 @@ bool Region::UnAssignMotors(int timestep)
 		while (servFMotorQ.getmax()->IsBack(timestep))
 		{
 			tmpM = servFMotorQ.extractMax();
-			tmpM->GetAssignedOrd()->SetFinishTime(tmpM->GetAssignedOrd()->GetArrTime()+tmpM->GetAssignedOrd()->GetWaitingTime()+2* tmpM->GetAssignedOrd()->GetServTime());
-			delete tmpM->GetAssignedOrd();
+			tmpM->GetAssignedOrd()->Changepriority(timestep);
+			DeliveredOrderQueue.insert(tmpM->GetAssignedOrd());
 			tmpM->SetStatus(IDLE);
 			tmpM->Changepriority(timestep);		
 			idelFMotorQ.insert(tmpM);
@@ -409,4 +409,8 @@ void Region::Promote(int autop , int timestep)
 Region::~Region(void)
 {
 	DeleteMotors();
+	while (DeliveredOrderQueue.getcount() != 0)
+	{
+		delete DeliveredOrderQueue.extractMax();
+	}
 }

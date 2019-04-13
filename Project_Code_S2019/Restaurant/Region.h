@@ -22,7 +22,7 @@ protected:
 	LinkedList<Order*>NOrderQueue;
 	priorityQueue<Order*>VOrderQueue;
 	Queue<Order*>FOrderQueue;
-
+	priorityQueue<Order*>DeliveredOrderQueue;
 	//whole number of orders of different types 
 	int NOrderCount, FOrderCount, VOrderCount;
 
