@@ -60,9 +60,11 @@ void Motorcycle::SetType(ORD_TYPE T)
 	type = (T > -1 && T < TYPE_CNT) ? T : TYPE_NRM;
 }
 
-void Motorcycle:: SetAssignedOrd(Order*O)
+void Motorcycle:: SetAssignedOrd(Order*O,int timestep)
 {
 	AssignedOrd=O;
+	status=SERV;
+	Changepriority(timestep);
 }
 
 void Motorcycle:: SetRegion(REGION R)
@@ -121,8 +123,15 @@ void Motorcycle::Changepriority(int timestp)
 	if(status == IDLE)
 		priority = speed;
 	else
-		priority = timestp + 2 * (AssignedOrd->GetDistance() / speed); 
+		priority = -1*(timestp + 2 * (AssignedOrd->GetDistance() / speed)); 
 }
+
+
+bool Motorcycle::IsBack(int timestep)const
+{
+	return timestep == -priority ;
+}
+
 
 
 Motorcycle::~Motorcycle()

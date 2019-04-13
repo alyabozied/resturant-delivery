@@ -35,9 +35,9 @@ public:
 	void RunSimulation();				//prompt the user to choose the mode to start the simulation
 	bool ReadFile();					//function to read input from a file
 	void PrintStatusBar();				//prints information about different regions
-	void simulate();					//the simple simulation function
+	void MODEINTR();					//the simple simulation function
 	bool LoadGUI();						//to load the gui array of pointers with orders to draw
-	void DeleteMax();					//delete the order which should be deleted in the current time step
+	void AssignOrders(int);					//delete the order which should be deleted in the current time step
 };
 
 #endif

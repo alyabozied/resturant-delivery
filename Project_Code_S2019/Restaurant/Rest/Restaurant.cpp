@@ -33,13 +33,11 @@ void Restaurant::RunSimulation()
 			switch (mode)	//Add a function for each mode in next phases
 	{
 	case MODE_INTR:
+		MODEINTR();
 		break;
 	case MODE_STEP:
 		break;
 	case MODE_SLNT:
-		break;
-	case MODE_Phaseone:
-		simulate();
 		break;
 	case MODE_EXIT :
 		break;
@@ -124,7 +122,7 @@ bool Restaurant::ReadFile()
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Restaurant::simulate()  
+void Restaurant::MODEINTR()  
 {
 	//prompt the user again and again till a valid file name is entered
 	while(!ReadFile()){}
@@ -135,39 +133,39 @@ void Restaurant::simulate()
 	PrintStatusBar();
 
 	//flag to check if there is still an order not served so simulation doesn't stop
-	bool FlagOrd=true;
+	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
+	
 
-	while(!EventsQueue.isEmpty() || FlagOrd )
+	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
 	{
-		Order *ord=nullptr;
 		ExecuteEvents(currstep);
-
 		//load gui returns true if there is still orders not served
 		FlagOrd=LoadGUI();
 		char timestep[10];
 		_itoa_s(currstep,timestep,10);
-		
-		//functions needed for the interface
-		pGUI->waitForClick();
 		pGUI->UpdateInterface();
-		PrintStatusBar();
 		pGUI->DrawTimeStepCenter(timestep);
-		currstep++;
-
-		//delete the order whose time has come
-		DeleteMax();
-
+		PrintStatusBar();
+		//Assign the order whose time has come
+		pGUI->waitForClick();
+		AssignOrders(currstep);
 		//update the interface after deleting the orders whose time has come
 		pGUI->ResetDrawingList();
 		FlagOrd=LoadGUI();
-		pGUI->waitForClick();
-		PrintStatusBar();
 		pGUI->UpdateInterface();
 		pGUI->DrawTimeStepCenter(timestep);
+		PrintStatusBar();
 		pGUI->ResetDrawingList();
-
-	
+		currstep++;
+		for (int i = 0; i < 4; i++)
+		{
+			FlagunAssign[i] = R[i].UnAssignMotors(currstep);
+			R[i].Promote(AutoProm, currstep);
+			
+		}
+		pGUI->waitForClick();
 	}
+	
 	pGUI->PrintMessage("generation done, click to END program");
 	pGUI->waitForClick();
 
@@ -247,35 +245,27 @@ bool Restaurant::LoadGUI()
 }
 
 
-void Restaurant::DeleteMax()
+void Restaurant::AssignOrders(int timestep)
 {
-	Order *deletedOrd = nullptr;
 	for (int i = 0; i < 4; i++)
 	{
-		// delete the first vip order in each region if exists
+		// Assign first vip order in each region if exists to a motorcycle
 		if(R[i].GetVOrdCnt())
 		{
-			deletedOrd=R[i].dequeueV();
-			delete deletedOrd;
-			deletedOrd=nullptr;
+			R[i].AssignOrdVMotor(timestep);		
 		}
 
-		//delete the first frozen order in each region in case exists 
+		//Assign  first frozen order in each region in case exists to a froozen motorcycle 
 		 if(!R[i].FOrdisEmpty())
 		{
-			deletedOrd=	R[i].dequeueF();
-			delete deletedOrd;
-			deletedOrd=nullptr;
-
+			R[i].AssignOrdFMotor(timestep);
 		}
 
-		//delete the first waiting order in each region case exists 
-		 if(R[i].GetNOrdCnt())
-			{
-				deletedOrd=R[i].GetNOrder(1);
-				delete deletedOrd;
-				deletedOrd=nullptr;
-			}
+		//Assign first waiting Normal order in each region case exists to a Motorcycle 
+		if(R[i].GetNOrdCnt())
+		{
+			R[i].AssignOrdNMotor(timestep);
+		}
 	}
 
 }

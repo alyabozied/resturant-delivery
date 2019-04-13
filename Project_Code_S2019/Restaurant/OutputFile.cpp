@@ -2,10 +2,18 @@
 
 OutputFile::OutputFile(Restaurant* R, GUI* G):pRest(R), pGUI(G)
 {
-	G->PrintMessage("enter file name to save the output");
-	FileName = G->GetString();
-	FileOutput.open(FileName + ".txt");
+
 }
+
+
+void OutputFile::OpenFileOut()
+{
+	pGUI->PrintMessage("enter file name to save the output");
+	FileName = pGUI->GetString();
+	FileOutput.open(FileName + ".txt");
+
+}
+
 
 OutputFile::~OutputFile()
 {
@@ -17,7 +25,6 @@ bool OutputFile::Write()
 	//modified later to output in a file
 	return false;
 }
-
 
 
 

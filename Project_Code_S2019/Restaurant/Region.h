@@ -12,7 +12,7 @@ protected:
 	priorityQueue<Motorcycle*>idelNMotorQ;
 	priorityQueue<Motorcycle*>idelVMotorQ;
 	priorityQueue<Motorcycle*>servFMotorQ;
-	priorityQueue<Motorcycle*>serNMotorQ;
+	priorityQueue<Motorcycle*>servNMotorQ;
 	priorityQueue<Motorcycle*>servVMotorQ;
 
 	//Number of MotorCycle in Region
@@ -57,6 +57,15 @@ public:
 	Order*const* GetArrFOrd();
 
 
+	//Assign orders to motorcycle
+	bool AssignOrdNMotor(int);
+	bool AssignOrdFMotor(int);
+	bool AssignOrdVMotor(int);
+	//unassign motorcylces
+	bool UnAssignMotors(int);
+	//auto promotion function
+	void Promote(int, int);
+	void IncreWatingtime(int);
 	~Region(void);
 };
 

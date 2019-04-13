@@ -111,12 +111,14 @@ Order* Region::GetNOrder(int postion)
 { 
 	Order* ord ;
 	NOrderQueue.remove(postion,ord);
+	NOrderCount--;
 	return ord; 
 }
 
 Order* Region::dequeueV() 
 { 
 	Order* ord = VOrderQueue.extractMax();
+	VOrderCount--;
 	return ord; 
 }
 
@@ -124,6 +126,7 @@ Order* Region::dequeueF()
 { 
 	Order *ord ;
 	FOrderQueue.dequeue(ord);
+	FOrderCount--;
 	return  ord;
 }
 
@@ -150,11 +153,11 @@ void Region::DeleteMotors()
 	}
 	while (servFMotorQ.getcount() != 0)
 	{
-		delete servFMotorQ.extractMax();
+		delete  servFMotorQ.extractMax();
 	}
-	while (serNMotorQ.getcount() != 0)
+	while (servNMotorQ.getcount() != 0)
 	{
-		delete serNMotorQ.extractMax();
+		delete servNMotorQ.extractMax();		
 	}
 	while (servVMotorQ.getcount() != 0)
 	{
@@ -195,6 +198,211 @@ int Region::Get_NMotorCnt()const
 int Region::Get_VMotorCnt()const
 {
 	return V_MotorsCnt;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//					functions to Assign an order to motorcylce      						  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool Region::AssignOrdNMotor(int timestep)
+{
+	Order*tmp = nullptr;
+	Motorcycle*NMotor = nullptr;
+	Motorcycle*VMotor = nullptr;
+	while(NOrderCount != 0 && N_MotorsCnt != 0)
+	{
+		NOrderQueue.remove(1,tmp);
+		NMotor = idelNMotorQ.extractMax();
+		NMotor->SetAssignedOrd(tmp,timestep);
+		servNMotorQ.insert(NMotor);
+		N_MotorsCnt--;
+		NOrderCount--;
+	}
+	
+		
+	while(NOrderCount != 0 && V_MotorsCnt != 0 && VOrderCount == 0)
+	{
+		NOrderQueue.remove(1,tmp);
+		VMotor = idelVMotorQ.extractMax();
+		VMotor->SetAssignedOrd(tmp,timestep);
+		servNMotorQ.insert(VMotor);
+		V_MotorsCnt--;
+		NOrderCount--;
+	}
+
+		
+	return NOrderCount == 0  ;
+
+}
+
+void Region::IncreWatingtime(int timestep)
+{
+	Order*const* tmparr ;
+	tmparr = GetArrVOrd();
+	for (int i = 0; i < VOrderCount; i++)
+	{
+		tmparr[i]->SetWaitingTime(timestep- tmparr[i]->GetArrTime());
+	}
+	delete [] tmparr;
+
+	tmparr = GetArrNOrd();
+	for (int i = 0; i < NOrderCount; i++)
+	{
+		tmparr[i]->SetWaitingTime(timestep- tmparr[i]->GetArrTime());
+	}
+	delete [] tmparr;
+
+
+	tmparr = GetArrFOrd();
+	for (int i = 0; i < FOrderCount; i++)
+	{
+		tmparr[i]->SetWaitingTime(timestep- tmparr[i]->GetArrTime());
+	}
+	delete [] tmparr;
+
+
+}
+
+
+
+
+bool Region::UnAssignMotors(int timestep)
+{
+
+	Motorcycle * tmpM =nullptr;
+	if(servVMotorQ.getcount())
+		while (servVMotorQ.getmax()->IsBack(timestep))
+		{
+			tmpM = servVMotorQ.extractMax();
+			tmpM->GetAssignedOrd()->SetFinishTime(tmpM->GetAssignedOrd()->GetArrTime()+tmpM->GetAssignedOrd()->GetWaitingTime()+2* tmpM->GetAssignedOrd()->GetServTime());
+			delete tmpM->GetAssignedOrd();
+			tmpM->SetStatus(IDLE);
+			tmpM->Changepriority(timestep);
+			idelVMotorQ.insert(tmpM);
+			V_MotorsCnt++;
+			if(!servVMotorQ.getcount())
+				break;
+		}
+
+		
+	if(servNMotorQ.getcount())
+		while (servNMotorQ.getmax()->IsBack(timestep))
+		{
+			tmpM = servNMotorQ.extractMax();
+			tmpM->GetAssignedOrd()->SetFinishTime(tmpM->GetAssignedOrd()->GetArrTime()+tmpM->GetAssignedOrd()->GetWaitingTime()+2* tmpM->GetAssignedOrd()->GetServTime());
+			delete tmpM->GetAssignedOrd();
+			tmpM->SetStatus(IDLE);
+			tmpM->Changepriority(timestep);
+			idelNMotorQ.insert(tmpM);
+			N_MotorsCnt++;
+			if(!servNMotorQ.getcount())
+				break;
+		}
+
+		
+	if(servFMotorQ.getcount())
+		while (servFMotorQ.getmax()->IsBack(timestep))
+		{
+			tmpM = servFMotorQ.extractMax();
+			tmpM->GetAssignedOrd()->SetFinishTime(tmpM->GetAssignedOrd()->GetArrTime()+tmpM->GetAssignedOrd()->GetWaitingTime()+2* tmpM->GetAssignedOrd()->GetServTime());
+			delete tmpM->GetAssignedOrd();
+			tmpM->SetStatus(IDLE);
+			tmpM->Changepriority(timestep);		
+			idelFMotorQ.insert(tmpM);
+			F_MotorsCnt++;
+			if(!servFMotorQ.getcount())
+				break;
+		}
+
+
+		return servFMotorQ.getcount() || servNMotorQ.getcount() || servVMotorQ.getcount();
+}
+
+
+
+
+bool Region::AssignOrdFMotor(int timestep)
+{
+	Order*tmp = nullptr;
+	Motorcycle*FMotor = nullptr;
+	while(FOrderCount != 0 && F_MotorsCnt != 0)
+	{
+		FOrderQueue.dequeue(tmp);
+		FMotor = idelFMotorQ.extractMax();
+		FMotor->SetAssignedOrd(tmp,timestep);
+		servFMotorQ.insert(FMotor);
+		F_MotorsCnt--;
+		FOrderCount--;
+	}
+		return FOrderCount == 0 ;
+
+}
+
+
+
+bool Region::AssignOrdVMotor(int timestep)
+{
+	Order*tmp = nullptr;
+	Motorcycle*VMotor = nullptr;
+	Motorcycle*NMotor = nullptr;
+	Motorcycle*FMotor = nullptr;
+	while(VOrderCount != 0 && V_MotorsCnt != 0)
+	{
+		tmp = VOrderQueue.extractMax();
+		VMotor = idelVMotorQ.extractMax();
+		VMotor->SetAssignedOrd(tmp,timestep);
+		servVMotorQ.insert(VMotor);
+		V_MotorsCnt--;
+		VOrderCount--;
+	}
+
+
+	while(VOrderCount != 0 && N_MotorsCnt != 0)
+	{
+		tmp = VOrderQueue.extractMax();
+		NMotor = idelNMotorQ.extractMax();
+		NMotor->SetAssignedOrd(tmp,timestep);
+		servNMotorQ.insert(NMotor);
+		N_MotorsCnt--;
+		VOrderCount--;
+	}
+
+	while(VOrderCount != 0 && F_MotorsCnt != 0)
+	{
+		tmp = VOrderQueue.extractMax();
+		FMotor = idelFMotorQ.extractMax();
+		FMotor->SetAssignedOrd(tmp,timestep);
+		servFMotorQ.insert(FMotor);
+		F_MotorsCnt--;
+		VOrderCount--;
+	}
+		return VOrderCount == 0 ;
+}
+
+
+
+void Region::Promote(int autop , int timestep)
+{
+	Order*const*Arrytmp =NOrderQueue.ToArray();
+	Order *tmp=nullptr;
+	int counter =NOrderCount;
+	for (int i = 0; i < counter; i++)
+	{
+		if((timestep-Arrytmp[i]->GetArrTime())>=autop)
+		{
+			Order* VIP = new Order(Arrytmp[i]->GetArrTime() ,Arrytmp[i]->GetID(), TYPE_VIP, Arrytmp[i]->GetRegion(), Arrytmp[i]->GetDistance(), Arrytmp[i]->GetMoney());
+			NOrderQueue.remove(1,tmp);
+			delete tmp;
+			InsertVOrder(VIP);
+			NOrderCount--;
+		}
+	}
+	delete [] Arrytmp;
+
 }
 
 

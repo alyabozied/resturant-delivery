@@ -17,9 +17,9 @@ class OutputFile
 
 public:
 	OutputFile(Restaurant*, GUI*);
+	void OpenFileOut();
 	~OutputFile();
 	bool Write();
 private:
 
 };
-
