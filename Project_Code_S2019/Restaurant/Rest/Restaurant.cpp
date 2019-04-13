@@ -162,6 +162,7 @@ void Restaurant::MODEINTR()
 			R[i].Promote(AutoProm, currstep);
 			
 		}
+		//pGUI->waitForClick();
 	}
 	PrintOutfile();	
 	pGUI->PrintMessage("generation done, click to END program");
@@ -275,18 +276,16 @@ void Restaurant::PrintOutfile()
 	for (int i = 0; i < 4; i++)
 	{
 		if(!R[i].EmptyDelivered());
-		Out->PrintFirstLine();
+			Out->PrintFirstLine();
 		while (!R[i].EmptyDelivered())
 		{
-			Out->Write(R[i].GetDeliveredOrder());
+			tmp = R[i].GetDeliveredOrder();
+			Out->Write(tmp);
+			delete tmp;
+			tmp = nullptr;
 		}
 		Out->PrintStatstics(R[i],REGION(i));
 	}
-	
-
-
-
-
 
 }
 

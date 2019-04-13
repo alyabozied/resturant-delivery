@@ -7,7 +7,7 @@ class Motorcycle;
 class Order
 {
 
-protected:
+private:
 	int ID;                     //Each order has a unique ID (from 1 --> 999 )
 	ORD_TYPE type;	            //order type: Normal, Frozen, VIP
 	REGION Region;              //Region of this order
@@ -16,7 +16,8 @@ protected:
 	int ArrTime, ServTime, FinishTime, WaitingTime;	    //arrival, service start, finish, and waiting times
 	double priority;
 	Motorcycle* AssignedMotor; //to calculate the serving and finish time
-	
+	void Changepriority(int timestp);
+		
 	
 public:
 	Order(int Arrivaltime ,int ID, ORD_TYPE r_Type, REGION r_region, double dist, double mon);
@@ -54,7 +55,6 @@ public:
 	bool operator >(Order& v);
 	bool operator ==(Order& v);
 	
-	void Changepriority(int timestp);
 	void AssignMotor(Motorcycle*, int);
 
 };
