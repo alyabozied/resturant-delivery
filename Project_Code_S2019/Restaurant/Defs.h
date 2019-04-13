@@ -33,7 +33,6 @@ enum PROG_MODE	//mode of the program interface
 	MODE_INTR,	//interactive mode
 	MODE_STEP,	//Step-by-step mode
 	MODE_SLNT,	//Silent mode
-	MODE_Phaseone,	//Demo mode (for introductory phase only, should be removed in phases 1&2)
 	MODE_EXIT,      /// exit the prog
 	MODE_CNT,	//number of possible modes
 	MODE_EMPYT  // empy place in menue bar

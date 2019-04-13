@@ -77,7 +77,6 @@ void GUI::CreateDrawToolBar()const
 	MenuItemImages[MODE_INTR] = "MENUEBAR//INTER_MODE.jpg";     //icon for first mode 
   	MenuItemImages[MODE_STEP]="MENUEBAR//SLEEP_MODE.jpg";         //icon for second mode 
 	MenuItemImages[MODE_SLNT]="MENUEBAR//SILENT_MODE.jpg";        //icon for third mode 
-	MenuItemImages[MODE_Phaseone]="MENUEBAR//PHASE_ONE.jpg";        //icon for phase one mode 
 	MenuItemImages[MODE_EXIT]="MENUEBAR//EXIT.jpg";        //icon for phase one mode 
 	// Prepare images for each menu item and add it to the list (DONE)
 	//Draw menu item one image at a time
@@ -121,7 +120,6 @@ PROG_MODE GUI::GetUserAction() const
 			case MODE_INTR: return MODE_INTR; 
 			case MODE_STEP: return MODE_STEP;
 			case MODE_SLNT: return MODE_SLNT;
-			case MODE_Phaseone: return MODE_Phaseone;
 			case MODE_EXIT: return MODE_EXIT;	
 			default: return MODE_EMPYT;	//A click on empty place in desgin toolbar
 			}
