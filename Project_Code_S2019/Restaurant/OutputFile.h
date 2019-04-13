@@ -20,7 +20,7 @@ public:
 	OutputFile(Restaurant*, GUI*&);
 	void OpenFileOut();
 	void PrintFirstLine();
-	void PrintStatstics(Region &R, REGION, float);
+	void PrintStatstics(Region &R, REGION, float, float);
 	~OutputFile();
 	bool Write(Order* O);
 private:

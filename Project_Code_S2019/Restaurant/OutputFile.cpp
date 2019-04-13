@@ -32,8 +32,10 @@ bool OutputFile::Write(Order* O)
 	return false;
 }
 
-void OutputFile::PrintStatstics(Region& R, REGION reg, float AvgWait)
+void OutputFile::PrintStatstics(Region& R, REGION reg, float AvgWait, float AvgServ)
 {
+	FileOutput <<"........................................................\n";
+	FileOutput <<"........................................................\n ";
 	if(reg == 0)
 	FileOutput<<"Region A:\n";
 	else if(reg == 1)
@@ -56,7 +58,7 @@ void OutputFile::PrintStatstics(Region& R, REGION reg, float AvgWait)
 	
 	FileOutput<<"MotorC: "<<string(itoa(NM+FM+VM,tmp,10))<<" [Norm:"<<string(itoa(NM,tmp,10))<<", Froz:"<<string(itoa(FM,tmp,10))<<", VIP:"<<string(itoa(VM,tmp,10))<<"]\n";
 	
-	FileOutput<< "Average Wait time is: " << AvgWait << endl;
+	FileOutput<< "Average Wait = " << AvgWait << ",\t Avg Serv = "<< AvgServ << "\n\n\n\n\n";
 
 }
 
