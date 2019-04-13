@@ -17,7 +17,6 @@ protected:
 
 	//Number of MotorCycle in Region
 	int N_MotorsCnt,V_MotorsCnt,F_MotorsCnt;
-	int N_DeliveredOrder,V_DeliveredOrder,F_DeliveredOrder;
 	//Order in Region
 	LinkedList<Order*>NOrderQueue;
 	priorityQueue<Order*>VOrderQueue;
@@ -38,9 +37,6 @@ public:
 	int Get_NMotorCnt()const;							//function to get the number of normal motors
 	int Get_VMotorCnt()const;							//function to get the number of fast motors
 	int Get_FMotorCnt()const;							//function to get the number of frozen motors
-	int Get_AllNOrd()const;
-	int Get_AllFOrd()const;
-	int Get_AllVOrd()const;
 	int GetWholeNOrdCount()const;						//will be used at the end of the program to be written in the file
 	int GetWholeVOrdCount()const;						//will be used at the end of the program to be written in the file
 	int GetWholeFOrdCount()const;						//will be used at the end of the program to be written in the file

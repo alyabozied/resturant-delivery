@@ -43,9 +43,9 @@ void OutputFile::PrintStatstics(Region& R, REGION reg)
 	else if(reg == 3)
 	FileOutput<<"Region D:\n";
 
-	int NO = R.Get_AllNOrd();
-	int FO = R.Get_AllFOrd();
-	int VO = R.Get_AllVOrd();
+	int NO = R.GetWholeNOrdCount();
+	int FO = R.GetWholeFOrdCount();
+	int VO = R.GetWholeVOrdCount();
 
 	char tmp [10];
 	FileOutput<<"Orders: "<<string(itoa(NO+FO+VO,tmp,10))<<" [Norm:"<<string(itoa(NO,tmp,10))<<", Froz:"<<string(itoa(FO,tmp,10))<<", VIP:"<<string(itoa(VO,tmp,10))<<"]\n";

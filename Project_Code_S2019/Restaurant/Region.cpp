@@ -4,7 +4,7 @@
 Region::Region(void)
 {
 	
-	N_MotorsCnt = V_MotorsCnt = F_MotorsCnt = NOrderCount = VOrderCount = FOrderCount = N_DeliveredOrder = V_DeliveredOrder = F_DeliveredOrder = 0;
+	N_MotorsCnt = V_MotorsCnt = F_MotorsCnt = NOrderCount = VOrderCount = FOrderCount = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,19 +48,16 @@ void Region::InsertVMotor(int id, double speed, STATUS s, ORD_TYPE t, REGION r)
 void Region::InsertFOrder(Order* F)
 {
 	FOrderCount++;
-	F_DeliveredOrder++;
 	FOrderQueue.enqueue(F);
 }
 void Region::InsertNOrder(Order* N)
 {
 	NOrderCount++;
-	N_DeliveredOrder;
 	NOrderQueue.insert(NOrderQueue.getLength()+1,N);
 }
 void Region::InsertVOrder(Order* V)
 {
 	VOrderCount++;
-	V_DeliveredOrder++;
 	VOrderQueue.insert(V); 
 }
 
@@ -76,9 +73,6 @@ void Region::InsertVOrder(Order* V)
 int Region::GetVOrdCnt(){ return VOrderQueue.getcount(); }
 int Region::GetNOrdCnt(){ return NOrderQueue.getLength();}
 int Region::GetFOrdCnt(){ return FOrderQueue.Get_count();}
-int Region::Get_AllNOrd()const {return N_DeliveredOrder;}
-int Region::Get_AllVOrd()const {return V_DeliveredOrder;}
-int Region::Get_AllFOrd()const {return F_DeliveredOrder;}
 bool Region::FOrdisEmpty(){ return FOrderQueue.isEmpty();}
 
 
