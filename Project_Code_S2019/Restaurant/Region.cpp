@@ -231,7 +231,7 @@ bool Region::AssignOrdNMotor(int timestep)
 		VMotor = idelVMotorQ.extractMax();
 		VMotor->SetAssignedOrd(tmp,timestep);
 		tmp->AssignMotor(VMotor, timestep);
-		servNMotorQ.insert(VMotor);
+		servVMotorQ.insert(VMotor);
 		V_MotorsCnt--;
 		NOrderCount--;
 	}
