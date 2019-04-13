@@ -34,11 +34,13 @@ void Restaurant::RunSimulation()
 			switch (mode)	//Add a function for each mode in next phases
 	{
 	case MODE_INTR:
-		MODEINTR();
+		ModeIntr();
 		break;
 	case MODE_STEP:
+		ModeStep();
 		break;
 	case MODE_SLNT:
+		Silent();
 		break;
 	case MODE_EXIT :
 		break;
@@ -119,11 +121,11 @@ bool Restaurant::ReadFile()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
-//								a simple simulation function								  //
+//								Different modes functions									  //
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Restaurant::MODEINTR()  
+void Restaurant::ModeIntr()    // Interactive mode
 {
 	//prompt the user again and again till a valid file name is entered
 	while(!ReadFile()){}
@@ -143,9 +145,11 @@ void Restaurant::MODEINTR()
 		FlagOrd=LoadGUI();
 		char timestep[10];
 		_itoa_s(currstep,timestep,10);
+		pGUI->waitForClick();
 		pGUI->UpdateInterface();
 		pGUI->DrawTimeStepCenter(timestep);
 		PrintStatusBar();
+		pGUI->waitForClick();
 		//Assign the order whose time has come
 		AssignOrders(currstep);
 		//update the interface after deleting the orders whose time has come
@@ -169,6 +173,92 @@ void Restaurant::MODEINTR()
 	pGUI->waitForClick();
 
 }
+
+void Restaurant::ModeStep()    // Step by Step mode function
+{
+	while(!ReadFile()) {}			// Reading input data from a file 
+
+	int currstep = 1 ;
+
+	//print the different info about the different regions
+	Out->OpenFileOut();
+	PrintStatusBar();
+
+	//flag to check if there is still an order not served so simulation doesn't stop
+	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
+	
+	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
+	{
+		ExecuteEvents(currstep);
+		//load gui returns true if there is still orders not served
+		FlagOrd=LoadGUI();
+		char timestep[10];
+		_itoa_s(currstep,timestep,10);
+		pGUI->UpdateInterface();
+		pGUI->DrawTimeStepCenter(timestep);
+		PrintStatusBar();
+		Sleep(1000);
+		//Assign the order whose time has come
+		AssignOrders(currstep);
+		//update the interface after deleting the orders whose time has come
+		pGUI->ResetDrawingList();
+		FlagOrd=LoadGUI();
+		pGUI->UpdateInterface();
+		pGUI->DrawTimeStepCenter(timestep);
+		PrintStatusBar();
+		pGUI->ResetDrawingList();
+		currstep++;
+		for (int i = 0; i < 4; i++)
+		{
+			FlagunAssign[i] = R[i].UnAssignMotors(currstep);
+			R[i].Promote(AutoProm, currstep);
+			
+		}
+		//pGUI->waitForClick();
+	}
+	PrintOutfile();	
+	pGUI->PrintMessage("generation done, click to END program");
+	pGUI->waitForClick();
+}
+
+void Restaurant::Silent()
+{
+	while(!ReadFile()) {}			// Reading input data from a file 
+
+	int currstep = 1 ;
+
+	//print the different info about the different regions
+	Out->OpenFileOut();
+	//PrintStatusBar();
+
+	//flag to check if there is still an order not served so simulation doesn't stop
+	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
+	
+	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
+	{
+		ExecuteEvents(currstep);
+		//load gui returns true if there is still orders not served
+		FlagOrd=LoadGUI();
+		
+		//Assign the order whose time has come
+		AssignOrders(currstep);
+		//update the interface after deleting the orders whose time has come
+		
+		FlagOrd=LoadGUI();
+		for (int i = 0; i < 4; i++)
+		{
+			FlagunAssign[i] = R[i].UnAssignMotors(currstep);
+			R[i].Promote(AutoProm, currstep);
+			
+		}
+		currstep++;
+	}
+	PrintOutfile();	
+	pGUI->PrintMessage("generation done, click to END program");
+	pGUI->waitForClick();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 void Restaurant::PrintStatusBar()
 {
 

@@ -35,10 +35,15 @@ public:
 	void RunSimulation();				//prompt the user to choose the mode to start the simulation
 	bool ReadFile();					//function to read input from a file
 	void PrintStatusBar();				//prints information about different regions
-	void MODEINTR();					//the simple simulation function
 	bool LoadGUI();						//to load the gui array of pointers with orders to draw
 	void AssignOrders(int);					//delete the order which should be deleted in the current time step
 	void PrintOutfile();
+	///////////////////////////////////////////////////////////////////////////////
+	//								Mode functions
+	///////////////////////////////////////////////////////////////////////////////
+	void ModeIntr();					//The interactive mode function
+	void ModeStep();
+	void Silent();
 };
 
 #endif
