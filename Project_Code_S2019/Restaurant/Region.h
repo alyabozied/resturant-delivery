@@ -65,7 +65,6 @@ public:
 	bool UnAssignMotors(int);
 	//auto promotion function
 	void Promote(int, int);
-	void IncreWatingtime(int);
 	~Region(void);
 };
 

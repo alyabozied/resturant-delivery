@@ -239,37 +239,6 @@ bool Region::AssignOrdNMotor(int timestep)
 
 }
 
-void Region::IncreWatingtime(int timestep)
-{
-	Order*const* tmparr ;
-	tmparr = GetArrVOrd();
-	for (int i = 0; i < VOrderCount; i++)
-	{
-		tmparr[i]->SetWaitingTime(timestep- tmparr[i]->GetArrTime());
-	}
-	delete [] tmparr;
-
-	tmparr = GetArrNOrd();
-	for (int i = 0; i < NOrderCount; i++)
-	{
-		tmparr[i]->SetWaitingTime(timestep- tmparr[i]->GetArrTime());
-	}
-	delete [] tmparr;
-
-
-	tmparr = GetArrFOrd();
-	for (int i = 0; i < FOrderCount; i++)
-	{
-		tmparr[i]->SetWaitingTime(timestep- tmparr[i]->GetArrTime());
-	}
-	delete [] tmparr;
-
-
-}
-
-
-
-
 bool Region::UnAssignMotors(int timestep)
 {
 

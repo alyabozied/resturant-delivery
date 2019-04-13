@@ -65,6 +65,7 @@ void Motorcycle:: SetAssignedOrd(Order*O,int timestep)
 	AssignedOrd=O;
 	status=SERV;
 	Changepriority(timestep);
+	O->AssignMotor(this,timestep);
 }
 
 void Motorcycle:: SetRegion(REGION R)
