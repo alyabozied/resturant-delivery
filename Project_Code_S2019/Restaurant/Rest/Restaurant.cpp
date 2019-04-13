@@ -362,19 +362,26 @@ void Restaurant::AssignOrders(int timestep)
 
 void Restaurant::PrintOutfile()
 {
+	float AvgWait = 0;
+	int OrderCount = 0;
 	Order*tmp=nullptr;
 	for (int i = 0; i < 4; i++)
 	{
+		AvgWait = OrderCount = 0;
 		if(!R[i].EmptyDelivered());
 			Out->PrintFirstLine();
 		while (!R[i].EmptyDelivered())
 		{
 			tmp = R[i].GetDeliveredOrder();
 			Out->Write(tmp);
+			AvgWait += tmp->GetWaitingTime();
+			OrderCount++;
 			delete tmp;
 			tmp = nullptr;
+
 		}
-		Out->PrintStatstics(R[i],REGION(i));
+		AvgWait /= OrderCount;
+		Out->PrintStatstics(R[i],REGION(i), AvgWait);
 	}
 
 }
