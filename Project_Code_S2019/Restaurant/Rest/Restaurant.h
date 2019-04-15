@@ -38,12 +38,20 @@ public:
 	bool LoadGUI();						//to load the gui array of pointers with orders to draw
 	void AssignOrders(int);					//delete the order which should be deleted in the current time step
 	void PrintOutfile();
+	
 	///////////////////////////////////////////////////////////////////////////////
-	//								Mode functions
+	//								Mode functions								 //
 	///////////////////////////////////////////////////////////////////////////////
-	void ModeIntr();					//The interactive mode function
-	void ModeStep();
-	void Silent();
+
+	void Simulate(PROG_MODE);					//The interactive and step by step modes function
+	void Silent();								// Silent mode function
+
+	///////////////////////////////////////////////////////////////////////////////
+	//							GUI controlling functions						 //
+	///////////////////////////////////////////////////////////////////////////////
+
+	bool RestUpdate(string );    // Proceeds to the next time step 
+
 };
 
 #endif

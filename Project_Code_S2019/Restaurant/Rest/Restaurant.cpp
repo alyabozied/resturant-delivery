@@ -34,10 +34,10 @@ void Restaurant::RunSimulation()
 			switch (mode)	//Add a function for each mode in next phases
 	{
 	case MODE_INTR:
-		ModeIntr();
+		Simulate(mode);
 		break;
 	case MODE_STEP:
-		ModeStep();
+		Simulate(mode);
 		break;
 	case MODE_SLNT:
 		Silent();
@@ -125,60 +125,14 @@ bool Restaurant::ReadFile()
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Restaurant::ModeIntr()    // Interactive mode
+void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 {
 	//prompt the user again and again till a valid file name is entered
 	while(!ReadFile()){}
 
 	int currstep = 1 ;
-
-	//print the different info about the different regions
-	Out->OpenFileOut();
-	PrintStatusBar();
-	//flag to check if there is still an order not served so simulation doesn't stop
-	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
+	char timestep[10];
 	
-	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
-	{
-		ExecuteEvents(currstep);
-		//load gui returns true if there is still orders not served
-		FlagOrd=LoadGUI();
-		char timestep[10];
-		_itoa_s(currstep,timestep,10);
-		pGUI->waitForClick();
-		pGUI->UpdateInterface();
-		pGUI->DrawTimeStepCenter(timestep);
-		PrintStatusBar();
-		pGUI->waitForClick();
-		//Assign the order whose time has come
-		AssignOrders(currstep);
-		//update the interface after deleting the orders whose time has come
-		pGUI->ResetDrawingList();
-		FlagOrd=LoadGUI();
-		pGUI->UpdateInterface();
-		pGUI->DrawTimeStepCenter(timestep);
-		PrintStatusBar();
-		pGUI->ResetDrawingList();
-		currstep++;
-		for (int i = 0; i < 4; i++)
-		{
-			FlagunAssign[i] = R[i].UnAssignMotors(currstep);
-			R[i].Promote(AutoProm, currstep);
-			
-		}
-		//pGUI->waitForClick();
-	}
-	PrintOutfile();	
-	pGUI->PrintMessage("generation done, click to END program");
-	pGUI->waitForClick();
-
-}
-
-void Restaurant::ModeStep()    // Step by Step mode function
-{
-	while(!ReadFile()) {}			// Reading input data from a file 
-
-	int currstep = 1 ;
 
 	//print the different info about the different regions
 	Out->OpenFileOut();
@@ -189,24 +143,24 @@ void Restaurant::ModeStep()    // Step by Step mode function
 	
 	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
 	{
-		ExecuteEvents(currstep);
-		//load gui returns true if there is still orders not served
-		FlagOrd=LoadGUI();
-		char timestep[10];
-		_itoa_s(currstep,timestep,10);
-		pGUI->UpdateInterface();
-		pGUI->DrawTimeStepCenter(timestep);
-		PrintStatusBar();
-		Sleep(1000);
-		//Assign the order whose time has come
-		AssignOrders(currstep);
-		//update the interface after deleting the orders whose time has come
-		pGUI->ResetDrawingList();
-		FlagOrd=LoadGUI();
-		pGUI->UpdateInterface();
-		pGUI->DrawTimeStepCenter(timestep);
-		PrintStatusBar();
-		pGUI->ResetDrawingList();
+		ExecuteEvents(currstep);	   // Executing events
+		_itoa_s(currstep,timestep,10); // converting timestep to be printed
+		
+		if(mode == MODE_INTR)		   // Waiting according to the mode of operation
+			pGUI->waitForClick();
+		//else 
+			//Sleep(1000);
+
+		RestUpdate(timestep);		   // Updates the interface 
+
+		if(mode == MODE_INTR)		   // Waiting to show changes before assigning motorcycles to orders
+			pGUI->waitForClick();
+		else
+			Sleep(1000);
+
+		AssignOrders(currstep);			//Assign the order whose time has come
+		FlagOrd= RestUpdate(timestep);  //Updates the interface and sets the order flag
+		
 		currstep++;
 		for (int i = 0; i < 4; i++)
 		{
@@ -214,11 +168,12 @@ void Restaurant::ModeStep()    // Step by Step mode function
 			R[i].Promote(AutoProm, currstep);
 			
 		}
-		//pGUI->waitForClick();
+		
 	}
 	PrintOutfile();	
 	pGUI->PrintMessage("generation done, click to END program");
 	pGUI->waitForClick();
+
 }
 
 void Restaurant::Silent()
@@ -237,6 +192,7 @@ void Restaurant::Silent()
 	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
 	{
 		ExecuteEvents(currstep);
+		
 		//load gui returns true if there is still orders not served
 		FlagOrd=LoadGUI();
 		
@@ -259,6 +215,7 @@ void Restaurant::Silent()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Restaurant::PrintStatusBar()
 {
 
@@ -280,6 +237,14 @@ void Restaurant::PrintStatusBar()
 
 }
 
+bool Restaurant::RestUpdate(string timestep)
+{
+		bool check = LoadGUI();
+		pGUI->UpdateInterface();
+		pGUI->DrawTimeStepCenter(timestep);
+		PrintStatusBar();
+		return check;
+}
 
 bool Restaurant::LoadGUI()
 {

@@ -322,7 +322,7 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a pri
 void GUI::DrawOrders() const
 {
 
-	//Prepare counter for each region
+	//Preparing a counter for each region
 	int RegionsCounts[REG_CNT]={0};	//initlaize all counters to zero
 	int twodigit[REG_CNT] = {0};
 	int onedigit[REG_CNT] = {0};
@@ -342,6 +342,7 @@ void GUI::UpdateInterface()
 	ClearDrawingArea();
 	DrawRestArea();
 	DrawOrders();
+	ResetDrawingList();
 }
 
 /*
