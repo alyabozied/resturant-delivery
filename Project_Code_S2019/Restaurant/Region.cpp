@@ -4,7 +4,7 @@
 Region::Region(void)
 {
 	
-	N_MotorsCnt = V_MotorsCnt = F_MotorsCnt = NOrderCount = VOrderCount = FOrderCount = 0;
+	N_MotorsCnt = V_MotorsCnt = F_MotorsCnt = NOrderCount = VOrderCount = FOrderCount =wholeNorders=wholeForders=wholeVoreders= 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,9 +172,9 @@ void Region::DeleteMotors()
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-int Region::GetWholeFOrdCount() const{ return FOrderCount; }
-int Region::GetWholeNOrdCount() const{ return NOrderCount; }
-int Region::GetWholeVOrdCount() const{ return VOrderCount; }
+int Region::GetWholeFOrdCount() const{ return wholeForders; }
+int Region::GetWholeNOrdCount() const{ return 	wholeNorders; }
+int Region::GetWholeVOrdCount() const{ return wholeVoreders; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
@@ -248,6 +248,7 @@ bool Region::UnAssignMotors(int timestep)
 	if(servVMotorQ.getcount())
 		while (servVMotorQ.getcount() && servVMotorQ.getmax()->IsBack(timestep))
 		{
+			wholeForders++;
 			tmpM = servVMotorQ.extractMax();
 			DeliveredOrderQueue.insert(tmpM->GetAssignedOrd());
 			tmpM->SetStatus(IDLE);
@@ -261,6 +262,7 @@ bool Region::UnAssignMotors(int timestep)
 	if(servNMotorQ.getcount())
 		while (servNMotorQ.getcount() && servNMotorQ.getmax()->IsBack(timestep))
 		{
+			wholeNorders++;
 			tmpM = servNMotorQ.extractMax();
 			DeliveredOrderQueue.insert(tmpM->GetAssignedOrd());
 			tmpM->SetStatus(IDLE);
@@ -274,6 +276,7 @@ bool Region::UnAssignMotors(int timestep)
 	if(servFMotorQ.getcount())
 		while (servFMotorQ.getcount() && servFMotorQ.getmax()->IsBack(timestep))
 		{
+			wholeVoreders++;
 			tmpM = servFMotorQ.extractMax();
 			DeliveredOrderQueue.insert(tmpM->GetAssignedOrd());
 			tmpM->SetStatus(IDLE);

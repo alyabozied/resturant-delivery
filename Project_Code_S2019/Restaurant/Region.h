@@ -14,7 +14,7 @@ protected:
 	priorityQueue<Motorcycle*>servFMotorQ;
 	priorityQueue<Motorcycle*>servNMotorQ;
 	priorityQueue<Motorcycle*>servVMotorQ;
-
+	int wholeNorders,wholeForders,wholeVoreders;
 	//Number of MotorCycle in Region
 	int N_MotorsCnt,V_MotorsCnt,F_MotorsCnt;
 	//Order in Region
@@ -46,7 +46,8 @@ public:
 	int GetNOrdCnt();
 	int GetFOrdCnt();
 	bool FOrdisEmpty();
-
+	//function to increase counters for each type of orders
+	void inccounter(char c);
 	// Functions used to dequeue the orders
 	Order* GetNOrder(int );
 	Order* dequeueV();
