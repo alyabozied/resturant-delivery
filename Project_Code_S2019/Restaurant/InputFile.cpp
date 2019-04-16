@@ -22,9 +22,9 @@ bool InputFile::Read()
 		return false; 
 	}
 	//speed of differnet types of motors
-	int SpeedN, SpeedF, SpeedV;
+	int Speed;
 	// number of different types of motors
-	int	Norm, Frzn, VIP;
+	int	Norm[REG_CNT], Frzn[REG_CNT], VIP[REG_CNT];
 	//time of auto promotion and number of events
 	int	AutoS, NumEvnts;
 	// the timestep,ID, Distance of different orders
@@ -34,26 +34,34 @@ bool InputFile::Read()
 	Order* pOrd = nullptr;
 	Event* pEv = nullptr;
 	
-	FileInput >> SpeedN >> SpeedF >> SpeedV;
-
+	//FileInput >> SpeedN >> SpeedF >> SpeedV;
+	for (int i = 0; i < REG_CNT; i++)
+	{
+		FileInput >> Norm[i] >> Frzn[i] >> VIP[i];
+	}
 	for (int i = 0; i < REG_CNT; i++)
 	{
 		Region* R = pRest->GetRegion(i);
-		FileInput >> Norm >> Frzn >> VIP;
+		char MotoReg, MotoType;
+		int MotoID;
 		//creating normal motorcycles
-		for (int j = 0; j < Norm; j++)
+		for (int j = 0; j < Norm[i]; j++)
 		{
-			R->InsertNMotor(j, SpeedN, IDLE, TYPE_NRM,(REGION)i);
+			FileInput >> MotoReg >> MotoType >> MotoID >> Speed; 
+			R->InsertNMotor(MotoID, Speed, IDLE, TYPE_NRM,(REGION)(MotoReg - 'A'));
 		}
 		//creating frozen motorcycles 
-		for (int k = 0; k < Frzn; k++)
+		for (int k = 0; k < Frzn[i]; k++)
 		{
-			R->InsertFMotor(k+Norm, SpeedF, IDLE, TYPE_FROZ,(REGION)i);
+			FileInput >> MotoReg >> MotoType >> MotoID >> Speed; 
+			R->InsertFMotor(MotoID, Speed, IDLE, TYPE_FROZ,(REGION)(MotoReg - 'A'));
 		}
 		//creating VIP motocycles
-		for (int l = 0; l < VIP; l++)
+		for (int l = 0; l < VIP[i]; l++)
 		{
-			R->InsertVMotor(Norm+TYPE_FROZ+l, SpeedV, IDLE, TYPE_VIP,(REGION)i);
+
+			FileInput >> MotoReg >> MotoType >> MotoID >> Speed; 
+			R->InsertVMotor(MotoID, Speed, IDLE, TYPE_VIP,(REGION)(MotoReg - 'A'));
 		}
 	}
 	

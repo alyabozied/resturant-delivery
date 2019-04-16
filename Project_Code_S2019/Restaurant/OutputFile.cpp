@@ -8,9 +8,10 @@ OutputFile::OutputFile(Restaurant* R, GUI*& G):pRest(R), pGUI(G)
 
 void OutputFile::OpenFileOut()
 {
-	pGUI->PrintMessage("enter file name to save the output");
+	pGUI->PrintMessage("Enter file name to save the output");
 	FileName = pGUI->GetString();
-	FileOutput.open(FileName+".txt");
+	FileName = FileName + ".txt";
+	FileOutput.open("../Restaurant/Simulation Results/"+FileName);
 }
 
 
