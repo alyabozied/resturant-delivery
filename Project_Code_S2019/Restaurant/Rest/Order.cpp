@@ -1,6 +1,6 @@
 #include "Order.h"
 
-Order::Order(int arrt,int id, ORD_TYPE r_Type, REGION r_region, double dist, double mon)
+Order::Order(int arrt,int id, ORD_TYPE r_Type, REGION r_region, double dist, double mon, bool h )
 {
 	SetArrTime(arrt);
 	SetID(id);
@@ -8,6 +8,7 @@ Order::Order(int arrt,int id, ORD_TYPE r_Type, REGION r_region, double dist, dou
 	SetRegion(r_region);
 	SetDistance(dist);
 	SetMoney(mon);
+	sethard(h);
 	AssignedMotor = nullptr;
 	if(r_Type == TYPE_VIP)
 		priority = 4 * mon -15* ArrTime  - 2 * dist;
@@ -21,6 +22,7 @@ Order::Order(int id)
 	if(id<0||id>1000)
 		ID=0;
 	ID=id;
+	hard = false;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
@@ -39,7 +41,7 @@ int Order::GetServTime() const { return ServTime; }
 int Order::GetWaitingTime() const { return WaitingTime; }
 double Order::Getpriority() const { return priority; }
 Motorcycle* Order::GetMotor() const { return AssignedMotor; }
-
+bool Order::ishard() {   return hard; } 
 
 
 void Order::SetID(int id) { ID = (id >= 0 && id < 1000) ? id : 0; }
@@ -51,7 +53,7 @@ void Order::SetArrTime(int t){ ArrTime = (t > 0) ? t : 0; }
 void Order::SetFinishTime(int t){ FinishTime = (t > 0) ? t : 0; }
 void Order::SetServTime(int t){ ServTime = (t > 0) ? t : 0; }
 void Order::SetWaitingTime(int t){ WaitingTime = (t > 0) ? t : 0; }
-
+void Order::sethard(bool h){ hard = h ;}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //

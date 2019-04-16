@@ -4,6 +4,8 @@ Motorcycle::Motorcycle()
 {
 	speed = 0;
 	status = IDLE;
+	damaged = false; 
+	tired = false;
 }
 
 Motorcycle::Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type, REGION r)
@@ -14,6 +16,8 @@ Motorcycle::Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type, REGIO
 	SetType(Type);
 	SetRegion(r);
 	Changepriority(0); //zero is the time of construction of the motorcycles
+	damaged = false; 
+	tired = false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,6 +89,33 @@ int  Motorcycle:: GetArrivalTime() const
 {
 	return ArrivalTime;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+//																							 //
+//								Motorcycle state functions									 //
+//																							 //
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void Motorcycle::SetDamaged()
+{
+	damaged = !damaged;
+}
+
+void Motorcycle::SetTired()
+{
+	tired = !tired;
+}
+
+bool Motorcycle::Isdamaged()
+{
+	return damaged;
+}
+
+bool Motorcycle::Istired()
+{
+	return tired;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
 //							overloads to check the priority									  //

@@ -17,10 +17,10 @@ private:
 	double priority;
 	Motorcycle* AssignedMotor; //to calculate the serving and finish time
 	void Changepriority(int timestp);
-		
+	bool hard;		// boolean to check if the order is hard to deliever due to traffic problems
 	
 public:
-	Order(int Arrivaltime ,int ID, ORD_TYPE r_Type, REGION r_region, double dist, double mon);
+	Order(int Arrivaltime ,int ID, ORD_TYPE r_Type, REGION r_region, double dist, double mon,bool Hard=false);
 	Order(int);
 	virtual ~Order();
 
@@ -37,6 +37,7 @@ public:
 	int GetWaitingTime() const;
 	double Getpriority() const;
 	Motorcycle* GetMotor() const;
+	bool ishard();
 
 	void SetID(int);
 	void SetRegion(REGION);
@@ -47,7 +48,7 @@ public:
 	void SetServTime(int);
 	void SetFinishTime(int);
 	void SetWaitingTime(int);
-
+	void sethard(bool);
 
 	//overloads for checking the priority
 

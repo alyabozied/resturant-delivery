@@ -19,7 +19,7 @@ public:
 	InputFile(Restaurant*, GUI*);
 	~InputFile();
 	bool Read();
-private:
+
 
 };
 
