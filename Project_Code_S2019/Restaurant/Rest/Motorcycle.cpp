@@ -4,8 +4,8 @@ Motorcycle::Motorcycle()
 {
 	speed = 0;
 	status = IDLE;
-	damaged = false; 
-	tired = false;
+	damagedT = -1; 
+	tiredT = -1;
 }
 
 Motorcycle::Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type, REGION r)
@@ -16,8 +16,8 @@ Motorcycle::Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type, REGIO
 	SetType(Type);
 	SetRegion(r);
 	Changepriority(0); //zero is the time of construction of the motorcycles
-	damaged = false; 
-	tired = false;
+	damagedT = -1; 
+	tiredT = -1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,12 +64,12 @@ void Motorcycle::SetType(ORD_TYPE T)
 	type = (T > -1 && T < TYPE_CNT) ? T : TYPE_NRM;
 }
 
-void Motorcycle:: SetAssignedOrd(Order*O,int timestep)
+void Motorcycle:: SetAssignedOrd(Order*O,int timestep, int timed, int timeT)
 {
 	AssignedOrd=O;
 	status=SERV;
 	Changepriority(timestep);
-	O->AssignMotor(this,timestep);
+	O->AssignMotor(this,timestep,timed,timeT);
 }
 
 void Motorcycle:: SetRegion(REGION R)
@@ -96,24 +96,30 @@ int  Motorcycle:: GetArrivalTime() const
 //																							 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void Motorcycle::SetDamaged()
+void Motorcycle::SetDamaged(int d)  // sets the time the motors stays damaged 
 {
-	damaged = !damaged;
+	damagedT = d;
 }
 
-void Motorcycle::SetTired()
+void Motorcycle::SetTired(int t)     // sets the time the motor stays tired
 {
-	tired = !tired;
+	tiredT = t;
 }
 
-bool Motorcycle::Isdamaged()
+bool Motorcycle::Isdamaged(int d)	// checks if the motor is damaged
 {
-	return damaged;
+	if(damagedT > d ) 
+		return true;
+	SetDamaged(-1);
+	return false;
 }
 
-bool Motorcycle::Istired()
+bool Motorcycle::Istired(int t)     // checks if the motor is tired
 {
-	return tired;
+	if(tiredT > t) 
+		return true;
+	SetTired(-1);
+	return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

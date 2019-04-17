@@ -26,11 +26,13 @@ bool InputFile::Read()
 	// number of different types of motors
 	int	Norm[REG_CNT], Frzn[REG_CNT], VIP[REG_CNT];
 	//time of auto promotion and number of events
-	int	AutoS, NumEvnts;
+	int	AutoS, NumEvnts,
+		timeT,timeD;  // The time a motor takes to recover when it is tired and when it is damaged
+	
 	// the timestep,ID, Distance of different orders
 	int	TimeStp, ID;
 	double MON = 0, EXMON = 0, DST;
-	char  EVNT, TYP, REG;
+	char  EVNT, TYP, REG,COM;   // COM if a char to detect the complexity of the order (Hard or easy)
 	Order* pOrd = nullptr;
 	Event* pEv = nullptr;
 	
@@ -66,10 +68,13 @@ bool InputFile::Read()
 	}
 	
 
-	FileInput >> AutoS;
 	FileInput >> NumEvnts;
-	
+	FileInput >> AutoS;
+	FileInput >> timeT;
+	FileInput >> timeD;
 	pRest->SetAutoProm(AutoS);
+	pRest->SetTimeDam(timeD);
+	pRest->SetTimeTir(timeT);
 	//reads the different types of events
 	while (!FileInput.eof())
 	{
@@ -77,7 +82,7 @@ bool InputFile::Read()
 		FileInput >> EVNT;
 		if(toupper(EVNT) == 'R')
 		{
-			FileInput >> TimeStp >> TYP >> ID >> DST >> MON >> REG;
+			FileInput >> TimeStp >> TYP >> ID >> DST >> MON >> REG >>COM ;
 			
 			// modifies the entered data for ordertype to be of desired datatype
 			if(toupper(TYP) == 'N')
@@ -89,10 +94,14 @@ bool InputFile::Read()
 			
 			// modifies the entered data for region to be of desired datatype
 			REG = toupper(REG) - 'A';
+			if(toupper(COM) == 'H')
+				COM = 1;
+			else 
+				COM = 0;
 
 			if(REG >= 0 && REG <= 3)
 			{
-				pEv = new ArrivalEvent(TimeStp, ID,(ORD_TYPE) TYP, (REGION)REG, DST, MON);
+				pEv = new ArrivalEvent(TimeStp, ID,(ORD_TYPE) TYP, (REGION)REG, DST, MON,(bool)COM);
 				pRest->AddEvent(pEv);
 			}
 

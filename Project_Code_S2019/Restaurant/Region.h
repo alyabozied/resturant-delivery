@@ -59,9 +59,9 @@ public:
 
 
 	//Assign orders to motorcycle
-	bool AssignOrdNMotor(int);
-	bool AssignOrdFMotor(int);
-	bool AssignOrdVMotor(int);
+	bool AssignOrdNMotor(int,int ,int);
+	bool AssignOrdFMotor(int,int ,int);
+	bool AssignOrdVMotor(int,int ,int);
 	//unassign motorcylces
 	bool UnAssignMotors(int);
 	//auto promotion function

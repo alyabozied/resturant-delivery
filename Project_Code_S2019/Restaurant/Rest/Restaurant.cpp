@@ -72,8 +72,14 @@ Region* Restaurant::GetRegion(int index)
 	return &R[index];
 }
 
+void Restaurant::SetTimeDam(int t){ TimeDam = t ;}
 
+void Restaurant::SetTimeTir(int t ){  TimeTir = t;}
+/*
+int Restaurant::getTimeDam(){ return TimeDam;}
 
+int Restaurant::getTimeTir(){ return TimeTir;}
+*/
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
 //									Event handling functions								  //
@@ -306,19 +312,19 @@ void Restaurant::AssignOrders(int timestep)
 		// Assign first vip order in each region if exists to a motorcycle
 		if(R[i].GetVOrdCnt())
 		{
-			R[i].AssignOrdVMotor(timestep);		
+			R[i].AssignOrdVMotor(timestep,TimeDam,TimeTir);		
 		}
 
 		//Assign  first frozen order in each region in case exists to a froozen motorcycle 
 		 if(!R[i].FOrdisEmpty())
 		{
-			R[i].AssignOrdFMotor(timestep);
+			R[i].AssignOrdFMotor(timestep,TimeDam,TimeTir);
 		}
 
 		//Assign first waiting Normal order in each region case exists to a Motorcycle 
 		if(R[i].GetNOrdCnt())
 		{
-			R[i].AssignOrdNMotor(timestep);
+			R[i].AssignOrdNMotor(timestep,TimeDam,TimeTir);
 		}
 	}
 

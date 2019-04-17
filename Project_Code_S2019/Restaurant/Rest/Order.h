@@ -56,7 +56,7 @@ public:
 	bool operator >(Order& v);
 	bool operator ==(Order& v);
 	
-	void AssignMotor(Motorcycle*, int);
+	void AssignMotor(Motorcycle*, int , int =-1, int =-1);
 
 };
 

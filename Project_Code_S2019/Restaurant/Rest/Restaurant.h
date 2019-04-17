@@ -23,7 +23,8 @@ private:
 	priorityQueue <Order*> ServedOrder;     //to store the orders being seved with the finish time as priority to print them
 	Region R[4];
 	int AutoProm;
-
+	int TimeTir;
+	int TimeDam;
 public:
 	Restaurant();
 	~Restaurant();
@@ -39,7 +40,11 @@ public:
 	void AssignOrders(int);					//delete the order which should be deleted in the current time step
 	void PrintOutfile();
 	
-	///////////////////////////////////////////////////////////////////////////////
+	void SetTimeTir(int);
+	void SetTimeDam(int);
+	/*int getTimeTir();
+	int getTimeDam();
+	*////////////////////////////////////////////////////////////////////////////////
 	//								Mode functions								 //
 	///////////////////////////////////////////////////////////////////////////////
 

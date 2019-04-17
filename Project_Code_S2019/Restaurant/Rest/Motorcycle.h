@@ -15,8 +15,8 @@ class Motorcycle
 	STATUS	status;	    //idle or in-service
 	Order* AssignedOrd;	//to hold the assigned order untill it is delivered then the order info can be printed,
 						//also implicitly has the service time of the motorcycle by dividing the distance over speed
-	bool tired ;
-	bool damaged;
+	int tiredT ;		// Time that the motor takes to recover
+	int damagedT;		
 	int ArrivalTime;	//will be used for priority, when will the motorcycle arrive 
 	int priority;	
 public:
@@ -39,15 +39,15 @@ public:
 	void SetSpeed(double);
 	void SetRegion(REGION);
 	void SetStatus(STATUS);
-	void SetAssignedOrd(Order*, int);
-	void SetTired();
-	void SetDamaged();
+	void SetAssignedOrd(Order*, int,int,int);
+	void SetTired(int);
+	void SetDamaged(int );
 
 	//function to check if the motor cycle returned
 	bool IsBack(int)const;
 
-	bool Istired();				// checks if the motor is tired 
-	bool Isdamaged();			// checks if the motor is damaged
+	bool Istired(int);				// checks if the motor is tired 
+	bool Isdamaged(int);			// checks if the motor is damaged
 
 	//overloads for the priority checking
 	bool operator <(Motorcycle M);

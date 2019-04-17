@@ -98,12 +98,22 @@ void Order::Changepriority(int Currtimestp)
 
 
 //function to assign a motorcycle for the order
-void Order::AssignMotor(Motorcycle* m, int timestp)
+void Order::AssignMotor(Motorcycle* m, int timestp, int timed, int timeT)
 {
 	AssignedMotor = m; 
 	SetServTime(Distance / m->GetSpeed());
 	SetWaitingTime(timestp - ArrTime);
 	Changepriority(timestp);
+	if(m->Istired(timestp)) 
+	{
+		m->SetDamaged(timestp+2*(Distance/m->GetSpeed()) + timed);
+		m->SetTired(-1);
+	}
+	else 
+		if(ishard())
+	{
+		m->SetTired(timestp + 2*(Distance/m->GetSpeed()) + timeT); 
+	}
 }
 Order::~Order()
 {
