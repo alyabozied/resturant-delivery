@@ -15,14 +15,17 @@ class OutputFile
 	ofstream FileOutput;
 	Restaurant* pRest;
 	GUI* pGUI;
+	float RegionWait[4];
+	float RegionServ[4];
+	float RestWait;
+	float RestServ;
 
 public:
 	OutputFile(Restaurant*, GUI*&);
 	void OpenFileOut();
-	void PrintFirstLine();
-	void PrintStatstics(Region &R, REGION, float, float);
+	void PrintStatstics();
 	~OutputFile();
-	bool Write(Order* O);
-private:
+	void Write(Order* O);
+
 
 };

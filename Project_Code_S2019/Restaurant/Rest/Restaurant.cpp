@@ -29,7 +29,6 @@ Restaurant::Restaurant()
 void Restaurant::RunSimulation()
 {
 	pGUI = new GUI;
-	Out= new OutputFile(this,pGUI);
 	PROG_MODE	mode = pGUI->getGUIMode();
 			switch (mode)	//Add a function for each mode in next phases
 	{
@@ -134,14 +133,13 @@ bool Restaurant::ReadFile()
 void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 {
 	//prompt the user again and again till a valid file name is entered
-	while(!ReadFile()){}
-
+	while(!ReadFile()) {}			// Reading input data from a file 
+	OutputFile Out(this, pGUI);
 	int currstep = 1 ;
 	char timestep[10];
 	
 
 	//print the different info about the different regions
-	Out->OpenFileOut();
 	PrintStatusBar();
 
 	//flag to check if there is still an order not served so simulation doesn't stop
@@ -166,17 +164,31 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 
 		AssignOrders(currstep);			//Assign the order whose time has come
 		FlagOrd= RestUpdate(timestep);  //Updates the interface and sets the order flag
-		
-		currstep++;
+		bool FlagPrint = true;
+		while(ServedOrder.getcount() && FlagPrint)
+		{
+			Order* tmpord = ServedOrder.getmax();
+			if(tmpord->GetFinishTime() == currstep)
+			{
+					Out.Write(tmpord);
+					delete tmpord;
+					ServedOrder.extractMax();
+					FlagPrint = true;
+			}
+			else
+				FlagPrint = false;
+		}
 		for (int i = 0; i < 4; i++)
 		{
 			FlagunAssign[i] = R[i].UnAssignMotors(currstep);
 			R[i].Promote(AutoProm, currstep);
 			
 		}
+		currstep++;
 		
 	}
-	PrintOutfile();	
+	
+	Out.PrintStatstics();	
 	pGUI->PrintMessage("generation done, click to END program");
 	pGUI->waitForClick();
 
@@ -185,12 +197,9 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 void Restaurant::Silent()
 {
 	while(!ReadFile()) {}			// Reading input data from a file 
-
+	OutputFile Out(this, pGUI);
 	int currstep = 1 ;
 
-	//print the different info about the different regions
-	Out->OpenFileOut();
-	//PrintStatusBar();
 
 	//flag to check if there is still an order not served so simulation doesn't stop
 	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
@@ -211,11 +220,24 @@ void Restaurant::Silent()
 		{
 			FlagunAssign[i] = R[i].UnAssignMotors(currstep);
 			R[i].Promote(AutoProm, currstep);
-			
+		}
+		bool FlagPrint = true;
+		while(ServedOrder.getcount() && FlagPrint)
+		{
+			Order* tmpord = ServedOrder.getmax();
+			if(tmpord->GetFinishTime() == currstep)
+			{
+					Out.Write(tmpord);
+					delete tmpord;
+					ServedOrder.extractMax();
+					FlagPrint = true;
+			}
+			else
+				FlagPrint = false;
 		}
 		currstep++;
 	}
-	PrintOutfile();	
+	Out.PrintStatstics();	
 	pGUI->PrintMessage("generation done, click to END program");
 	pGUI->waitForClick();
 }
@@ -312,58 +334,57 @@ void Restaurant::AssignOrders(int timestep)
 		// Assign first vip order in each region if exists to a motorcycle
 		if(R[i].GetVOrdCnt())
 		{
-			R[i].AssignOrdVMotor(timestep,TimeDam,TimeTir);		
+			R[i].AssignOrdVMotor(timestep,TimeDam,TimeTir, &ServedOrder);
 		}
 
 		//Assign  first frozen order in each region in case exists to a froozen motorcycle 
 		 if(!R[i].FOrdisEmpty())
 		{
-			R[i].AssignOrdFMotor(timestep,TimeDam,TimeTir);
+			R[i].AssignOrdFMotor(timestep,TimeDam,TimeTir, &ServedOrder);
 		}
 
 		//Assign first waiting Normal order in each region case exists to a Motorcycle 
 		if(R[i].GetNOrdCnt())
 		{
-			R[i].AssignOrdNMotor(timestep,TimeDam,TimeTir);
+			R[i].AssignOrdNMotor(timestep,TimeDam,TimeTir, &ServedOrder);
 		}
 	}
 
 }
 
 
-void Restaurant::PrintOutfile()
-{
-	float AvgWait = 0;
-	float AvgServ = 0;
-	int OrderCount = 0;
-	Order*tmp=nullptr;
-	for (int i = 0; i < 4; i++)
-	{
-		AvgWait = AvgServ = OrderCount = 0;
-		if(!R[i].EmptyDelivered());
-			Out->PrintFirstLine();
-		while (!R[i].EmptyDelivered())
-		{
-			tmp = R[i].GetDeliveredOrder();
-			Out->Write(tmp);
-			AvgWait += tmp->GetWaitingTime();
-			AvgServ += tmp->GetServTime();
-			OrderCount++;
-			delete tmp;
-			tmp = nullptr;
-
-		}
-		AvgWait /= OrderCount;
-		AvgServ /= OrderCount;
-		Out->PrintStatstics(R[i],REGION(i), AvgWait, AvgServ);
-	}
-
-}
+//void Restaurant::PrintOutfile()
+//{
+//	float AvgWait = 0;
+//	float AvgServ = 0;
+//	int OrderCount = 0;
+//	Order*tmp=nullptr;
+//	for (int i = 0; i < 4; i++)
+//	{
+//		AvgWait = AvgServ = OrderCount = 0;
+//		if(!R[i].EmptyDelivered());
+//			Out->PrintFirstLine();
+//		while (!R[i].EmptyDelivered())
+//		{
+//			tmp = R[i].GetDeliveredOrder();
+//			Out->Write(tmp);
+//			AvgWait += tmp->GetWaitingTime();
+//			AvgServ += tmp->GetServTime();
+//			OrderCount++;
+//			delete tmp;
+//			tmp = nullptr;
+//
+//		}
+//		AvgWait /= OrderCount;
+//		AvgServ /= OrderCount;
+//		Out->PrintStatstics(R[i],REGION(i), AvgWait, AvgServ);
+//	}
+//
+//}
 
 
 
 Restaurant::~Restaurant()
 {
 		delete pGUI;
-		delete Out;
 }

@@ -4,6 +4,7 @@
 #include"Rest\Order.h"
 #include"Generic_DS\Queue.h"
 #include"Generic_DS\List.h"
+
 class Region
 {
 protected:
@@ -22,10 +23,8 @@ protected:
 	priorityQueue<Order*>VOrderQueue;
 	Queue<Order*>FOrderQueue;
 	Queue<Order*>DeletedOrderQueue;
-	priorityQueue<Order*>DeliveredOrderQueue;
 	//whole number of orders of different types 
 	int NOrderCount, FOrderCount, VOrderCount;
-
 public:
 	Region(void);
 	void InsertFMotor(int, double, STATUS, ORD_TYPE, REGION);	//function to insert frozen motorcycle
@@ -59,15 +58,13 @@ public:
 
 
 	//Assign orders to motorcycle
-	bool AssignOrdNMotor(int,int ,int);
-	bool AssignOrdFMotor(int,int ,int);
-	bool AssignOrdVMotor(int,int ,int);
+	bool AssignOrdNMotor(int,int ,int, priorityQueue<Order*>*);
+	bool AssignOrdFMotor(int,int ,int, priorityQueue<Order*>*);
+	bool AssignOrdVMotor(int,int ,int, priorityQueue<Order*>*);
 	//unassign motorcylces
 	bool UnAssignMotors(int);
 	//auto promotion function
 	void Promote(int, int);
-	Order* GetDeliveredOrder();
-	bool EmptyDelivered()const;
 	~Region(void);
 };
 

@@ -63,8 +63,11 @@ void Order::sethard(bool h){ hard = h ;}
 
 bool Order:: operator <(Order &v)
 {
-	if(priority<v.priority)
+	if(priority < v.priority)
 		return true;
+	/*else if(priority == v.priority)
+		if(ServTime < v.ServTime)
+			return true;*/
 	else return false;
 }
 
@@ -72,6 +75,9 @@ bool Order:: operator >(Order &v)
 {
 	if(priority>v.priority)
 		return true;
+	/*else if(priority == v.priority)
+		if(ServTime > v.ServTime)
+			return true;*/
 	else return false;
 }
 
@@ -93,7 +99,7 @@ void Order::Changepriority(int Currtimestp)
 {
 	
 	SetFinishTime(ArrTime + ServTime + WaitingTime);
-	priority = FinishTime;
+	priority = -FinishTime;
 }
 
 

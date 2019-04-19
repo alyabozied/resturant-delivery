@@ -17,7 +17,6 @@ class OutputFile;
 class Restaurant  
 {	
 private:
-	OutputFile *Out;                        //to write on the file and closes at the end of the program
 	GUI *pGUI;
 	Queue <Event*> EventsQueue;				//Queue of all events that will be loaded from file
 	priorityQueue <Order*> ServedOrder;     //to store the orders being seved with the finish time as priority to print them
@@ -38,7 +37,7 @@ public:
 	void PrintStatusBar();				//prints information about different regions
 	bool LoadGUI();						//to load the gui array of pointers with orders to draw
 	void AssignOrders(int);					//delete the order which should be deleted in the current time step
-	void PrintOutfile();
+	//void PrintOutfile();
 	
 	void SetTimeTir(int);
 	void SetTimeDam(int);
