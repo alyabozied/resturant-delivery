@@ -242,7 +242,6 @@ void Region::recovered(int timestep)
 		{
 			temp->SetDamaged(0);
 			temp->Changepriority(timestep);
-			temp->SetStatus(IDLE);
 			if(temp->GetType() == TYPE_NRM)
 			{
 				wholeNorders++;
@@ -264,8 +263,9 @@ void Region::recovered(int timestep)
 			}
 
 		}
-		Damaged.insert(temp);
-			return ;
+		else
+			Damaged.insert(temp);
+		return ;
 	}
 	
 }
@@ -277,17 +277,15 @@ bool Region::UnAssignMotors(int timestep)
 	if(servMotorQ.getcount())
 		while (servMotorQ.getcount() && servMotorQ.getmax()->IsBack(timestep))
 		{
-			
 			tmpM = servMotorQ.extractMax();
+			tmpM->SetStatus(IDLE);
+			tmpM->Changepriority(timestep);			
 			if(tmpM->Isdamaged(timestep))
 			{
-				tmpM->Changepriority(timestep);
 				Damaged.insert(tmpM);
 			}
 			else
 			{				
-				tmpM->SetStatus(IDLE);
-				tmpM->Changepriority(timestep);
 				if(tmpM->GetType() == TYPE_NRM)
 				{
 					wholeNorders++;
