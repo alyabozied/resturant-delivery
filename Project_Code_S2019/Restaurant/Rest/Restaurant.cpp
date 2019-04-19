@@ -212,6 +212,7 @@ void Restaurant::Silent()
 		FlagOrd=LoadGUI();
 		
 		//Assign the order whose time has come
+		
 		AssignOrders(currstep);
 		//update the interface after deleting the orders whose time has come
 		
@@ -331,6 +332,8 @@ void Restaurant::AssignOrders(int timestep)
 {
 	for (int i = 0; i < 4; i++)
 	{
+		//	Returns the recovered motorcycles to the idle lists before assiging
+		R[i].recovered(timestep);
 		// Assign first vip order in each region if exists to a motorcycle
 		if(R[i].GetVOrdCnt())
 		{

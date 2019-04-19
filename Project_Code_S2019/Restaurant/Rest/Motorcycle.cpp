@@ -16,8 +16,8 @@ Motorcycle::Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type, REGIO
 	SetType(Type);
 	SetRegion(r);
 	Changepriority(0); //zero is the time of construction of the motorcycles
-	damagedT = -1; 
-	tiredT = -1;
+	damagedT = 0; 
+	tiredT = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,6 +90,16 @@ int  Motorcycle:: GetArrivalTime() const
 	return ArrivalTime;
 }
 
+int Motorcycle::getdamagedT() const 
+{
+	return damagedT;
+}
+
+int Motorcycle::gettiredT() const 
+{
+	return tiredT;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //																							 //
 //								Motorcycle state functions									 //
@@ -118,9 +128,10 @@ bool Motorcycle::Istired(int t)     // checks if the motor is tired
 {
 	if(tiredT > t) 
 		return true;
-	SetTired(-1);
+	SetTired(0);
 	return false;
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
@@ -159,7 +170,13 @@ bool Motorcycle:: operator ==(Motorcycle M)
 void Motorcycle::Changepriority(int timestp)
 {
 	if(status == IDLE)
-		priority = speed;
+		if(!Isdamaged(timestp))
+			if(!Istired(timestp))
+				priority = speed;
+			else
+				priority = speed - tiredT;
+		else
+			priority = -1*damagedT;
 	else
 		priority = -1*(timestp + 2 * (AssignedOrd->GetDistance() / speed)); 
 }

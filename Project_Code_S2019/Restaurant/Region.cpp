@@ -139,6 +139,7 @@ Order* Region::dequeueF()
 
 void Region::DeleteMotors()
 {
+
 	while (idelNMotorQ.getcount() != 0)
 	{
 		delete idelNMotorQ.extractMax();
@@ -151,19 +152,11 @@ void Region::DeleteMotors()
 	{
 		delete idelFMotorQ.extractMax();
 	}
-	while (servFMotorQ.getcount() != 0)
+	while (servMotorQ.getcount() != 0)
 	{
-		delete  servFMotorQ.extractMax();
+		delete  servMotorQ.extractMax();
 	}
-	while (servNMotorQ.getcount() != 0)
-	{
-		delete servNMotorQ.extractMax();		
-	}
-	while (servVMotorQ.getcount() != 0)
-	{
-		delete servVMotorQ.extractMax();
-	}
-
+	
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -173,7 +166,7 @@ void Region::DeleteMotors()
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 int Region::GetWholeFOrdCount() const{ return wholeForders; }
-int Region::GetWholeNOrdCount() const{ return 	wholeNorders; }
+int Region::GetWholeNOrdCount() const{ return wholeNorders; }
 int Region::GetWholeVOrdCount() const{ return wholeVoreders; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -213,100 +206,110 @@ bool Region::AssignOrdNMotor(int timestep , int timed , int timeT, priorityQueue
 	Order*tmp = nullptr;
 	Motorcycle*NMotor = nullptr;
 	Motorcycle*VMotor = nullptr;
-	Queue<Motorcycle*> temp;
 	while(NOrderCount != 0 && N_MotorsCnt != 0)
 	{
 		NMotor = idelNMotorQ.extractMax();
-		if(NMotor->Isdamaged(timestep))
-		{
-			temp.enqueue(NMotor); N_MotorsCnt--; continue;
-		}
 		NOrderQueue.remove(1,tmp);
 		NMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
-		tmp->AssignMotor(NMotor, timestep, timed , timeT);
-		servNMotorQ.insert(NMotor);
+		servMotorQ.insert(NMotor);
 		serv->insert(tmp);
 		N_MotorsCnt--;
 		NOrderCount--;
-	}
-	while(!temp.isEmpty())
-	{
-		temp.dequeue(NMotor);
-		idelNMotorQ.insert(NMotor);
-		N_MotorsCnt++;
 	}
 		
 	while(NOrderCount != 0 && V_MotorsCnt != 0 && VOrderCount == 0)
 	{
 		VMotor = idelVMotorQ.extractMax();
-		if(VMotor->Isdamaged(timestep))
-		{
-			temp.enqueue(VMotor);
-			V_MotorsCnt--;
-			continue;
-		}
 		NOrderQueue.remove(1,tmp);
 		VMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
-		tmp->AssignMotor(VMotor, timestep,timed, timeT);
-		servVMotorQ.insert(VMotor);
+		servMotorQ.insert(VMotor);
 		serv->insert(tmp);
 		V_MotorsCnt--;
 		NOrderCount--;
-	}
-	while(!temp.isEmpty())
-	{
-		temp.dequeue(VMotor);
-		idelVMotorQ.insert(VMotor);
-		V_MotorsCnt++;
 	}
 		
 	return NOrderCount == 0  ;
 
 }
 
+void Region::recovered(int timestep)
+{
+	Motorcycle* temp;
+	while(Damaged.getcount() !=0)
+	{
+		temp = Damaged.extractMax();
+		if(temp->getdamagedT() == timestep)
+		{
+			temp->SetDamaged(0);
+			temp->Changepriority(timestep);
+			temp->SetStatus(IDLE);
+			if(temp->GetType() == TYPE_NRM)
+			{
+				wholeNorders++;
+				idelNMotorQ.insert(temp);
+				N_MotorsCnt++;
+			}
+			else
+				if(temp->GetType() ==TYPE_FROZ)
+				{
+					wholeForders++;
+					idelFMotorQ.insert(temp);
+					F_MotorsCnt++;
+				}
+			else	
+			{
+				wholeVoreders++;
+				idelVMotorQ.insert(temp);
+				V_MotorsCnt++;
+			}
+
+		}
+		Damaged.insert(temp);
+			return ;
+	}
+	
+}
+
 bool Region::UnAssignMotors(int timestep)
 {
 
 	Motorcycle * tmpM =nullptr;
-	if(servVMotorQ.getcount())
-		while (servVMotorQ.getcount() && servVMotorQ.getmax()->IsBack(timestep))
+	if(servMotorQ.getcount())
+		while (servMotorQ.getcount() && servMotorQ.getmax()->IsBack(timestep))
 		{
-			wholeForders++;
-			tmpM = servVMotorQ.extractMax();
-			tmpM->SetStatus(IDLE);
-			tmpM->Changepriority(timestep);
-			idelVMotorQ.insert(tmpM);
-			V_MotorsCnt++;
 			
+			tmpM = servMotorQ.extractMax();
+			if(tmpM->Isdamaged(timestep))
+			{
+				tmpM->Changepriority(timestep);
+				Damaged.insert(tmpM);
+			}
+			else
+			{				
+				tmpM->SetStatus(IDLE);
+				tmpM->Changepriority(timestep);
+				if(tmpM->GetType() == TYPE_NRM)
+				{
+					wholeNorders++;
+					idelNMotorQ.insert(tmpM);
+					N_MotorsCnt++;				
+				}
+				else
+					if(tmpM->GetType() ==TYPE_FROZ)
+					{
+						wholeForders++;
+						idelFMotorQ.insert(tmpM);
+						F_MotorsCnt++;
+					}
+				else
+				{
+					wholeVoreders++;
+					idelVMotorQ.insert(tmpM);
+					V_MotorsCnt++;	
+				}
+			}
 		}
-
-		
-	if(servNMotorQ.getcount())
-		while (servNMotorQ.getcount() && servNMotorQ.getmax()->IsBack(timestep))
-		{
-			wholeNorders++;
-			tmpM = servNMotorQ.extractMax();
-			tmpM->SetStatus(IDLE);
-			tmpM->Changepriority(timestep);
-			idelNMotorQ.insert(tmpM);
-			N_MotorsCnt++;
-
-		}
-
-		
-	if(servFMotorQ.getcount())
-		while (servFMotorQ.getcount() && servFMotorQ.getmax()->IsBack(timestep))
-		{
-			wholeVoreders++;
-			tmpM = servFMotorQ.extractMax();
-			tmpM->SetStatus(IDLE);
-			tmpM->Changepriority(timestep);		
-			idelFMotorQ.insert(tmpM);
-			F_MotorsCnt++;
-		}
-
-
-		return servFMotorQ.getcount() || servNMotorQ.getcount() || servVMotorQ.getcount();
+		return servMotorQ.getcount();
 }
 
 
@@ -316,28 +319,17 @@ bool Region::AssignOrdFMotor(int timestep , int timed , int timeT, priorityQueue
 {
 	Order*tmp = nullptr;
 	Motorcycle*FMotor = nullptr;
-	Queue<Motorcycle*> temp;
 	while(FOrderCount != 0 && F_MotorsCnt != 0)
 	{
 		FMotor = idelFMotorQ.extractMax();
-		if(FMotor->Isdamaged(timestep))
-		{
-			temp.enqueue(FMotor); F_MotorsCnt--; continue;
-		}
 		FOrderQueue.dequeue(tmp);
 		FMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
-		tmp->AssignMotor(FMotor, timestep,timed,timeT);
-		servFMotorQ.insert(FMotor);
+		servMotorQ.insert(FMotor);
 		serv->insert(tmp);
 		F_MotorsCnt--;
 		FOrderCount--;
 	}
-	while(!temp.isEmpty())
-	{
-		temp.dequeue(FMotor);
-		idelFMotorQ.insert(FMotor);
-		F_MotorsCnt++;
-	}
+	
 		return FOrderCount == 0 ;
 
 }
@@ -354,59 +346,37 @@ bool Region::AssignOrdVMotor(int timestep , int timed , int timeT, priorityQueue
 	while(VOrderCount != 0 && V_MotorsCnt != 0)
 	{
 		VMotor = idelVMotorQ.extractMax();
-		if(VMotor->Isdamaged(timestep)) { temp.enqueue(VMotor); V_MotorsCnt--;continue;}
 		tmp = VOrderQueue.extractMax();
 		VMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
-		tmp->AssignMotor(VMotor, timestep,timed,timeT);
-		servVMotorQ.insert(VMotor);
+		servMotorQ.insert(VMotor);
 		serv->insert(tmp);
 		V_MotorsCnt--;
 		VOrderCount--;
-	}
-	while (!temp.isEmpty())
-	{
-	temp.dequeue(VMotor);
-	idelVMotorQ.insert(VMotor);
-	V_MotorsCnt++;
 	}
 
 	while(VOrderCount != 0 && N_MotorsCnt != 0)
 	{
 		NMotor = idelNMotorQ.extractMax();
-		if(NMotor->Isdamaged(timestep)){ temp.enqueue(NMotor); N_MotorsCnt--; continue;}
 		tmp = VOrderQueue.extractMax();
 		NMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
-		tmp->AssignMotor(NMotor, timestep,timed,timeT);
-		servNMotorQ.insert(NMotor);
+		servMotorQ.insert(NMotor);
 		serv->insert(tmp);
 		N_MotorsCnt--;
 		VOrderCount--;
 	}
-	while(!temp.isEmpty())
-	{
-		temp.dequeue(NMotor);
-		idelNMotorQ.insert(NMotor);
-		N_MotorsCnt++;	
-	}
+
 	while(VOrderCount != 0 && F_MotorsCnt != 0)
 	{
 		FMotor = idelFMotorQ.extractMax();
-		if(FMotor->Isdamaged(timestep)) { temp.enqueue(FMotor); F_MotorsCnt--; continue;}
 		tmp = VOrderQueue.extractMax();
 		FMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
-		tmp->AssignMotor(FMotor, timestep,timed,timeT);
-		servFMotorQ.insert(FMotor);
+		servMotorQ.insert(FMotor);
 		serv->insert(tmp);
 		F_MotorsCnt--;
 		VOrderCount--;
 	}
-	while(!temp.isEmpty())
-	{
-		temp.dequeue(FMotor);
-		idelFMotorQ.insert(FMotor);
-		F_MotorsCnt++;
-	}
-		return VOrderCount == 0 ;
+
+	return VOrderCount == 0 ;
 }
 
 

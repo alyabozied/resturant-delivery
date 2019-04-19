@@ -12,9 +12,9 @@ protected:
 	priorityQueue<Motorcycle*>idelFMotorQ;
 	priorityQueue<Motorcycle*>idelNMotorQ;
 	priorityQueue<Motorcycle*>idelVMotorQ;
-	priorityQueue<Motorcycle*>servFMotorQ;
-	priorityQueue<Motorcycle*>servNMotorQ;
-	priorityQueue<Motorcycle*>servVMotorQ;
+	priorityQueue<Motorcycle*>servMotorQ;	// A queue for serving motorcycles
+	priorityQueue<Motorcycle*>Damaged;		// A queue for damaged motorcycles
+	
 	int wholeNorders,wholeForders,wholeVoreders;
 	//Number of MotorCycle in Region
 	int N_MotorsCnt,V_MotorsCnt,F_MotorsCnt;
@@ -55,7 +55,9 @@ public:
 	Order*const* GetArrNOrd();
 	Order*const* GetArrVOrd();
 	Order*const* GetArrFOrd();
-
+	
+	// Moves the recovered motorcycles from the damaged queue to the idle list
+	void recovered(int);    
 
 	//Assign orders to motorcycle
 	bool AssignOrdNMotor(int,int ,int, priorityQueue<Order*>*);

@@ -32,7 +32,8 @@ public:
 	STATUS GetStatus()const;
 	Order* GetAssignedOrd()const;
 	int GetArrivalTime()const;
-
+	int getdamagedT()const;
+	int gettiredT() const;
 
 	void SetID(int);
 	void SetType(ORD_TYPE);

@@ -123,7 +123,7 @@ void Order::AssignMotor(Motorcycle* m, int timestp, int timed, int timeT)
 	if(m->Istired(timestp)) 
 	{
 		m->SetDamaged(timestp+2*(Distance/m->GetSpeed()) + timed);
-		m->SetTired(-1);
+		m->SetTired(0);
 	}
 	else 
 		if(ishard())
