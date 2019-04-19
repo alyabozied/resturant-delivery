@@ -65,20 +65,30 @@ bool Order:: operator <(Order &v)
 {
 	if(priority < v.priority)
 		return true;
-	/*else if(priority == v.priority)
-		if(ServTime < v.ServTime)
-			return true;*/
-	else return false;
+	else if(priority == v.priority && AssignedMotor)
+	{
+		if(ServTime > v.ServTime)
+			return true;
+		else
+			return false;
+	}
+	else 
+		return false;
 }
 
 bool Order:: operator >(Order &v)
 {
 	if(priority>v.priority)
 		return true;
-	/*else if(priority == v.priority)
-		if(ServTime > v.ServTime)
-			return true;*/
-	else return false;
+	else if(priority == v.priority && AssignedMotor)
+	{
+		if(ServTime < v.ServTime)
+			return true;
+		else 
+			return false;
+	}
+	else 
+		return false;
 }
 
 bool Order:: operator ==(Order& v)
