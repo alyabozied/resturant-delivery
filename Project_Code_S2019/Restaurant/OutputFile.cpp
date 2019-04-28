@@ -92,7 +92,6 @@ void OutputFile::PrintStatstics()
 		totalnmotors += NM;
 		totalfmotors += FM;
 		totalvmotors += VM;
-		totalvmotors += VM;
 		totaldelivery += D;
 	}
 

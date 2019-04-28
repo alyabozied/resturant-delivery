@@ -20,7 +20,7 @@ private:
 	GUI *pGUI;
 	Queue <Event*> EventsQueue;				//Queue of all events that will be loaded from file
 	priorityQueue <Order*> ServedOrder;     //to store the orders being seved with the finish time as priority to print them
-	Region R[4];
+	Region R[REG_CNT];
 	int AutoProm;
 	int TimeTir;
 	int TimeDam;

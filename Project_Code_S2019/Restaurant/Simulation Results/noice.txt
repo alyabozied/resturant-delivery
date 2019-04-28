@@ -1,0 +1,46 @@
+FT	ID	AT	WT	ST
+2	1	1	0	1
+13	5	5	0	8
+
+
+
+........................................................
+........................................................
+Region A:
+	Orders: 7 [Norm: 5, Froz: 1, VIP: 0, PARTY: 1, NEAR: 0]
+	MotorC: 12 [Norm: 5, Froz: 3, VIP: 4]
+	DeliveryC: 2
+	Average Wait = 0,	 Avg Serv = 0
+
+........................................................
+........................................................
+Region B:
+	Orders: 6 [Norm: 4, Froz: 1, VIP: 0, PARTY: 1, NEAR: 0]
+	MotorC: 12 [Norm: 6, Froz: 4, VIP: 2]
+	DeliveryC: 3
+	Average Wait = 0,	 Avg Serv = 1.33333
+
+........................................................
+........................................................
+Region C:
+	Orders: 4 [Norm: 2, Froz: 1, VIP: 0, PARTY: 0, NEAR: 1]
+	MotorC: 14 [Norm: 5, Froz: 5, VIP: 4]
+	DeliveryC: 3
+	Average Wait = 0,	 Avg Serv = 0.25
+
+........................................................
+........................................................
+Region D:
+	Orders: 2 [Norm: 2, Froz: 0, VIP: 0, PARTY: 0, NEAR: 0]
+	MotorC: 13 [Norm: 4, Froz: 5, VIP: 4]
+	DeliveryC: 2
+	Average Wait = 0,	 Avg Serv = 0
+
+........................................................
+........................................................
+Whole Restaurant:
+	Orders: 19 [Norm: 13, Froz: 3, VIP: 0, PARTY: 2, Near: 1]
+	MotorC: 51 [Norm: 20, Froz: 17, VIP: 14]
+DeliveryC: 10
+	Average Wait = 0,	 Avg Serv = 0.473684
+

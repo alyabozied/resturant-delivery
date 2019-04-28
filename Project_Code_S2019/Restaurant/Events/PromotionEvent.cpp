@@ -15,7 +15,7 @@ void PromotionEvent::Execute(Restaurant* pRest)
 
 	Order *tmp;
 	Order *const*TmpArr;
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < REG_CNT; i++)
 	{
 		TmpArr = pRest->GetRegion(i)->GetArrNOrd();
 		int Cnt = pRest->GetRegion(i)->GetNOrdCnt();

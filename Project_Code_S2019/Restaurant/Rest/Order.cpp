@@ -46,7 +46,7 @@ bool Order::ishard() {   return hard; }
 
 
 void Order::SetID(int id) { ID = (id >= 0 && id < 1000) ? id : 0; }
-void Order::SetType(ORD_TYPE oType){ type = (oType >= 0 && oType <= 4) ? oType : TYPE_NRM; }
+void Order::SetType(ORD_TYPE oType){ type = (oType >= 0 && oType <= TYPE_CNT + 1) ? oType : TYPE_NRM; }
 void Order::SetRegion(REGION R){ Region = (R >= A_REG && R < REG_CNT) ? R : A_REG; }
 void Order::SetDistance(double d){ Distance = (d > 0) ? d : 100; }
 void Order::SetMoney(double m){ totalMoney = (m > 0) ? m : 0; }

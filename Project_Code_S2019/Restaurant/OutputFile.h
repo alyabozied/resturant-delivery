@@ -15,8 +15,8 @@ class OutputFile
 	ofstream FileOutput;
 	Restaurant* pRest;
 	GUI* pGUI;
-	float RegionWait[4];
-	float RegionServ[4];
+	float RegionWait[REG_CNT];
+	float RegionServ[REG_CNT];
 	float RestWait;
 	float RestServ;
 

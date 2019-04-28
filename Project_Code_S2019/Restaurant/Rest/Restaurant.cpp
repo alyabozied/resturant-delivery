@@ -143,7 +143,7 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 	PrintStatusBar();
 
 	//flag to check if there is still an order not served so simulation doesn't stop
-	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
+	bool FlagOrd=true,FlagunAssign[REG_CNT]={true,true,true,true};
 	
 	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
 	{
@@ -178,7 +178,7 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 			else
 				FlagPrint = false;
 		}
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < REG_CNT; i++)
 		{
 			FlagunAssign[i] = R[i].UnAssignMotors(currstep);
 			R[i].Promote(AutoProm, currstep);
@@ -202,7 +202,7 @@ void Restaurant::Silent()
 
 
 	//flag to check if there is still an order not served so simulation doesn't stop
-	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
+	bool FlagOrd=true,FlagunAssign[REG_CNT]={true,true,true,true};
 	
 	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
 	{
@@ -217,7 +217,7 @@ void Restaurant::Silent()
 		//update the interface after deleting the orders whose time has come
 		
 		FlagOrd=LoadGUI();
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < REG_CNT; i++)
 		{
 			FlagunAssign[i] = R[i].UnAssignMotors(currstep);
 			R[i].Promote(AutoProm, currstep);
@@ -248,7 +248,7 @@ void Restaurant::Silent()
 void Restaurant::PrintStatusBar()
 {
 
-	char NM[4], VM [4], FM[4], NOrd [4], VOrd[4], FOrd[4];
+	char NM[REG_CNT], VM [REG_CNT], FM[REG_CNT], NOrd [REG_CNT], VOrd[REG_CNT], FOrd[REG_CNT];
 	string RN1 ="RegionA NMotors: "+string(itoa(R[0].Get_NMotorCnt(),NM,10))+",    RegionA NOrders: "+string(itoa(R[0].GetNOrdCnt(),NOrd,10));			
 	string RV1 =",    RegionA VMotors: "+string(itoa(R[0].Get_VMotorCnt(),VM,10))+",    RegionA VOrders: "+string(itoa(R[0].GetVOrdCnt(),VOrd,10));			
 	string RF1 =",    RegionA FMotors: "+string(itoa(R[0].Get_FMotorCnt(),FM,10))+",    RegionA FOrders: "+string(itoa(R[0].GetFOrdCnt(),FOrd,10));			
@@ -356,7 +356,7 @@ bool Restaurant::LoadGUI()
 void Restaurant::AssignOrders(int timestep)
 {
 	bool Flag = true;
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < REG_CNT; i++)
 	{
 		//	Returns the recovered motorcycles to the idle lists before assiging
 		R[i].recovered(timestep);
@@ -394,36 +394,6 @@ void Restaurant::AssignOrders(int timestep)
 	}
 
 }
-
-
-//void Restaurant::PrintOutfile()
-//{
-//	float AvgWait = 0;
-//	float AvgServ = 0;
-//	int OrderCount = 0;
-//	Order*tmp=nullptr;
-//	for (int i = 0; i < 4; i++)
-//	{
-//		AvgWait = AvgServ = OrderCount = 0;
-//		if(!R[i].EmptyDelivered());
-//			Out->PrintFirstLine();
-//		while (!R[i].EmptyDelivered())
-//		{
-//			tmp = R[i].GetDeliveredOrder();
-//			Out->Write(tmp);
-//			AvgWait += tmp->GetWaitingTime();
-//			AvgServ += tmp->GetServTime();
-//			OrderCount++;
-//			delete tmp;
-//			tmp = nullptr;
-//
-//		}
-//		AvgWait /= OrderCount;
-//		AvgServ /= OrderCount;
-//		Out->PrintStatstics(R[i],REGION(i), AvgWait, AvgServ);
-//	}
-//
-//}
 
 
 
