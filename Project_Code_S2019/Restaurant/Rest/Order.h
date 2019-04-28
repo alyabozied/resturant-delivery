@@ -5,6 +5,7 @@
 #include "Motorcycle.h"
 #include"delivery.h"
 class Motorcycle;
+class delivery;
 class Order
 {
 
@@ -17,6 +18,7 @@ private:
 	int ArrTime, ServTime, FinishTime, WaitingTime;	    //arrival, service start, finish, and waiting times
 	double priority;
 	Motorcycle* AssignedMotor; //to calculate the serving and finish time
+	delivery* AssignedDelivery;
 	void Changepriority(int timestp);
 	bool hard;		// boolean to check if the order is hard to deliever due to traffic problems
 public:
@@ -57,7 +59,7 @@ public:
 	bool operator ==(Order& v);
 	
 	void AssignMotor(Motorcycle*, int , int =-1, int =-1);
-	void Delivery(int , int , int=-1 , int=-1 );
+	void Delivery(delivery* , int , int=-1 , int=-1 );
 
 };
 

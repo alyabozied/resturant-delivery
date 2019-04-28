@@ -133,12 +133,12 @@ void Order::AssignMotor(Motorcycle* m, int timestp, int timed, int timeT)
 	}
 }
 //function to assign a delivery for the order
-void Order::Delivery(int speed ,int timestp, int timed, int timeT)
+void Order::Delivery(delivery *d ,int timestp, int timed, int timeT)
 {
-	SetServTime(Distance / speed);
+		AssignedDelivery = d; 
+	SetServTime(Distance / d->GetSpeed());
 	SetWaitingTime(timestp - ArrTime);
-	SetFinishTime(ArrTime + ServTime + WaitingTime);
-	priority=-FinishTime;
+	Changepriority(timestp);
 }
 Order::~Order()
 {

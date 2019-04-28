@@ -355,7 +355,6 @@ bool Restaurant::LoadGUI()
 
 void Restaurant::AssignOrders(int timestep)
 {
-	bool Flag = true;
 	for (int i = 0; i < REG_CNT; i++)
 	{
 		//	Returns the recovered motorcycles to the idle lists before assiging
@@ -364,10 +363,8 @@ void Restaurant::AssignOrders(int timestep)
 		// Assign first party order in each region if exists to a motorcycle
 		if(R[i].GetPOrdCnt())
 		{
-			Flag = R[i].AssignOrdPMotor(timestep,TimeDam,TimeTir, &ServedOrder);
+			 R[i].AssignOrdPMotor(timestep,TimeDam,TimeTir, &ServedOrder);
 		}
-		if(Flag)
-		{
 		// Assign first vip order in each region if exists to a motorcycle
 		if(R[i].GetVOrdCnt())
 		{
@@ -384,7 +381,7 @@ void Restaurant::AssignOrders(int timestep)
 		{
 			R[i].AssignOrdNMotor(timestep,TimeDam,TimeTir, &ServedOrder);
 		}
-		}
+		
 		//Assign first waiting Near order in each region case exists to a Motorcycle 
 		if(R[i].GetNearOrdCnt())
 		{

@@ -39,7 +39,7 @@ void Region::Insertrdelivery(int id, double speed, STATUS s, ORD_TYPE t, REGION 
 {
 	delivery* D = new delivery (id, speed, s, t, r);
 	Neardelivery++;
-	idealdelivery.enqueue(D);
+	idealdelivery.insert(D);
 }
 
 
@@ -193,16 +193,14 @@ void Region::DeleteMotorsAndDelivery()
 		delete idelFMotorQ.extractMax();
 	}
 	delivery *tmp ;
-	while (!serdelivery.isEmpty())
+	while (serdelivery.getcount())
 	{
-		 serdelivery.dequeue(tmp);
-		 delete tmp;
+		delete serdelivery.extractMax();
 	}
 	
-	while (!idealdelivery.isEmpty())
+	while (idealdelivery.extractMax())
 	{
-		idealdelivery.dequeue(tmp);
-		 delete tmp;
+		delete idealdelivery.extractMax();
 	}
 }
 
@@ -364,17 +362,19 @@ bool Region::UnAssignMotors(int timestep)
 				}
 			}
 		}
-		serdelivery.peekFront(tmpD);
-		if(serdelivery.Get_count() && tmpD ->IsBack(timestep) )
+		tmpD = serdelivery.getmax();
+		if(serdelivery.getcount() && tmpD->IsBack(timestep) )
 		{
+			tmpD=serdelivery.extractMax();
+			tmpD->SetStatus(IDLE);
+			tmpD->Changepriority(timestep);
 			wholeNearoreders++;
-			serdelivery.dequeue(tmpD);
-			idealdelivery.enqueue(tmpD);
+			idealdelivery.insert(tmpD);
 			Neardelivery++;
 
 		}
 
-		return servMotorQ.getcount() ||serdelivery.Get_count();
+		return servMotorQ.getcount() ||serdelivery.getcount();
 }
 
 
@@ -405,12 +405,12 @@ bool Region::AssignOrdNeardelivery(int timestep , int timed , int timeT, priorit
 {
 	Order*tmp = nullptr;
 	delivery * tmpd = nullptr;
-	while(NearOrderCount != 0 && idealdelivery.Get_count() != 0)
+	while(NearOrderCount != 0 && idealdelivery.getcount() != 0)
 	{
-		idealdelivery.dequeue(tmpd);
+		tmpd = idealdelivery.extractMax();
 		NearOrderQueue.dequeue(tmp);
 		tmpd->SetAssignedOrd(tmp,timestep,timed,timeT);
-		serdelivery.enqueue(tmpd);
+		serdelivery.insert(tmpd);
 		serv->insert(tmp);
 		Neardelivery--;
 		NearOrderCount--;
@@ -473,63 +473,108 @@ bool Region::AssignOrdPMotor(int timestep , int timed , int timeT, priorityQueue
 	Motorcycle*FMotor = nullptr;
 	Queue<Motorcycle*> temp ;
 	int AssignedMotortoserv = 3;
-	int tempv =0 , tempn =0 , tempf =0 ;
-	if(V_MotorsCnt + N_MotorsCnt + V_MotorsCnt >= 3 )
+	int tempv =0 , tempn =0 , tempf =0 , tempcount =0 ;
+	if(V_MotorsCnt >= 3  )
 	{
+		tempn = 0;
+		tempf = 0;
+		if(V_MotorsCnt == 3 )
+		{
 		tempv = V_MotorsCnt;
+		}
+		else
+			tempv =3;
+	
+	}
+	else if(V_MotorsCnt + N_MotorsCnt >=3 )
+	{
+		tempf = 0;
+		tempv = V_MotorsCnt;
+		while (tempv+tempn < 3 )
+		{
+			tempn++;
+		}
+	}
+	else if(V_MotorsCnt + N_MotorsCnt + F_MotorsCnt >= 3 )
+	{
 		tempn = N_MotorsCnt;
-		tempf = F_MotorsCnt;
+		tempv = V_MotorsCnt;
+		while (tempv+tempn+tempf < 3 )
+		{
+			tempf++;
+		}
+
 	}
 
 	while(POrderCount != 0 && V_MotorsCnt != 0 && AssignedMotortoserv != 0 && tempv != 0 )
 	{
+		if(tempcount == 0)
 		tmp = POrderQueue.extractMax();
-		serv->insert(tmp);
 		for (int i = 0; i < tempv; i++)
 		{
 		VMotor = idelVMotorQ.extractMax();
 		VMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
+		if(tempcount == 0)
+		serv->insert(tmp);
 		servMotorQ.insert(VMotor);
 		V_MotorsCnt--;
-		}
+		tempcount++;
+		if(tempcount == 3)
+		{
 		POrderCount--;
 		wholePoreders++;
-		tempv = 0;
+		tempcount =0;
+		}
+
+		}
+			
 	}
 
 	while(POrderCount != 0 && N_MotorsCnt != 0 && AssignedMotortoserv != 0 &&  tempn != 0)
 	{
-		
+		if(tempcount == 0)
 		tmp = POrderQueue.extractMax();
-		serv->insert(tmp);
 		for (int i = 0; i < tempn; i++)
 		{
 		NMotor = idelNMotorQ.extractMax();
 		NMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
+		if(tempcount == 0 )
+		serv->insert(tmp);
 		servMotorQ.insert(NMotor);
 		N_MotorsCnt--;
-		}
+		tempcount++;
+		
+		
+		if(tempcount == 3)
+		{
 		POrderCount--;
 		wholePoreders++;
-		tempn= 0;
+		tempcount =0;
+		}
+		}
+
 	}
 	while(POrderCount != 0 && F_MotorsCnt != 0 && AssignedMotortoserv != 0 &&  tempf != 0)
 	{
-		
+		if(tempcount == 0)
 		tmp = POrderQueue.extractMax();
-		serv->insert(tmp);
 		for (int i = 0; i < tempf; i++)
 		{
 		FMotor = idelFMotorQ.extractMax();
 		FMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
+		if(tempcount == 0)
+		serv->insert(tmp);
 		servMotorQ.insert(FMotor);
 		F_MotorsCnt--;
-		}
+		tempcount++;
+		if(tempcount == 3)
+		{
 		POrderCount--;
 		wholePoreders++;
-		tempf= 0;
+		tempcount =0;
+		}
 	}
-	
+	}
 	return POrderCount == 0 ;
 }
 

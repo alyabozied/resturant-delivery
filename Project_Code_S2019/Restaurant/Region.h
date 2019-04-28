@@ -14,8 +14,8 @@ protected:
 	priorityQueue<Motorcycle*>idelVMotorQ;
 	priorityQueue<Motorcycle*>servMotorQ;	// A queue for serving motorcycles
 	priorityQueue<Motorcycle*>Damaged;		// A queue for damaged motorcycles
-	Queue<delivery*>idealdelivery;
-	Queue<delivery*>serdelivery;
+	priorityQueue<delivery*>idealdelivery;
+	priorityQueue<delivery*>serdelivery;
 	int wholeNorders,wholeForders,wholeVoreders,wholePoreders,wholeNearoreders;
 	//Number of MotorCycle in Region
 	int N_MotorsCnt,V_MotorsCnt,F_MotorsCnt,Neardelivery;
