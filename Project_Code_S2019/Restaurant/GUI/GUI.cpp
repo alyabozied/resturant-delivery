@@ -12,7 +12,9 @@ GUI::GUI()
 	OrdersClrs[TYPE_NRM] = 	PTHALOWBLUE;	//normal-order color
 	OrdersClrs[TYPE_FROZ] = MAGENTA;		//Frozen-order color
 	OrdersClrs[TYPE_VIP] = 	RED;	//VIP-order color					
-
+	OrdersClrs[TYPE_PARTY] = 	DARKRED;	//Party-order color					
+	OrdersClrs[TYPE_NEAR] = 	YELLOWGREEN;	//Near-order color					
+	
 	ClearStatusBar();
 	ClearDrawingArea();
 	CreateDrawToolBar();

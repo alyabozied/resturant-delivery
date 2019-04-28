@@ -10,6 +10,7 @@ Order::Order(int arrt,int id, ORD_TYPE r_Type, REGION r_region, double dist, dou
 	SetMoney(mon);
 	sethard(h);
 	AssignedMotor = nullptr;
+	//AssignedDelivery = nullptr;
 	if(r_Type == TYPE_VIP)
 		priority = 4 * mon -15* ArrTime  - 2 * dist;
 	else  
@@ -45,7 +46,7 @@ bool Order::ishard() {   return hard; }
 
 
 void Order::SetID(int id) { ID = (id >= 0 && id < 1000) ? id : 0; }
-void Order::SetType(ORD_TYPE oType){ type = (oType >= 0 && oType < 4) ? oType : TYPE_NRM; }
+void Order::SetType(ORD_TYPE oType){ type = (oType >= 0 && oType <= 4) ? oType : TYPE_NRM; }
 void Order::SetRegion(REGION R){ Region = (R >= A_REG && R < REG_CNT) ? R : A_REG; }
 void Order::SetDistance(double d){ Distance = (d > 0) ? d : 100; }
 void Order::SetMoney(double m){ totalMoney = (m > 0) ? m : 0; }
@@ -130,6 +131,14 @@ void Order::AssignMotor(Motorcycle* m, int timestp, int timed, int timeT)
 	{
 		m->SetTired(timestp + 2*(Distance/m->GetSpeed()) + timeT); 
 	}
+}
+//function to assign a delivery for the order
+void Order::Delivery(int speed ,int timestp, int timed, int timeT)
+{
+	SetServTime(Distance / speed);
+	SetWaitingTime(timestp - ArrTime);
+	SetFinishTime(ArrTime + ServTime + WaitingTime);
+	priority=-FinishTime;
 }
 Order::~Order()
 {

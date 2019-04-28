@@ -3,6 +3,7 @@
 
 #include "..\Defs.h"
 #include "Motorcycle.h"
+#include"delivery.h"
 class Motorcycle;
 class Order
 {
@@ -18,7 +19,6 @@ private:
 	Motorcycle* AssignedMotor; //to calculate the serving and finish time
 	void Changepriority(int timestp);
 	bool hard;		// boolean to check if the order is hard to deliever due to traffic problems
-	
 public:
 	Order(int Arrivaltime ,int ID, ORD_TYPE r_Type, REGION r_region, double dist, double mon,bool Hard=false);
 	Order(int);
@@ -57,6 +57,7 @@ public:
 	bool operator ==(Order& v);
 	
 	void AssignMotor(Motorcycle*, int , int =-1, int =-1);
+	void Delivery(int , int , int=-1 , int=-1 );
 
 };
 

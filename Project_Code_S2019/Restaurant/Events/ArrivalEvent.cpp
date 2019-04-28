@@ -31,7 +31,11 @@ void ArrivalEvent::Execute(Restaurant* pRest)
 		pRest->GetRegion(OrdRegion)->InsertNOrder(pOrd);
 	else if(OrdType == TYPE_FROZ)
 		pRest->GetRegion(OrdRegion)->InsertFOrder(pOrd);
-	else
+	else if(OrdType == TYPE_VIP)
 		pRest->GetRegion(OrdRegion)->InsertVOrder(pOrd);
+	else if(OrdType == TYPE_PARTY)
+		pRest->GetRegion(OrdRegion)->InsertPOrder(pOrd);
+	else
+		pRest->GetRegion(OrdRegion)->InsertNearOrder(pOrd);
 
 }

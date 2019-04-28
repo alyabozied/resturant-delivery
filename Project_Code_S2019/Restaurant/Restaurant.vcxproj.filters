@@ -125,6 +125,9 @@
     <ClInclude Include="OutputFile.h">
       <Filter>Restaurant</Filter>
     </ClInclude>
+    <ClInclude Include="Rest\delivery.h">
+      <Filter>Restaurant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CMUgraphicsLib\jpeg\jcomapi.c">
@@ -266,6 +269,7 @@
       <Filter>Restaurant</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Rest\delivery.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMUgraphicsLib\Manual.txt">

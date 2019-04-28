@@ -1,0 +1,72 @@
+5 4 2 2
+4 4 4 2
+7 5 2 2
+7 3 4 2
+A N 1 9
+A N 2 8
+A N 3 8
+A N 4 9
+A N 5 7
+A F 1 8
+A F 2 9
+A F 3 6
+A F 4 11
+A V 1 17
+A V 2 9
+B N 1 4
+B N 2 7
+B N 3 6
+B N 4 6
+B F 1 10
+B F 2 5
+B F 3 8
+B F 4 9
+B V 1 10
+B V 2 17
+B V 3 18
+B V 4 12
+C N 1 9
+C N 2 7
+C N 3 5
+C N 4 8
+C N 5 8
+C N 6 9
+C N 7 10
+C F 1 11
+C F 2 9
+C F 3 12
+C F 4 9
+C F 5 10
+C V 1 19
+C V 2 13
+D N 1 4
+D N 2 3
+D N 3 6
+D N 4 9
+D N 5 8
+D N 6 7
+D N 7 3
+D F 1 12
+D F 2 10
+D F 3 12
+D V 1 17
+D V 2 18
+D V 3 13
+D V 4 16
+7
+17 4 2
+R 1 F 1 76 44 C E
+R 3 N 2 67 472 A H
+R 3 N 3 64 337 D H
+R 4 V 4 30 247 A E
+R 4 N 5 23 427 C H
+R 5 V 6 84 334 D E
+R 5 N 7 86 169 C H
+R 4 Y 8 72 358 A E
+R 4 Y 9 72 358 B E
+R 4 Y 10 72 358 C E
+R 4 Y 11 10 358 D E
+R 5 L 12 8 358 A E
+R 5 L 13 12 358 B E
+R 5 L 14 7 358 C E
+R 5 L 15 8 358 D E

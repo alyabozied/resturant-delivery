@@ -100,6 +100,7 @@ int Motorcycle::gettiredT() const
 	return tiredT;
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //																							 //
 //								Motorcycle state functions									 //
@@ -178,7 +179,9 @@ void Motorcycle::Changepriority(int timestp)
 		else
 			priority = -1*damagedT;
 	else
+	{
 		priority = -1*(timestp + 2 * (AssignedOrd->GetDistance() / speed)); 
+	}
 }
 
 

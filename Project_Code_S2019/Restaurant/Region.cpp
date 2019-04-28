@@ -4,7 +4,7 @@
 Region::Region(void)
 {
 	
-	N_MotorsCnt = V_MotorsCnt = F_MotorsCnt = NOrderCount = VOrderCount = FOrderCount =wholeNorders=wholeForders=wholeVoreders= 0;
+	N_MotorsCnt = V_MotorsCnt = F_MotorsCnt = Neardelivery = NOrderCount = VOrderCount = FOrderCount = wholePoreders = wholeNearoreders = wholeNorders = wholeForders = wholeVoreders=  POrderCount = NearOrderCount = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,6 +35,12 @@ void Region::InsertVMotor(int id, double speed, STATUS s, ORD_TYPE t, REGION r)
 	idelVMotorQ.insert(M);
 }
 
+void Region::Insertrdelivery(int id, double speed, STATUS s, ORD_TYPE t, REGION r)
+{
+	delivery* D = new delivery (id, speed, s, t, r);
+	Neardelivery++;
+	idealdelivery.enqueue(D);
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +67,17 @@ void Region::InsertVOrder(Order* V)
 	VOrderQueue.insert(V); 
 }
 
+void Region::InsertNearOrder(Order* Near)
+{
+	NearOrderCount++;
+	NearOrderQueue.enqueue(Near);
+}
+void Region::InsertPOrder(Order* P)
+{
+	POrderCount++;
+	POrderQueue.insert(P); 
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
@@ -73,6 +90,8 @@ void Region::InsertVOrder(Order* V)
 int Region::GetVOrdCnt(){ return VOrderQueue.getcount(); }
 int Region::GetNOrdCnt(){ return NOrderQueue.getLength();}
 int Region::GetFOrdCnt(){ return FOrderQueue.Get_count();}
+int Region::GetPOrdCnt(){ return POrderQueue.getcount();}
+int Region::GetNearOrdCnt(){ return NearOrderQueue.Get_count();}
 bool Region::FOrdisEmpty(){ return FOrderQueue.isEmpty();}
 
 
@@ -94,6 +113,12 @@ Order* const* Region::GetArrFOrd()
 {
 	return FOrderQueue.ToArray();
 }
+
+Order* const* Region::GetArrNearOrd()
+{
+	return NearOrderQueue.ToArray();
+}
+
 
 Order*const* Region::GetArrNOrd()
 {
@@ -122,6 +147,21 @@ Order* Region::dequeueV()
 	return ord; 
 }
 
+Order* Region::dequeueP() 
+{ 
+	Order* ord = POrderQueue.extractMax();
+	POrderCount--;
+	return ord; 
+}
+
+Order* Region::dequeueNear() 
+{ 
+	Order* ord; 
+	NearOrderQueue.dequeue(ord);
+	NearOrderCount--;
+	return ord; 
+}
+
 Order* Region::dequeueF()
 { 
 	Order *ord ;
@@ -137,7 +177,7 @@ Order* Region::dequeueF()
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void Region::DeleteMotors()
+void Region::DeleteMotorsAndDelivery()
 {
 
 	while (idelNMotorQ.getcount() != 0)
@@ -152,11 +192,18 @@ void Region::DeleteMotors()
 	{
 		delete idelFMotorQ.extractMax();
 	}
-	while (servMotorQ.getcount() != 0)
+	delivery *tmp ;
+	while (!serdelivery.isEmpty())
 	{
-		delete  servMotorQ.extractMax();
+		 serdelivery.dequeue(tmp);
+		 delete tmp;
 	}
 	
+	while (!idealdelivery.isEmpty())
+	{
+		idealdelivery.dequeue(tmp);
+		 delete tmp;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,8 +215,9 @@ void Region::DeleteMotors()
 int Region::GetWholeFOrdCount() const{ return wholeForders; }
 int Region::GetWholeNOrdCount() const{ return wholeNorders; }
 int Region::GetWholeVOrdCount() const{ return wholeVoreders; }
-
-////////////////////////////////////////////////////////////////////////////////////////////////
+int Region::GetWholePOrdCount() const{ return wholePoreders; }
+int Region::GetWholeNearOrdCount() const{ return wholeNearoreders; }
+///////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
 //					functions to return the number of the motorcycles						  //
 //																							  //	
@@ -191,6 +239,12 @@ int Region::Get_NMotorCnt()const
 int Region::Get_VMotorCnt()const
 {
 	return V_MotorsCnt;
+}
+
+
+int Region::Get_NearMotorCnt()const
+{
+	return Neardelivery;
 }
 
 
@@ -272,14 +326,16 @@ void Region::recovered(int timestep)
 
 bool Region::UnAssignMotors(int timestep)
 {
-
+	delivery *tmpD =  nullptr;
 	Motorcycle * tmpM =nullptr;
 	if(servMotorQ.getcount())
 		while (servMotorQ.getcount() && servMotorQ.getmax()->IsBack(timestep))
 		{
 			tmpM = servMotorQ.extractMax();
 			tmpM->SetStatus(IDLE);
-			tmpM->Changepriority(timestep);			
+			tmpM->Changepriority(timestep);
+		
+
 			if(tmpM->Isdamaged(timestep))
 			{
 				Damaged.insert(tmpM);
@@ -299,15 +355,26 @@ bool Region::UnAssignMotors(int timestep)
 						idelFMotorQ.insert(tmpM);
 						F_MotorsCnt++;
 					}
-				else
+					else 
 				{
+					if(tmpM->GetAssignedOrd()->GetType() == TYPE_VIP)
 					wholeVoreders++;
 					idelVMotorQ.insert(tmpM);
 					V_MotorsCnt++;	
 				}
 			}
 		}
-		return servMotorQ.getcount();
+		serdelivery.peekFront(tmpD);
+		if(serdelivery.Get_count() && tmpD ->IsBack(timestep) )
+		{
+			wholeNearoreders++;
+			serdelivery.dequeue(tmpD);
+			idealdelivery.enqueue(tmpD);
+			Neardelivery++;
+
+		}
+
+		return servMotorQ.getcount() ||serdelivery.Get_count();
 }
 
 
@@ -332,6 +399,26 @@ bool Region::AssignOrdFMotor(int timestep , int timed , int timeT, priorityQueue
 
 }
 
+
+
+bool Region::AssignOrdNeardelivery(int timestep , int timed , int timeT, priorityQueue<Order*>* serv)
+{
+	Order*tmp = nullptr;
+	delivery * tmpd = nullptr;
+	while(NearOrderCount != 0 && idealdelivery.Get_count() != 0)
+	{
+		idealdelivery.dequeue(tmpd);
+		NearOrderQueue.dequeue(tmp);
+		tmpd->SetAssignedOrd(tmp,timestep,timed,timeT);
+		serdelivery.enqueue(tmpd);
+		serv->insert(tmp);
+		Neardelivery--;
+		NearOrderCount--;
+	}
+	
+		return NearOrderCount == 0 ;
+
+}
 
 
 bool Region::AssignOrdVMotor(int timestep , int timed , int timeT, priorityQueue<Order*>* serv)
@@ -378,6 +465,75 @@ bool Region::AssignOrdVMotor(int timestep , int timed , int timeT, priorityQueue
 }
 
 
+bool Region::AssignOrdPMotor(int timestep , int timed , int timeT, priorityQueue<Order*>* serv)
+{
+	Order*tmp = nullptr;
+	Motorcycle*VMotor = nullptr;
+	Motorcycle*NMotor = nullptr;
+	Motorcycle*FMotor = nullptr;
+	Queue<Motorcycle*> temp ;
+	int AssignedMotortoserv = 3;
+	int tempv =0 , tempn =0 , tempf =0 ;
+	if(V_MotorsCnt + N_MotorsCnt + V_MotorsCnt >= 3 )
+	{
+		tempv = V_MotorsCnt;
+		tempn = N_MotorsCnt;
+		tempf = F_MotorsCnt;
+	}
+
+	while(POrderCount != 0 && V_MotorsCnt != 0 && AssignedMotortoserv != 0 && tempv != 0 )
+	{
+		tmp = POrderQueue.extractMax();
+		serv->insert(tmp);
+		for (int i = 0; i < tempv; i++)
+		{
+		VMotor = idelVMotorQ.extractMax();
+		VMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
+		servMotorQ.insert(VMotor);
+		V_MotorsCnt--;
+		}
+		POrderCount--;
+		wholePoreders++;
+		tempv = 0;
+	}
+
+	while(POrderCount != 0 && N_MotorsCnt != 0 && AssignedMotortoserv != 0 &&  tempn != 0)
+	{
+		
+		tmp = POrderQueue.extractMax();
+		serv->insert(tmp);
+		for (int i = 0; i < tempn; i++)
+		{
+		NMotor = idelNMotorQ.extractMax();
+		NMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
+		servMotorQ.insert(NMotor);
+		N_MotorsCnt--;
+		}
+		POrderCount--;
+		wholePoreders++;
+		tempn= 0;
+	}
+	while(POrderCount != 0 && F_MotorsCnt != 0 && AssignedMotortoserv != 0 &&  tempf != 0)
+	{
+		
+		tmp = POrderQueue.extractMax();
+		serv->insert(tmp);
+		for (int i = 0; i < tempf; i++)
+		{
+		FMotor = idelFMotorQ.extractMax();
+		FMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
+		servMotorQ.insert(FMotor);
+		F_MotorsCnt--;
+		}
+		POrderCount--;
+		wholePoreders++;
+		tempf= 0;
+	}
+	
+	return POrderCount == 0 ;
+}
+
+
 
 void Region::Promote(int autop , int timestep)
 {
@@ -405,7 +561,7 @@ void Region::Promote(int autop , int timestep)
 Region::~Region(void)
 {
 	Order*tmp;
-	DeleteMotors();
+	DeleteMotorsAndDelivery();
 	while (!DeletedOrderQueue.isEmpty())
 	{
 		 DeletedOrderQueue.enqueue(tmp);

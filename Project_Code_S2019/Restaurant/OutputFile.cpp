@@ -44,9 +44,12 @@ void OutputFile::PrintStatstics()
 	int totalnorders = 0;
 	int totalforders = 0;
 	int totalvorders = 0;
+	int totalporders = 0;
+	int totalnearorders = 0;
 	int totalnmotors = 0;
 	int totalfmotors = 0;
 	int totalvmotors = 0;
+	int totaldelivery = 0;
 
 	char reg = 'A';
 	FileOutput << endl << endl << endl;
@@ -59,33 +62,50 @@ void OutputFile::PrintStatstics()
 		int NO = R->GetWholeNOrdCount();
 		int FO = R->GetWholeFOrdCount();
 		int VO = R->GetWholeVOrdCount();
+		int PO = R->GetWholePOrdCount();
+		int NEO = R->GetWholeNearOrdCount();
 		int NM = R->Get_NMotorCnt();
 		int FM = R->Get_FMotorCnt();
 		int VM = R->Get_VMotorCnt();
-		FileOutput << "\tOrders: " << NO+FO+VO << " [Norm: " << NO;
-		FileOutput << ", Froz: " << FO << ", VIP: " << VO << "]\n";
+		int D = R->Get_NearMotorCnt();
+		FileOutput << "\tOrders: " << NO+FO+VO+PO+NEO << " [Norm: " << NO;
+		FileOutput << ", Froz: " << FO << ", VIP: " << VO << ", PARTY: " << PO << ", NEAR: " << NEO <<  "]\n";
 		FileOutput << "\tMotorC: " << NM+FM+VM << " [Norm: " << NM;
 		FileOutput << ", Froz: " << FM << ", VIP: " << VM << "]\n";
-		RegionWait[i] /= NO+FO+VO;
-		RegionServ[i] /= NO+FO+VO;
+		FileOutput << "\tDeliveryC: " << D <<"\n";
+		if((NO+FO+VO+PO+NEO)!= 0)
+		{
+		RegionWait[i] /= NO+FO+VO+PO+NEO;
+		RegionServ[i] /= NO+FO+VO+PO+NEO;
+		}
+		else
+		{
+		RegionWait[i] = NO+FO+VO+PO+NEO;
+		RegionServ[i] = NO+FO+VO+PO+NEO;
+		}
 		FileOutput<< "\tAverage Wait = " << RegionWait[i] << ",\t Avg Serv = "<< RegionServ[i] << "\n\n";
 		totalnorders +=  NO;
 		totalforders +=  FO;
 		totalvorders +=  VO;
+		totalporders +=  PO;
+		totalnearorders +=  NEO;
 		totalnmotors += NM;
 		totalfmotors += FM;
 		totalvmotors += VM;
+		totalvmotors += VM;
+		totaldelivery += D;
 	}
 
-	RestServ /= totalnorders + totalforders + totalvmotors;
-	RestWait /= totalnorders + totalforders + totalvmotors;
+	RestServ /= totalnorders + totalforders + totalvorders + totalporders + totalnearorders ;
+	RestWait /= totalnorders + totalforders + totalvorders + totalporders + totalnearorders;
 	FileOutput <<"........................................................\n";
 	FileOutput <<"........................................................\n";
 	FileOutput <<"Whole Restaurant:\n";
-	FileOutput << "\tOrders: " << totalnorders + totalforders + totalvmotors << " [Norm: " << totalnorders;
-	FileOutput << ", Froz: " << totalforders << ", VIP: " << totalvorders << "]\n";
+	FileOutput << "\tOrders: " << totalnorders + totalforders + totalvorders + totalporders + totalnearorders << " [Norm: " << totalnorders;
+	FileOutput << ", Froz: " << totalforders << ", VIP: " << totalvorders << ", PARTY: " << totalporders << ", Near: " << totalnearorders << "]\n";
 	FileOutput << "\tMotorC: " << totalnmotors + totalfmotors + totalvmotors << " [Norm: " << totalnmotors;
 	FileOutput << ", Froz: " << totalfmotors << ", VIP: " << totalvmotors << "]\n";
+	FileOutput << "DeliveryC: " << totaldelivery <<"\n";
 	FileOutput<< "\tAverage Wait = " << RestWait << ",\t Avg Serv = "<< RestServ << "\n\n";
 
 }

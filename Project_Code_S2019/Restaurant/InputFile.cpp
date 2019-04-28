@@ -24,7 +24,7 @@ bool InputFile::Read()
 	//speed of differnet types of motors
 	int Speed;
 	// number of different types of motors
-	int	Norm[REG_CNT], Frzn[REG_CNT], VIP[REG_CNT];
+	int	Norm[REG_CNT], Frzn[REG_CNT], VIP[REG_CNT],DEl[REG_CNT];
 	//time of auto promotion and number of events
 	int	AutoS, NumEvnts,
 		timeT,timeD;  // The time a motor takes to recover when it is tired and when it is damaged
@@ -36,16 +36,17 @@ bool InputFile::Read()
 	Order* pOrd = nullptr;
 	Event* pEv = nullptr;
 	
-	//FileInput >> SpeedN >> SpeedF >> SpeedV;
 	for (int i = 0; i < REG_CNT; i++)
 	{
-		FileInput >> Norm[i] >> Frzn[i] >> VIP[i];
+		FileInput >> Norm[i] >> Frzn[i] >> VIP[i] >> DEl[i];
 	}
 	for (int i = 0; i < REG_CNT; i++)
 	{
 		Region* R = pRest->GetRegion(i);
 		char MotoReg, MotoType;
+		char DELReg, DELType;
 		int MotoID;
+		int DELID;
 		//creating normal motorcycles
 		for (int j = 0; j < Norm[i]; j++)
 		{
@@ -65,6 +66,14 @@ bool InputFile::Read()
 			FileInput >> MotoReg >> MotoType >> MotoID >> Speed; 
 			R->InsertVMotor(MotoID, Speed, IDLE, TYPE_VIP,(REGION)(MotoReg - 'A'));
 		}
+		//creating delivery 
+		for (int N = 0; N < DEl[i]; N++)
+		{
+
+			FileInput >> DELReg >> DELType >> DELID >> Speed; 
+			R->Insertrdelivery(DELID, Speed, IDLE, TYPE_NEAR,(REGION)(DELReg - 'A'));
+		}
+
 	}
 	
 
@@ -91,7 +100,10 @@ bool InputFile::Read()
 				TYP = TYPE_VIP;
 			if(toupper(TYP) == 'F')
 				TYP = TYPE_FROZ;
-			
+			if(toupper(TYP) == 'Y')
+				TYP = TYPE_PARTY;	
+				if(toupper(TYP) == 'L')
+				TYP = TYPE_NEAR;
 			// modifies the entered data for region to be of desired datatype
 			REG = toupper(REG) - 'A';
 			if(toupper(COM) == 'H')

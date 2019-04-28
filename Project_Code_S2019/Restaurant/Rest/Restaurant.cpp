@@ -284,10 +284,25 @@ bool Restaurant::LoadGUI()
 	Order*tmpOrd;
 	for (int j = 0; j < REG_CNT; j++)
 	{
-		//load the gui with the VIP orders
-		int OrderCnt = R[j].GetVOrdCnt();
-		// to store the vip orders then put them again in the priorityQ after filling the gui array
+		//load the gui with the party orders
+		int OrderCnt = R[j].GetPOrdCnt();
+		// to store the party orders then put them again in the priorityQ after filling the gui array
 		Queue<Order*> tmpQ;
+		for (int i = 0; i < OrderCnt; i++)
+		{
+			tmpOrd = R[j].dequeueP();
+			pGUI->AddOrderForDrawing(tmpOrd);
+			tmpQ.enqueue(tmpOrd);
+			flag=true;
+		}
+		while(!tmpQ.isEmpty())
+		{
+			tmpQ.dequeue(tmpOrd);
+			R[j].InsertPOrder(tmpOrd);
+		}
+		//load the gui with the VIP orders
+		 OrderCnt = R[j].GetVOrdCnt();
+		// to store the vip orders then put them again in the priorityQ after filling the gui array
 		for (int i = 0; i < OrderCnt; i++)
 		{
 			tmpOrd = R[j].dequeueV();
@@ -321,6 +336,16 @@ bool Restaurant::LoadGUI()
 		}
 		delete tmpArr;
 		tmpArr = nullptr;
+		//load the gui with the frozen orders
+		tmpArr = R[j].GetArrNearOrd();
+		OrderCnt = R[j].GetNearOrdCnt();
+		for (int i = 0; i < OrderCnt; i++)
+		{
+			pGUI->AddOrderForDrawing(tmpArr[i]);
+			flag=true;
+		}
+		delete []tmpArr;
+		tmpArr = nullptr;
 	}
 
 	return flag;
@@ -330,16 +355,24 @@ bool Restaurant::LoadGUI()
 
 void Restaurant::AssignOrders(int timestep)
 {
+	bool Flag = true;
 	for (int i = 0; i < 4; i++)
 	{
 		//	Returns the recovered motorcycles to the idle lists before assiging
 		R[i].recovered(timestep);
+
+		// Assign first party order in each region if exists to a motorcycle
+		if(R[i].GetPOrdCnt())
+		{
+			Flag = R[i].AssignOrdPMotor(timestep,TimeDam,TimeTir, &ServedOrder);
+		}
+		if(Flag)
+		{
 		// Assign first vip order in each region if exists to a motorcycle
 		if(R[i].GetVOrdCnt())
 		{
 			R[i].AssignOrdVMotor(timestep,TimeDam,TimeTir, &ServedOrder);
 		}
-
 		//Assign  first frozen order in each region in case exists to a froozen motorcycle 
 		 if(!R[i].FOrdisEmpty())
 		{
@@ -351,6 +384,13 @@ void Restaurant::AssignOrders(int timestep)
 		{
 			R[i].AssignOrdNMotor(timestep,TimeDam,TimeTir, &ServedOrder);
 		}
+		}
+		//Assign first waiting Near order in each region case exists to a Motorcycle 
+		if(R[i].GetNearOrdCnt())
+		{
+			R[i].AssignOrdNeardelivery(timestep,TimeDam,TimeTir, &ServedOrder);
+		}
+		
 	}
 
 }

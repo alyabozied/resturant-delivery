@@ -18,7 +18,7 @@ class Motorcycle
 	int tiredT ;		// Time that the motor takes to recover
 	int damagedT;		
 	int ArrivalTime;	//will be used for priority, when will the motorcycle arrive 
-	int priority;	
+	int priority;
 public:
 	Motorcycle();
 	Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type, REGION);
@@ -34,7 +34,6 @@ public:
 	int GetArrivalTime()const;
 	int getdamagedT()const;
 	int gettiredT() const;
-
 	void SetID(int);
 	void SetType(ORD_TYPE);
 	void SetSpeed(double);
