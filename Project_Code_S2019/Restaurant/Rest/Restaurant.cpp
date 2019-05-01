@@ -74,11 +74,7 @@ Region* Restaurant::GetRegion(int index)
 void Restaurant::SetTimeDam(int t){ TimeDam = t ;}
 
 void Restaurant::SetTimeTir(int t ){  TimeTir = t;}
-/*
-int Restaurant::getTimeDam(){ return TimeDam;}
 
-int Restaurant::getTimeTir(){ return TimeTir;}
-*/
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
 //									Event handling functions								  //

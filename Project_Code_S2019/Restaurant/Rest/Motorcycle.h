@@ -15,6 +15,7 @@ class Motorcycle
 	STATUS	status;	    //idle or in-service
 	Order* AssignedOrd;	//to hold the assigned order untill it is delivered then the order info can be printed,
 						//also implicitly has the service time of the motorcycle by dividing the distance over speed
+	ORD_TYPE ordtype ;
 	int tiredT ;		// Time that the motor takes to recover
 	int damagedT;		
 	int ArrivalTime;	//will be used for priority, when will the motorcycle arrive 
@@ -34,6 +35,7 @@ public:
 	int GetArrivalTime()const;
 	int getdamagedT()const;
 	int gettiredT() const;
+	ORD_TYPE getordtype() const;
 
 	void SetID(int);
 	void SetType(ORD_TYPE);

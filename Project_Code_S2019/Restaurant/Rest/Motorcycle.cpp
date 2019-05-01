@@ -16,8 +16,8 @@ Motorcycle::Motorcycle(int ID, double Speed, STATUS Status, ORD_TYPE Type, REGIO
 	SetType(Type);
 	SetRegion(r);
 	Changepriority(0); //zero is the time of construction of the motorcycles
-	damagedT = 0; 
-	tiredT = 0;
+	damagedT = -1; 
+	tiredT = -1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,6 +68,7 @@ void Motorcycle:: SetAssignedOrd(Order*O,int timestep, int timed, int timeT)
 {
 	AssignedOrd=O;
 	status=SERV;
+	ordtype = O->GetType();
 	Changepriority(timestep);
 	O->AssignMotor(this,timestep,timed,timeT);
 }
@@ -100,6 +101,11 @@ int Motorcycle::gettiredT() const
 	return tiredT;
 }
 
+ORD_TYPE Motorcycle::getordtype() const
+{
+	return ordtype;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //																							 //
 //								Motorcycle state functions									 //
@@ -120,7 +126,6 @@ bool Motorcycle::Isdamaged(int d)	// checks if the motor is damaged
 {
 	if(damagedT > d ) 
 		return true;
-	SetDamaged(-1);
 	return false;
 }
 
@@ -128,7 +133,6 @@ bool Motorcycle::Istired(int t)     // checks if the motor is tired
 {
 	if(tiredT > t) 
 		return true;
-	SetTired(0);
 	return false;
 }
 
@@ -170,13 +174,7 @@ bool Motorcycle:: operator ==(Motorcycle M)
 void Motorcycle::Changepriority(int timestp)
 {
 	if(status == IDLE)
-		if(!Isdamaged(timestp))
-			if(!Istired(timestp))
-				priority = speed;
-			else
-				priority = speed - tiredT;
-		else
-			priority = -1*damagedT;
+		priority = speed;		
 	else
 		priority = -1*(timestp + 2 * (AssignedOrd->GetDistance() / speed)); 
 }
