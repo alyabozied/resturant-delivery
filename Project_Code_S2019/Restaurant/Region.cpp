@@ -156,7 +156,31 @@ void Region::DeleteMotors()
 	{
 		delete  servMotorQ.extractMax();
 	}
-	
+	while(Damaged.Get_count() != 0)
+	{
+		Motorcycle* tmp;
+		Damaged.dequeue(tmp);
+		delete tmp;
+	}
+	while(tirFmotorQ.Get_count() != 0)
+	{
+		Motorcycle* tmp;
+		tirFmotorQ.dequeue(tmp);
+		delete tmp;
+	}
+	while(tirVmotorQ.Get_count() != 0)
+	{
+		Motorcycle* tmp;
+		tirVmotorQ.dequeue(tmp);
+		delete tmp;
+	}
+	while(tirNmotorQ.Get_count() != 0)
+	{
+		Motorcycle* tmp;
+		tirNmotorQ.dequeue(tmp);
+		delete tmp;
+	}
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
