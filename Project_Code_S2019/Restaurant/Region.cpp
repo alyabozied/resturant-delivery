@@ -201,7 +201,7 @@ int Region::Get_VMotorCnt()const
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool Region::AssignOrdNMotor(int timestep , int timed , int timeT, priorityQueue<Order*>* serv)
+bool Region::AssignOrdNMotor(int timestep , int timed , int timeT, priorityQueue<Order*>* serv, string& s)
 {
 	Order*tmp = nullptr;
 	Motorcycle*NMotor = nullptr;
@@ -219,6 +219,7 @@ bool Region::AssignOrdNMotor(int timestep , int timed , int timeT, priorityQueue
 		NMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
 		servMotorQ.insert(NMotor);
 		serv->insert(tmp);
+		AppendString(s, tmp, NMotor);
 		N_MotorsCnt--;
 		NOrderCount--;
 	}
@@ -236,6 +237,7 @@ bool Region::AssignOrdNMotor(int timestep , int timed , int timeT, priorityQueue
 		VMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
 		servMotorQ.insert(VMotor);
 		serv->insert(tmp);
+		AppendString(s, tmp, VMotor);
 		V_MotorsCnt--;
 		NOrderCount--;
 	}
@@ -374,7 +376,7 @@ bool Region::UnAssignMotors(int timestep)
 
 
 
-bool Region::AssignOrdFMotor(int timestep , int timed , int timeT, priorityQueue<Order*>* serv)
+bool Region::AssignOrdFMotor(int timestep , int timed , int timeT, priorityQueue<Order*>* serv, string& s)
 {
 	Order*tmp = nullptr;
 	Motorcycle*FMotor = nullptr;
@@ -391,6 +393,7 @@ bool Region::AssignOrdFMotor(int timestep , int timed , int timeT, priorityQueue
 		FMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
 		servMotorQ.insert(FMotor);
 		serv->insert(tmp);
+		AppendString(s, tmp, FMotor);
 		F_MotorsCnt--;
 		FOrderCount--;
 	}
@@ -401,7 +404,7 @@ bool Region::AssignOrdFMotor(int timestep , int timed , int timeT, priorityQueue
 
 
 
-bool Region::AssignOrdVMotor(int timestep , int timed , int timeT, priorityQueue<Order*>* serv)
+bool Region::AssignOrdVMotor(int timestep , int timed , int timeT, priorityQueue<Order*>* serv, string& s)
 {
 	Order*tmp = nullptr;
 	Motorcycle*VMotor = nullptr;
@@ -418,9 +421,11 @@ bool Region::AssignOrdVMotor(int timestep , int timed , int timeT, priorityQueue
 		else
 			break;
 		tmp = VOrderQueue.extractMax();
+		
 		VMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
 		servMotorQ.insert(VMotor);
 		serv->insert(tmp);
+		AppendString(s, tmp, VMotor);
 		V_MotorsCnt--;
 		VOrderCount--;
 	}
@@ -437,6 +442,7 @@ bool Region::AssignOrdVMotor(int timestep , int timed , int timeT, priorityQueue
 		NMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
 		servMotorQ.insert(NMotor);
 		serv->insert(tmp);
+		AppendString(s, tmp, NMotor);
 		N_MotorsCnt--;
 		VOrderCount--;
 	}
@@ -453,6 +459,7 @@ bool Region::AssignOrdVMotor(int timestep , int timed , int timeT, priorityQueue
 		FMotor->SetAssignedOrd(tmp,timestep,timed,timeT);
 		servMotorQ.insert(FMotor);
 		serv->insert(tmp);
+		AppendString(s, tmp, FMotor);
 		F_MotorsCnt--;
 		VOrderCount--;
 	}
@@ -482,6 +489,37 @@ void Region::Promote(int autop , int timestep)
 	delete [] Arrytmp;
 
 }
+
+
+void Region::AppendString(string& s, Order* O, Motorcycle* M)
+{
+	string action = "";
+	ORD_TYPE motor = M->GetType();
+	ORD_TYPE order = O->GetType();
+	if(motor == TYPE_NRM)
+		action += "N";
+	else if(motor == TYPE_FROZ)
+		action += "F";
+	else 
+		action += "V";
+	action += to_string(M->GetID());
+	action += "(";
+
+	if(order == TYPE_NRM)
+		action += "N";
+	else if(order == TYPE_FROZ)
+		action += "F";
+	else 
+		action += "V";
+	action += to_string(O->GetID());
+
+	action += ")";
+	if( s.length() != 0 || s.length() != 1)
+		s += "  ";
+	s += action;
+	s += " "; 
+}
+
 
 
 Region::~Region(void)

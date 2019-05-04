@@ -133,16 +133,17 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 	OutputFile Out(this, pGUI);
 	int currstep = 1 ;
 	char timestep[10];
-	
+	string PrintAssigned;
 
 	//print the different info about the different regions
-	PrintStatusBar();
+	PrintStatusBar(PrintAssigned);
 
 	//flag to check if there is still an order not served so simulation doesn't stop
 	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
 	
 	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
 	{
+		
 		ExecuteEvents(currstep);	   // Executing events
 		_itoa_s(currstep,timestep,10); // converting timestep to be printed
 		
@@ -151,15 +152,15 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 		//else 
 			//Sleep(1000);
 
-		RestUpdate(timestep);		   // Updates the interface 
-
+		RestUpdate(timestep, PrintAssigned);		   // Updates the interface 
 		if(mode == MODE_INTR)		   // Waiting to show changes before assigning motorcycles to orders
 			pGUI->waitForClick();
 		else
 			Sleep(1000);
 
-		AssignOrders(currstep);			//Assign the order whose time has come
-		FlagOrd= RestUpdate(timestep);  //Updates the interface and sets the order flag
+		AssignOrders(currstep, PrintAssigned);			//Assign the order whose time has come
+		FlagOrd= RestUpdate(timestep, PrintAssigned);  //Updates the interface and sets the order flag
+		PrintAssigned = "";
 		bool FlagPrint = true;
 		while(ServedOrder.getcount() && FlagPrint)
 		{
@@ -181,7 +182,6 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 			
 		}
 		currstep++;
-		
 	}
 	
 	Out.PrintStatstics();	
@@ -195,13 +195,14 @@ void Restaurant::Silent()
 	while(!ReadFile()) {}			// Reading input data from a file 
 	OutputFile Out(this, pGUI);
 	int currstep = 1 ;
-
+	string PrintAssigned;
 
 	//flag to check if there is still an order not served so simulation doesn't stop
 	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
 	
 	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
 	{
+		PrintAssigned = "";
 		ExecuteEvents(currstep);
 		
 		//load gui returns true if there is still orders not served
@@ -209,7 +210,7 @@ void Restaurant::Silent()
 		
 		//Assign the order whose time has come
 		
-		AssignOrders(currstep);
+		AssignOrders(currstep, PrintAssigned);
 		//update the interface after deleting the orders whose time has come
 		
 		FlagOrd=LoadGUI();
@@ -241,33 +242,33 @@ void Restaurant::Silent()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Restaurant::PrintStatusBar()
+void Restaurant::PrintStatusBar(string actions)
 {
 
 	char NM[4], VM [4], FM[4], NOrd [4], VOrd[4], FOrd[4];
-	string RN1 ="RegionA NMotors: "+string(itoa(R[0].Get_NMotorCnt(),NM,10))+",    RegionA NOrders: "+string(itoa(R[0].GetNOrdCnt(),NOrd,10));			
-	string RV1 =",    RegionA VMotors: "+string(itoa(R[0].Get_VMotorCnt(),VM,10))+",    RegionA VOrders: "+string(itoa(R[0].GetVOrdCnt(),VOrd,10));			
-	string RF1 =",    RegionA FMotors: "+string(itoa(R[0].Get_FMotorCnt(),FM,10))+",    RegionA FOrders: "+string(itoa(R[0].GetFOrdCnt(),FOrd,10));			
-	string RN2 ="RegionB NMotors: "+string(itoa(R[1].Get_NMotorCnt(),NM,10))+",    RegionB NOrders: "+string(itoa(R[1].GetNOrdCnt(),NOrd,10));			
-	string RV2 =",    RegionB VMotors: "+string(itoa(R[1].Get_VMotorCnt(),VM,10))+",    RegionB VOrders: "+string(itoa(R[1].GetVOrdCnt(),VOrd,10));			
-	string RF2 =",    RegionB FMotors: "+string(itoa(R[1].Get_FMotorCnt(),FM,10))+",    RegionB FOrders: "+string(itoa(R[1].GetFOrdCnt(),FOrd,10));			
-	string RN3 ="RegionC NMotors: "+string(itoa(R[2].Get_NMotorCnt(),NM,10))+",    RegionC NOrders: "+string(itoa(R[2].GetNOrdCnt(),NOrd,10));			
- 	string RV3 =",    RegionC VMotors: "+string(itoa(R[2].Get_VMotorCnt(),VM,10))+",    RegionC VOrders: "+string(itoa(R[2].GetVOrdCnt(),VOrd,10));		
-	string RF3 =",    RegionC FMotors: "+string(itoa(R[2].Get_FMotorCnt(),FM,10))+",    RegionC FOrders: "+string(itoa(R[2].GetFOrdCnt(),FOrd,10));		
-	string RN4 ="RegionD NMotors: "+string(itoa(R[3].Get_NMotorCnt(),NM,10))+",    RegionD NOrders: "+string(itoa(R[3].GetNOrdCnt(),NOrd,10));			
-	string RV4 =",    RegionD VMotors: "+string(itoa(R[3].Get_VMotorCnt(),VM,10))+",    RegionD VOrders: "+string(itoa(R[3].GetVOrdCnt(),VOrd,10));			
-	string RF4 =",    RegionD FMotors: "+string(itoa(R[3].Get_FMotorCnt(),FM,10))+",    RegionD FOrders: "+string(itoa(R[3].GetFOrdCnt(),FOrd,10));
-	pGUI->PrintMessage(RN1+RV1+RF1,RN2+RV2+RF2,RN3+RV3+RF3,RN4+RV4+RF4);
+	string RN1 ="RegionA   NMotors: "+string(itoa(R[0].Get_NMotorCnt(),NM,10))+",     NOrders: "+string(itoa(R[0].GetNOrdCnt(),NOrd,10));			
+	string RV1 =",     VMotors: "+string(itoa(R[0].Get_VMotorCnt(),VM,10))+",     VOrders: "+string(itoa(R[0].GetVOrdCnt(),VOrd,10));			
+	string RF1 =",     FMotors: "+string(itoa(R[0].Get_FMotorCnt(),FM,10))+",     FOrders: "+string(itoa(R[0].GetFOrdCnt(),FOrd,10));			
+	string RN2 ="RegionB   NMotors: "+string(itoa(R[1].Get_NMotorCnt(),NM,10))+",     NOrders: "+string(itoa(R[1].GetNOrdCnt(),NOrd,10));			
+	string RV2 =",     VMotors: "+string(itoa(R[1].Get_VMotorCnt(),VM,10))+",     VOrders: "+string(itoa(R[1].GetVOrdCnt(),VOrd,10));			
+	string RF2 =",     FMotors: "+string(itoa(R[1].Get_FMotorCnt(),FM,10))+",     FOrders: "+string(itoa(R[1].GetFOrdCnt(),FOrd,10));			
+	string RN3 ="RegionC   NMotors: "+string(itoa(R[2].Get_NMotorCnt(),NM,10))+",     NOrders: "+string(itoa(R[2].GetNOrdCnt(),NOrd,10));			
+ 	string RV3 =",     VMotors: "+string(itoa(R[2].Get_VMotorCnt(),VM,10))+",     VOrders: "+string(itoa(R[2].GetVOrdCnt(),VOrd,10));		
+	string RF3 =",     FMotors: "+string(itoa(R[2].Get_FMotorCnt(),FM,10))+",     FOrders: "+string(itoa(R[2].GetFOrdCnt(),FOrd,10));		
+	string RN4 ="RegionD   NMotors: "+string(itoa(R[3].Get_NMotorCnt(),NM,10))+",     NOrders: "+string(itoa(R[3].GetNOrdCnt(),NOrd,10));			
+	string RV4 =",     VMotors: "+string(itoa(R[3].Get_VMotorCnt(),VM,10))+",     VOrders: "+string(itoa(R[3].GetVOrdCnt(),VOrd,10));			
+	string RF4 =",     FMotors: "+string(itoa(R[3].Get_FMotorCnt(),FM,10))+",     FOrders: "+string(itoa(R[3].GetFOrdCnt(),FOrd,10));
+	pGUI->PrintMessage(RN1+RV1+RF1,RN2+RV2+RF2,RN3+RV3+RF3,RN4+RV4+RF4, actions);
 
 
 }
 
-bool Restaurant::RestUpdate(string timestep)
+bool Restaurant::RestUpdate(string timestep, string actions)
 {
 		bool check = LoadGUI();
 		pGUI->UpdateInterface();
 		pGUI->DrawTimeStepCenter(timestep);
-		PrintStatusBar();
+		PrintStatusBar(actions);
 		return check;
 }
 
@@ -324,7 +325,7 @@ bool Restaurant::LoadGUI()
 }
 
 
-void Restaurant::AssignOrders(int timestep)
+void Restaurant::AssignOrders(int timestep, string& s)
 {
 	for (int i = 0; i < 4; i++)
 	{
@@ -333,19 +334,20 @@ void Restaurant::AssignOrders(int timestep)
 		// Assign first vip order in each region if exists to a motorcycle
 		if(R[i].GetVOrdCnt())
 		{
-			R[i].AssignOrdVMotor(timestep,TimeDam,TimeTir, &ServedOrder);
+			R[i].AssignOrdVMotor(timestep,TimeDam,TimeTir, &ServedOrder, s);
+			
 		}
 
 		//Assign  first frozen order in each region in case exists to a froozen motorcycle 
 		 if(!R[i].FOrdisEmpty())
 		{
-			R[i].AssignOrdFMotor(timestep,TimeDam,TimeTir, &ServedOrder);
+			R[i].AssignOrdFMotor(timestep,TimeDam,TimeTir, &ServedOrder, s);
 		}
 
 		//Assign first waiting Normal order in each region case exists to a Motorcycle 
 		if(R[i].GetNOrdCnt())
 		{
-			R[i].AssignOrdNMotor(timestep,TimeDam,TimeTir, &ServedOrder);
+			R[i].AssignOrdNMotor(timestep,TimeDam,TimeTir, &ServedOrder, s);
 		}
 	}
 
