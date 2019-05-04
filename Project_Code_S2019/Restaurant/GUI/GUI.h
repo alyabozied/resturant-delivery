@@ -17,8 +17,8 @@ private:
 	// Some Static Constant Data Members: ---------------------
 
 	static const int	
-		WindWidth=1400, WindHeight=650,		//Window width and height
-		StatusBarHeight = 150,	//Status Bar Height
+		WindWidth=1400, WindHeight=700,		//Window width and height
+		StatusBarHeight = 180,	//Status Bar Height
 		MenuBarHeight = 50,		//Menu Bar Height (distance from top of window to bottom line of menu bar)
 		MenuItemWidth = 70,		//Width of each item in menu bar menu
 		
@@ -89,7 +89,7 @@ public:
 	string GetString() const ; // reads a string (keyboard input) from the user
 
 	// Output Functions  ---------------------------
-	void PrintMessage(string msg="",string msg1="",string msg2="",string msg3="") const; // prints a message in the status bar
+	void PrintMessage(string msg="",string msg1="",string msg2="",string msg3="", string msg4 ="") const; // prints a message in the status bar
 
 
 	void UpdateInterface();

@@ -66,8 +66,14 @@ void OutputFile::PrintStatstics()
 		FileOutput << ", Froz: " << FO << ", VIP: " << VO << "]\n";
 		FileOutput << "\tMotorC: " << NM+FM+VM << " [Norm: " << NM;
 		FileOutput << ", Froz: " << FM << ", VIP: " << VM << "]\n";
-		RegionWait[i] /= NO+FO+VO;
-		RegionServ[i] /= NO+FO+VO;
+		if (NO+FO+VO != 0)
+		{
+			RegionWait[i] /= NO+FO+VO;
+			RegionServ[i] /= NO+FO+VO;
+		}
+		else
+			RegionWait[i]  = RegionServ[i] = 0;
+
 		FileOutput<< "\tAverage Wait = " << RegionWait[i] << ",\t Avg Serv = "<< RegionServ[i] << "\n\n";
 		totalnorders +=  NO;
 		totalforders +=  FO;
@@ -76,9 +82,14 @@ void OutputFile::PrintStatstics()
 		totalfmotors += FM;
 		totalvmotors += VM;
 	}
-
-	RestServ /= totalnorders + totalforders + totalvmotors;
-	RestWait /= totalnorders + totalforders + totalvmotors;
+	if(totalnorders + totalforders + totalvmotors != 0)
+	{
+		RestServ /= totalnorders + totalforders + totalvmotors;
+		RestWait /= totalnorders + totalforders + totalvmotors;
+	}
+	else
+		RestServ = RestWait = 0;
+	
 	FileOutput <<"........................................................\n";
 	FileOutput <<"........................................................\n";
 	FileOutput <<"Whole Restaurant:\n";

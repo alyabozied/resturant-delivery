@@ -34,9 +34,9 @@ public:
 	Region* GetRegion(int);
 	void RunSimulation();				//prompt the user to choose the mode to start the simulation
 	bool ReadFile();					//function to read input from a file
-	void PrintStatusBar();				//prints information about different regions
+	void PrintStatusBar(string action);				//prints information about different regions
 	bool LoadGUI();						//to load the gui array of pointers with orders to draw
-	void AssignOrders(int);					//delete the order which should be deleted in the current time step
+	void AssignOrders(int, string&);					//delete the order which should be deleted in the current time step
 	//void PrintOutfile();
 	
 	void SetTimeTir(int);
@@ -54,7 +54,7 @@ public:
 	//							GUI controlling functions						 //
 	///////////////////////////////////////////////////////////////////////////////
 
-	bool RestUpdate(string );    // Proceeds to the next time step 
+	bool RestUpdate(string, string );    // Proceeds to the next time step 
 
 };
 

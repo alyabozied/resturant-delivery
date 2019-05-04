@@ -4,7 +4,8 @@
 #include"Rest\Order.h"
 #include"Generic_DS\Queue.h"
 #include"Generic_DS\List.h"
-
+#include <string>
+using namespace std;
 class Region
 {
 protected:
@@ -64,9 +65,10 @@ public:
 	void recovered(int);    
 
 	//Assign orders to motorcycle
-	bool AssignOrdNMotor(int,int ,int, priorityQueue<Order*>*);
-	bool AssignOrdFMotor(int,int ,int, priorityQueue<Order*>*);
-	bool AssignOrdVMotor(int,int ,int, priorityQueue<Order*>*);
+	bool AssignOrdNMotor(int,int ,int, priorityQueue<Order*>*, string&);
+	bool AssignOrdFMotor(int,int ,int, priorityQueue<Order*>*, string&);
+	bool AssignOrdVMotor(int,int ,int, priorityQueue<Order*>*, string&);
+	void AppendString(string&, Order*, Motorcycle*);
 	//unassign motorcylces
 	bool UnAssignMotors(int);
 	//auto promotion function
