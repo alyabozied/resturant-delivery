@@ -12,13 +12,14 @@ InputFile::~InputFile()
 
 bool InputFile::Read()
 {
-	pGUI->PrintMessage("Enter the file name: ");
+	string temp [4] = {"","","",""};
+	pGUI->PrintMessage("Enter the file name: ","","","",temp,"");
 	FileName = pGUI->GetString();
 	FileName = FileName + ".txt";
 	FileInput.open("../Samples/"+FileName);
 	if(!FileInput.is_open())
 	{
-		pGUI->PrintMessage("an error occured loading the file there may not exist a file with this name");
+		pGUI->PrintMessage("an error occured loading the file there may not exist a file with this name","","","",temp,"");
 		return false; 
 	}
 	//speed of differnet types of motors
@@ -121,7 +122,8 @@ bool InputFile::Read()
 		}
 		else 
 		{
-			pGUI->PrintMessage("wrong file format");
+			string temp [4] = {"","","",""};
+			pGUI->PrintMessage("wrong file format","","","",temp,"");
 			return false;
 		}
 

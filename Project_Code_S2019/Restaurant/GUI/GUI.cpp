@@ -50,8 +50,8 @@ string GUI::GetString() const
 			Label.resize(Label.size() -1 );			
 		else
 			Label += Key;
-		
-		PrintMessage(Label);
+		string temp [4] = {"","","",""};
+		PrintMessage(Label,"","","",temp,"");
 	}
 }
 
@@ -135,40 +135,44 @@ PROG_MODE GUI::GetUserAction() const
 // ================================== OUTPUT FUNCTIONS =================================//
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3, string msg4) const	//Prints a message on status bar
+void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3, string msg4 [], string msg5) const	//Prints a message on status bar
 {
 	ClearStatusBar();	//First clear the status bar
 	pWind->SetPen(ETSHAWY);
 	pWind->SetFont(22, BOLD, BY_NAME, "SWISS");   
-	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1) - 5, msg); 
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1) - 5, msg+"    "+msg4[0]); 
 
 	if(msg1 == "")
 		return;
 	pWind->SetPen(LIGHTYELLOW);
-	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 20, 880, WindHeight - (int) (StatusBarHeight/1.1) + 20);
+	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 20, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 20);
 	pWind->DrawLine(95, WindHeight - (int) (StatusBarHeight), 95, WindHeight - (int) (StatusBarHeight / 1.1) + 110); //vertical line after the region names
 
 	pWind->SetPen(ETSHAWY);
-	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+25, msg1); 
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+25, msg1+"    "+msg4[1]); 
 	pWind->SetPen(LIGHTYELLOW);
-	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 50, 880, WindHeight - (int) (StatusBarHeight/1.1) + 50);
+	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 50, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 50);
 
 	pWind->SetPen(ETSHAWY);
-	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+55, msg2); 
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+55, msg2+"    "+msg4[2]); 
 	pWind->SetPen(LIGHTYELLOW);
-	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 80, 880, WindHeight - (int) (StatusBarHeight/1.1) + 80);
+	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 80, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 80);
 
 
 	pWind->SetPen(ETSHAWY);
-	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+85, msg3);  
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+85, msg3+"    "+msg4[3]);  
 	pWind->SetPen(LIGHTYELLOW);
-	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 110, 880, WindHeight - (int) (StatusBarHeight/1.1) + 110);
+	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 110, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 110);
 
 
 	pWind->DrawLine(880, WindHeight - (int) (StatusBarHeight), 880, WindHeight - (int) (StatusBarHeight / 1.1) + 110);//vertical line  
-
+	
 	pWind->SetPen(ETSHAWY);
-	pWind->DrawString(0, WindHeight - (int) (StatusBarHeight/1.1)+115, msg4);
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+115, msg5);  
+	pWind->SetPen(LIGHTYELLOW);
+	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 110, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 110);
+
+
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawString(const int iX, const int iY, const string Text)
@@ -373,10 +377,11 @@ void GUI::ResetDrawingList()
 
 PROG_MODE	GUI::getGUIMode() const
 {
+	string temp [4] = {"","","",""};
 	PROG_MODE Mode;
 	do
 	{
-		PrintMessage("Please select one of the menu bar icons ");
+		PrintMessage("Please select one of the menu bar icons ","","","",temp,"");
 		Mode = GetUserAction();
 
 	}
