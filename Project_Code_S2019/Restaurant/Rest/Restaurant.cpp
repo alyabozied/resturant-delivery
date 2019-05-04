@@ -48,6 +48,14 @@ void Restaurant::RunSimulation()
 
 }
 
+void Restaurant::wait(PROG_MODE mode)
+{
+	if(mode == MODE_INTR)		   // Waiting to show changes before assigning motorcycles to orders
+		pGUI->waitForClick();
+	else
+		Sleep(1000);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
 //								different setters and getters								  //
@@ -147,16 +155,9 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 		ExecuteEvents(currstep);	   // Executing events
 		_itoa_s(currstep,timestep,10); // converting timestep to be printed
 		
-		if(mode == MODE_INTR)		   // Waiting according to the mode of operation
-			pGUI->waitForClick();
-		//else 
-			//Sleep(1000);
-
+		wait(mode);						// Waiting according to the mode of the simulation
 		RestUpdate(timestep, PrintAssigned);		   // Updates the interface 
-		if(mode == MODE_INTR)		   // Waiting to show changes before assigning motorcycles to orders
-			pGUI->waitForClick();
-		else
-			Sleep(1000);
+		wait(mode);
 
 		AssignOrders(currstep, PrintAssigned);			//Assign the order whose time has come
 		FlagOrd= RestUpdate(timestep, PrintAssigned);  //Updates the interface and sets the order flag
