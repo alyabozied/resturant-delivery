@@ -61,7 +61,6 @@ bool InputFile::Read()
 		//creating VIP motocycles
 		for (int l = 0; l < VIP[i]; l++)
 		{
-
 			FileInput >> MotoReg >> MotoType >> MotoID >> Speed; 
 			R->InsertVMotor(MotoID, Speed, IDLE, TYPE_VIP,(REGION)(MotoReg - 'A'));
 		}

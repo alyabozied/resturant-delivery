@@ -15,10 +15,10 @@ class OutputFile
 	ofstream FileOutput;
 	Restaurant* pRest;
 	GUI* pGUI;
-	float RegionWait[4];
-	float RegionServ[4];
-	float RestWait;
-	float RestServ;
+	float RegionWait[4];  // to store the avg wait time for all regions
+	float RegionServ[4];  // to store the avg serice time for  all regions
+	float RestWait;		  // to store the avg wait time for the whole restaurant
+	float RestServ;		  // to store the avg service time for the whole restaurant
 
 public:
 	OutputFile(Restaurant*, GUI*&);

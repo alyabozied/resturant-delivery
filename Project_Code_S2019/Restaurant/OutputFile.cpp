@@ -30,7 +30,6 @@ OutputFile::~OutputFile()
 
 void OutputFile::Write(Order* O)
 {
-	//modified later to output in a file
 	FileOutput << O->GetFinishTime() << "\t" << O->GetID() << "\t" << O->GetArrTime() << "\t";
 	FileOutput << O->GetWaitingTime() << "\t" << O->GetServTime() << "\n";
 	RegionWait[O->GetRegion()] += O->GetWaitingTime();

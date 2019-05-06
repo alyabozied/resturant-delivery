@@ -4,7 +4,7 @@
 Region::Region(void)
 {
 	
-	N_MotorsCnt = V_MotorsCnt = F_MotorsCnt = NOrderCount = VOrderCount = FOrderCount =wholeNorders=wholeForders=wholeVoreders= 0;
+	N_MotorsCnt = V_MotorsCnt = F_MotorsCnt = NOrderCount = VOrderCount = FOrderCount = wholeNorders = wholeForders = wholeVoreders = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,8 +64,8 @@ void Region::InsertVOrder(Order* V)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
-//					functions to get the number of not served								  //
-//							orders of different types									      //
+//					functions to get the number of active orders							  //
+//								 of different types											  //
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -459,14 +459,14 @@ bool Region::UnAssignMotors(int timestep)
 			tmpM->SetStatus(IDLE);
 			tmpM->Changepriority(timestep);			
 			ORD_TYPE motortype = tmpM->GetType(),ordertype = tmpM->getordtype();
-					if(ordertype == TYPE_FROZ)
-						wholeForders++;
-					else
-						if(ordertype == TYPE_NRM)
-							wholeNorders++;
-					else
-						if(ordertype == TYPE_VIP)
-							wholeVoreders++;
+			if(ordertype == TYPE_FROZ)
+				wholeForders++;
+			else
+				if(ordertype == TYPE_NRM)
+					wholeNorders++;
+			else
+				if(ordertype == TYPE_VIP)
+					wholeVoreders++;
 
 			if(tmpM->Isdamaged(timestep))
 			{
@@ -577,9 +577,4 @@ Region::~Region(void)
 {
 	Order*tmp;
 	DeleteMotors();
-	while (!DeletedOrderQueue.isEmpty())
-	{
-		 DeletedOrderQueue.enqueue(tmp);
-		 delete tmp;
-	}
 }

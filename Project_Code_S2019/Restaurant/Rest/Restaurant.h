@@ -21,42 +21,46 @@ private:
 	Queue <Event*> EventsQueue;				//Queue of all events that will be loaded from file
 	priorityQueue <Order*> ServedOrder;     //to store the orders being seved with the finish time as priority to print them
 	Region R[4];
-	int AutoProm;
-	int TimeTir;
-	int TimeDam;
+	int AutoProm;							//time which the normal order should wait to be promoted to a vip
+	int TimeTir;							//time within which a tired motorcyle can recover
+	int TimeDam;							//time within which a damaged motorcycle can recover
 	int NServedOrd[4];						//counter to whole Normal for each region
 	int FServedOrd[4];						//counter to whole Frozen for each region
 	int VServedOrd[4];						//counter to whole VIP for each region
 public:
 	Restaurant();
 	~Restaurant();
-	void AddEvent(Event* pE);	        //adds a new event to the queue of events
-	void ExecuteEvents(int TimeStep);	//executes all events at current timestep
+
+	////////////////////////////////////////////////////////////////////////////////
+	//								setters and  getters					      //
+	////////////////////////////////////////////////////////////////////////////////
 	void SetAutoProm(int);
 	int GetAutoProm() const;
 	Region* GetRegion(int);
-	void RunSimulation();				//prompt the user to choose the mode to start the simulation
-	bool ReadFile();					//function to read input from a file
-	void PrintStatusBar(string);				//prints information about different regions
-	bool LoadGUI();						//to load the gui array of pointers with orders to draw
-	void AssignOrders(int, string&);					//delete the order which should be deleted in the current time step
-	//void PrintOutfile();
-	
 	void SetTimeTir(int);
 	void SetTimeDam(int);
+
+
+	void AddEvent(Event* pE);				//adds a new event to the queue of events
+	void ExecuteEvents(int TimeStep);		//executes all events at current timestep
+	void RunSimulation();					//prompt the user to choose the mode to start the simulation
+	bool ReadFile();						//function to read input from a file
+	void AssignOrders(int, string&);		//delete the order which should be deleted in the current time step
+
 	////////////////////////////////////////////////////////////////////////////////
 	//								Mode functions							      //
-	///////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	void wait(PROG_MODE);
 	void Simulate(PROG_MODE);					//The interactive and step by step modes function
 	void Silent();								// Silent mode function
 
-	  ///////////////////////////////////////////////////////////////////////////////
-	 //							GUI controlling functions						  //
- 	///////////////////////////////////////////////////////////////////////////////
 
+	////////////////////////////////////////////////////////////////////////////////
+	//							GUI controlling functions					      //
+	////////////////////////////////////////////////////////////////////////////////
 	bool RestUpdate(string, string);    // Proceeds to the next time step 
-
+	bool LoadGUI();						//to load the gui array of pointers with orders to draw
+	void PrintStatusBar(string);			//prints information about different regions
 };
 
 #endif
