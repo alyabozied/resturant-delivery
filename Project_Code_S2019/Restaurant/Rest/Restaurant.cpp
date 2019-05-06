@@ -24,39 +24,31 @@ using namespace std;
 Restaurant::Restaurant() 
 {
 	pGUI = NULL;
-	 NServedOrd[0] = 0;
-	 NServedOrd[1] = 0;
-	 NServedOrd[2] = 0;
-	 NServedOrd[3] = 0;
-	 FServedOrd[0] = 0;
-	 FServedOrd[1] = 0;
-	 FServedOrd[2] = 0;
-	 FServedOrd[3] = 0;
-	 VServedOrd[0] = 0;
-	 VServedOrd[1] = 0;
-	 VServedOrd[2] = 0;
-	 VServedOrd[3] = 0;
-
+	for (int i = 0; i < REG_CNT; i++)
+	{
+		 NServedOrd[i] = 0;
+		 FServedOrd[i] = 0;
+		 VServedOrd[i] = 0;
+	}
 }
 
 void Restaurant::RunSimulation()
 {
 	pGUI = new GUI;
 	PROG_MODE	mode = pGUI->getGUIMode();
-			switch (mode)	//Add a function for each mode in next phases
+	switch (mode)	//Add a function for each mode in next phases
 	{
-	case MODE_INTR:
-		Simulate(mode);
-		break;
-	case MODE_STEP:
-		Simulate(mode);
-		break;
-	case MODE_SLNT:
-		Silent();
-		break;
-	case MODE_EXIT :
-		break;
-
+		case MODE_INTR:
+			Simulate(mode);
+			break;
+		case MODE_STEP:
+			Simulate(mode);
+			break;
+		case MODE_SLNT:
+			Silent();
+			break;
+		case MODE_EXIT :
+			break;
 	};
 
 }
@@ -75,22 +67,11 @@ void Restaurant::wait(PROG_MODE mode)
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+int Restaurant::GetAutoProm()const{ return AutoProm; }
 
+void Restaurant::SetAutoProm(int x){ AutoProm = AutoProm > 0 ? AutoProm : 10; }
 
-int Restaurant::GetAutoProm()const
-{
-	return AutoProm;
-}
-
-void Restaurant::SetAutoProm(int x)
-{
-	AutoProm = AutoProm > 0 ? AutoProm : 10;
-}
-
-Region* Restaurant::GetRegion(int index)
-{
-	return &R[index];
-}
+Region* Restaurant::GetRegion(int index){ return &R[index]; }
 
 void Restaurant::SetTimeDam(int t){ TimeDam = t ;}
 
@@ -149,11 +130,13 @@ bool Restaurant::ReadFile()
 
 void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 {
-	//prompt the user again and again till a valid file name is entered
-	while(!ReadFile()) {}			// Reading input data from a file 
+	//prompt the user again and again till a valid file name is entered to read inputs
+	while(!ReadFile()) {}	
 	OutputFile Out(this, pGUI);
-	int currstep = 1 ;
+	int currstep = 1;
 	char timestep[10];
+
+	// to store the orders that were assigned as well as their motors at this timestep
 	string  PrintAssigned;
 
 	//print the different info about the different regions
@@ -165,28 +148,39 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
 	{
 		
-		ExecuteEvents(currstep);	   // Executing events
-		_itoa_s(currstep,timestep,10); // converting timestep to be printed
-		
-		wait(mode);						// Waiting according to the mode of the simulation
-		RestUpdate(timestep, PrintAssigned);		   // Updates the interface 
+		ExecuteEvents(currstep);
+		_itoa_s(currstep,timestep,10);
+
+		wait(mode);						                // Waiting according to the mode of the simulation
+		RestUpdate(timestep, PrintAssigned);		    // Updates the interface 
 		wait(mode);
 
-		AssignOrders(currstep, PrintAssigned);			//Assign the order whose time has come
+		AssignOrders(currstep, PrintAssigned);		   //Assign the order whose time has come
 		FlagOrd= RestUpdate(timestep, PrintAssigned);  //Updates the interface and sets the order flag
 		PrintAssigned = "";
+
+		//to show that there is an order that reached its finish time so we need to write it on the output file
 		bool FlagPrint = true;
+
 		while(ServedOrder.getcount() && FlagPrint)
 		{
 			Order* tmpord = ServedOrder.getmax();
+
 			if(tmpord->GetFinishTime() == currstep)
 			{
 				if(tmpord->GetType() == TYPE_NRM)
+					//to count served normal orders so far
 					NServedOrd[tmpord->GetRegion()]++;
+
 				if(tmpord->GetType() == TYPE_VIP)
+					//to count served VIP orders so far
 					VServedOrd[tmpord->GetRegion()]++;
+
 				if(tmpord->GetType() == TYPE_FROZ)
+					//to count served frozen orders so far
 					FServedOrd[tmpord->GetRegion()]++;
+
+				// print the order then delete it 
 				Out.Write(tmpord);
 				delete tmpord;
 				ServedOrder.extractMax();
@@ -195,18 +189,20 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 			else
 				FlagPrint = false;
 		}
+
 		for (int i = 0; i < 4; i++)
 		{
 			FlagunAssign[i] = R[i].UnAssignMotors(currstep);
 			R[i].Promote(AutoProm, currstep);
-			
 		}
 		currstep++;
 	}
 		PrintAssigned = "";  
 	
+	//print the statistics for each region(# of orders, # of motors, Avg wait time, ..etc)
 	Out.PrintStatstics();	
-	pGUI->PrintMessage("generation done, click to END program","","","",PrintAssigned,"");
+
+	pGUI->PrintMessage("Simulation done, click to END program");
 	pGUI->waitForClick();
 
 }
@@ -214,34 +210,44 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 
 void Restaurant::Silent()
 {
-	while(!ReadFile()) {}			// Reading input data from a file 
+	//prompt the user again and again till a valid file name is entered to read inputs
+	while(!ReadFile()) {}			 
 	OutputFile Out(this, pGUI);
-	int currstep = 1 ;
-	string  PrintAssigned ;
+	int currstep = 1;
 
 	//flag to check if there is still an order not served so simulation doesn't stop
 	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
 	
 	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
 	{
-		PrintAssigned = "";
 		ExecuteEvents(currstep);
 		
-		//load gui returns true if there is still orders not served
-		FlagOrd=LoadGUI();
+		//if there is still orders not served simulation doesn't stop
+		for (int i = 0; i < REG_CNT; i++)
+		{
+			if(R[i].GetVOrdCnt() || R[i].GetFOrdCnt()|| R[i].GetNOrdCnt())
+			{
+				FlagOrd = true;
+				break;
+			}
+			else
+				FlagOrd = false;
+		}
 		
 		//Assign the order whose time has come
-		
-		AssignOrders(currstep, PrintAssigned);
+		string tmp;
+		AssignOrders(currstep, tmp);
+
 		//update the interface after deleting the orders whose time has come
-		
-		FlagOrd=LoadGUI();
+		//FlagOrd=LoadGUI();
 		for (int i = 0; i < 4; i++)
 		{
 			FlagunAssign[i] = R[i].UnAssignMotors(currstep);
 			R[i].Promote(AutoProm, currstep);
 		}
 		bool FlagPrint = true;
+
+		//to show that there is an order that whose finish time has come so we need to write it on the output file
 		while(ServedOrder.getcount() && FlagPrint)
 		{
 			Order* tmpord = ServedOrder.getmax();
@@ -258,16 +264,21 @@ void Restaurant::Silent()
 		}
 		currstep++;
 	}
-		PrintAssigned = "";  
 		Out.PrintStatstics();	
-		pGUI->PrintMessage("generation done, click to END program","","","",PrintAssigned,"");
+		pGUI->PrintMessage("Simulation done, click any where to close the program.");
 		pGUI->waitForClick();
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//				Preparing strings to be printed on the status bar							  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Restaurant::PrintStatusBar(string actions)
 {
+	// used to store the orders in service of the previous timestep with its the motorcylce 
 	string assigned[REG_CNT];
 	if(actions.length() > 2)
 	{
@@ -282,6 +293,9 @@ void Restaurant::PrintStatusBar(string actions)
 		}
 		assigned[3] += actions.substr(pos[3]);
 	}
+
+
+	//to store the number of active orders of each type
 	string RN[REG_CNT], RV [REG_CNT], RF[REG_CNT], RALL[REG_CNT];
 	for (int i = 0; i < REG_CNT; i++)
 	{
@@ -295,11 +309,21 @@ void Restaurant::PrintStatusBar(string actions)
 	string msg2 = "RegionC   " + RN[2] + RV[2] + RF[2] + assigned[2];
 	string msg3 = "RegionD   " + RN[3] + RV[3] + RF[3] + assigned[3];
 
+
+	// to store the number of served orders for each region
 	string msg4 = "Served orders so far: RegionA " + RALL[0] + ",  RegionB " + RALL[1] +",  RegionC " + RALL[2] +",  RegionD " + RALL[3];
 	pGUI->PrintMessage(msg0, msg1, msg2, msg3, msg4);
 
 }
 
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//				responsible for showing the changes on the GUI each timestep				  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool Restaurant::RestUpdate(string timestep, string actions)
 {
@@ -309,6 +333,14 @@ bool Restaurant::RestUpdate(string timestep, string actions)
 		PrintStatusBar(actions);
 		return check;
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//				loads the GUI with the active orders to be drawn							  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool Restaurant::LoadGUI()
 {
@@ -321,6 +353,7 @@ bool Restaurant::LoadGUI()
 	{
 		//load the gui with the VIP orders
 		int OrderCnt = R[j].GetVOrdCnt();
+		
 		// to store the vip orders then put them again in the priorityQ after filling the gui array
 		Queue<Order*> tmpQ;
 		for (int i = 0; i < OrderCnt; i++)
@@ -336,6 +369,7 @@ bool Restaurant::LoadGUI()
 			R[j].InsertVOrder(tmpOrd);
 		}
 
+
 		//load the gui with the frozen orders
 		tmpArr = R[j].GetArrFOrd();
 		OrderCnt = R[j].GetFOrdCnt();
@@ -346,6 +380,8 @@ bool Restaurant::LoadGUI()
 		}
 		delete []tmpArr;
 		tmpArr = nullptr;
+
+
 		//load the gui with normal orders
 		tmpArr = R[j].GetArrNOrd();
 		OrderCnt = R[j].GetNOrdCnt();
@@ -362,33 +398,34 @@ bool Restaurant::LoadGUI()
 
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//				to assign motorcycles for the orders for all regions						  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Restaurant::AssignOrders(int timestep, string& s)
 {
 	for (int i = 0; i < 4; i++)
 	{
+		// the string s is used to keep track of the assigned orders each timestep to be drawn on the status bar
 		s += "Region";
 		s += to_string(i + 1);
+
 		//	Returns the recovered motorcycles to the idle lists before assiging
 		R[i].recovered(timestep);
-		// Assign first vip order in each region if exists to a motorcycle
-		if(R[i].GetVOrdCnt())
-		{
-			R[i].AssignOrdVMotor(timestep,TimeDam,TimeTir, &ServedOrder, s);
-			
-		}
 
-		//Assign  first frozen order in each region in case exists to a froozen motorcycle 
+		// start with assigning vip order in each region if exists to a motorcycle
+		if(R[i].GetVOrdCnt())
+			R[i].AssignOrdVMotor(timestep,TimeDam,TimeTir, &ServedOrder, s);
+
+		//then frozen order in each region in case exists to a frozen motorcycle 
 		 if(!R[i].FOrdisEmpty())
-		{
 			R[i].AssignOrdFMotor(timestep,TimeDam,TimeTir, &ServedOrder, s);
-		}
 
 		//Assign first waiting Normal order in each region case exists to a Motorcycle 
 		if(R[i].GetNOrdCnt())
-		{
 			R[i].AssignOrdNMotor(timestep,TimeDam,TimeTir, &ServedOrder, s);
-		}
 		s += " ";
 	}
 

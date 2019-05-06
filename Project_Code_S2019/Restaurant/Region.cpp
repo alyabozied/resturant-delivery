@@ -370,7 +370,7 @@ bool Region::AssignOrdVMotor(int timestep , int timed , int timeT, priorityQueue
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Region::recovered(int timestep)  // done for this session
+void Region::recovered(int timestep)  
 {
 	Motorcycle* temp;
 	while(!Damaged.isEmpty())
