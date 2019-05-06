@@ -19,7 +19,7 @@ void OutputFile::OpenFileOut()
 	pGUI->PrintMessage("Enter file name to save the output","","","",temp,"");
 	FileName = pGUI->GetString();
 	FileName = FileName + ".txt";
-	FileOutput.open("../Restaurant/Simulation Results/"+FileName);
+	FileOutput.open("../Simulation Results/"+FileName);
 }
 
 
@@ -83,10 +83,10 @@ void OutputFile::PrintStatstics()
 		totalfmotors += FM;
 		totalvmotors += VM;
 	}
-	if(totalnorders + totalforders + totalvmotors != 0)
+	if(totalnorders + totalforders + totalvorders != 0)
 	{
-		RestServ /= totalnorders + totalforders + totalvmotors;
-		RestWait /= totalnorders + totalforders + totalvmotors;
+		RestServ /= totalnorders + totalforders + totalvorders;
+		RestWait /= totalnorders + totalforders + totalvorders;
 	}
 	else
 		RestServ = RestWait = 0;
@@ -94,7 +94,7 @@ void OutputFile::PrintStatstics()
 	FileOutput <<"........................................................\n";
 	FileOutput <<"........................................................\n";
 	FileOutput <<"Whole Restaurant:\n";
-	FileOutput << "\tOrders: " << totalnorders + totalforders + totalvmotors << " [Norm: " << totalnorders;
+	FileOutput << "\tOrders: " << totalnorders + totalforders + totalvorders << " [Norm: " << totalnorders;
 	FileOutput << ", Froz: " << totalforders << ", VIP: " << totalvorders << "]\n";
 	FileOutput << "\tMotorC: " << totalnmotors + totalfmotors + totalvmotors << " [Norm: " << totalnmotors;
 	FileOutput << ", Froz: " << totalfmotors << ", VIP: " << totalvmotors << "]\n";
