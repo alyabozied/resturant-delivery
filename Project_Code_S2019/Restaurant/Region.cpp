@@ -270,134 +270,6 @@ bool Region::AssignOrdNMotor(int timestep , int timed , int timeT, priorityQueue
 
 }
 
-void Region::recovered(int timestep)  // done for this session
-{
-	Motorcycle* temp;
-	while(!Damaged.isEmpty())
-	{
-		Damaged.peekFront(temp);
-		if(!temp->Isdamaged(timestep))
-		{
-			Damaged.dequeue(temp);
-			temp->SetDamaged(-1);
-			if(temp->GetType() == TYPE_NRM)
-			{
-				idelNMotorQ.insert(temp);
-				N_MotorsCnt++;
-			}
-			else
-				if(temp->GetType() == TYPE_FROZ)
-				{
-					idelFMotorQ.insert(temp);
-					F_MotorsCnt++;
-				}
-			else	
-			{
-				idelVMotorQ.insert(temp);
-				V_MotorsCnt++;
-			}
-
-		}
-		else	
-			break ;
-		
-	}
-	while(!tirFmotorQ.isEmpty())
-	{
-		tirFmotorQ.peekFront(temp);
-		if(!temp->Istired(timestep))
-		{
-			temp->SetTired(-1);
-			tirFmotorQ.dequeue(temp);
-			idelFMotorQ.insert(temp);
-		}
-		else
-			break;
-	}
-	while(!tirVmotorQ.isEmpty())
-	{
-		tirVmotorQ.peekFront(temp);
-		if(!temp->Istired(timestep))
-		{
-			temp->SetTired(-1);
-			tirVmotorQ.dequeue(temp);
-			idelVMotorQ.insert(temp);
-		}
-		else
-			break;
-	}
-	while(!tirNmotorQ.isEmpty())
-	{
-		tirNmotorQ.peekFront(temp);
-		if(!temp->Istired(timestep))
-		{
-			temp->SetTired(-1);
-			tirNmotorQ.dequeue(temp);
-			idelNMotorQ.insert(temp);
-		}
-		else
-			break;
-	}
-	
-}
-
-bool Region::UnAssignMotors(int timestep)
-{
-
-	Motorcycle * tmpM =nullptr;
-	if(servMotorQ.getcount())
-		while (servMotorQ.getcount() && servMotorQ.getmax()->IsBack(timestep))
-		{
-			tmpM = servMotorQ.extractMax();
-			tmpM->SetStatus(IDLE);
-			tmpM->Changepriority(timestep);			
-			ORD_TYPE motortype = tmpM->GetType(),ordertype = tmpM->getordtype();
-					if(ordertype == TYPE_FROZ)
-						wholeForders++;
-					else
-						if(ordertype == TYPE_NRM)
-							wholeNorders++;
-					else
-						if(ordertype == TYPE_VIP)
-							wholeVoreders++;
-
-			if(tmpM->Isdamaged(timestep))
-			{
-				Damaged.enqueue(tmpM);
-			}
-			else
-			{		
-				if(motortype == TYPE_NRM)
-				{
-					N_MotorsCnt++;		
-					if(tmpM->Istired(timestep))
-						tirNmotorQ.enqueue(tmpM);
-					else
-						idelNMotorQ.insert(tmpM);
-				}
-				else
-					if(motortype ==TYPE_FROZ)
-					{
-						F_MotorsCnt++;
-					if(tmpM->Istired(timestep))
-						tirFmotorQ.enqueue(tmpM);
-					else
-						idelFMotorQ.insert(tmpM);
-					}
-				else
-				{
-					V_MotorsCnt++;	
-					if(tmpM->Istired(timestep))
-						tirVmotorQ.enqueue(tmpM);
-					else
-						idelVMotorQ.insert(tmpM);
-				}
-			}
-		}
-		return servMotorQ.getcount();
-}
-
-
 
 
 bool Region::AssignOrdFMotor(int timestep , int timed , int timeT, priorityQueue<Order*>* serv, string& s)
@@ -492,6 +364,155 @@ bool Region::AssignOrdVMotor(int timestep , int timed , int timeT, priorityQueue
 
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//					functions to recover motorcylce				    						  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Region::recovered(int timestep)  // done for this session
+{
+	Motorcycle* temp;
+	while(!Damaged.isEmpty())
+	{
+		Damaged.peekFront(temp);
+		if(!temp->Isdamaged(timestep))
+		{
+			Damaged.dequeue(temp);
+			temp->SetDamaged(-1);
+			if(temp->GetType() == TYPE_NRM)
+			{
+				idelNMotorQ.insert(temp);
+				N_MotorsCnt++;
+			}
+			else
+				if(temp->GetType() == TYPE_FROZ)
+				{
+					idelFMotorQ.insert(temp);
+					F_MotorsCnt++;
+				}
+				else	
+				{
+					idelVMotorQ.insert(temp);
+					V_MotorsCnt++;
+				}
+		}
+		else	
+			break ;
+	}
+	
+	while(!tirFmotorQ.isEmpty())
+	{
+		tirFmotorQ.peekFront(temp);
+		if(!temp->Istired(timestep))
+		{
+			temp->SetTired(-1);
+			tirFmotorQ.dequeue(temp);
+			idelFMotorQ.insert(temp);
+		}
+		else
+			break;
+	}
+	while(!tirVmotorQ.isEmpty())
+	{
+		tirVmotorQ.peekFront(temp);
+		if(!temp->Istired(timestep))
+		{
+			temp->SetTired(-1);
+			tirVmotorQ.dequeue(temp);
+			idelVMotorQ.insert(temp);
+		}
+		else
+			break;
+	}
+	while(!tirNmotorQ.isEmpty())
+	{
+		tirNmotorQ.peekFront(temp);
+		if(!temp->Istired(timestep))
+		{
+			temp->SetTired(-1);
+			tirNmotorQ.dequeue(temp);
+			idelNMotorQ.insert(temp);
+		}
+		else
+			break;
+	}
+	
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//					functions to Assign an order to motorcylce      						  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool Region::UnAssignMotors(int timestep)
+{
+
+	Motorcycle * tmpM =nullptr;
+	if(servMotorQ.getcount())
+		while (servMotorQ.getcount() && servMotorQ.getmax()->IsBack(timestep))
+		{
+			tmpM = servMotorQ.extractMax();
+			tmpM->SetStatus(IDLE);
+			tmpM->Changepriority(timestep);			
+			ORD_TYPE motortype = tmpM->GetType(),ordertype = tmpM->getordtype();
+					if(ordertype == TYPE_FROZ)
+						wholeForders++;
+					else
+						if(ordertype == TYPE_NRM)
+							wholeNorders++;
+					else
+						if(ordertype == TYPE_VIP)
+							wholeVoreders++;
+
+			if(tmpM->Isdamaged(timestep))
+			{
+				Damaged.enqueue(tmpM);
+			}
+			else
+			{		
+				if(motortype == TYPE_NRM)
+				{
+					N_MotorsCnt++;		
+					if(tmpM->Istired(timestep))
+						tirNmotorQ.enqueue(tmpM);
+					else
+						idelNMotorQ.insert(tmpM);
+				}
+				else
+					if(motortype ==TYPE_FROZ)
+					{
+						F_MotorsCnt++;
+					if(tmpM->Istired(timestep))
+						tirFmotorQ.enqueue(tmpM);
+					else
+						idelFMotorQ.insert(tmpM);
+					}
+				else
+				{
+					V_MotorsCnt++;	
+					if(tmpM->Istired(timestep))
+						tirVmotorQ.enqueue(tmpM);
+					else
+						idelVMotorQ.insert(tmpM);
+				}
+			}
+		}
+		return servMotorQ.getcount();
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//					functions to Pormote Normal orders              						  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 void Region::Promote(int autop , int timestep)
 {
 	Order*const*Arrytmp =NOrderQueue.ToArray();
@@ -514,6 +535,12 @@ void Region::Promote(int autop , int timestep)
 
 }
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//																							  //
+//					functions to print the assgined orders on the stats bar   				  //
+//																							  //	
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Region::AppendString(string& s, Order* O, Motorcycle* M)
 {

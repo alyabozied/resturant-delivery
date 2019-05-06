@@ -217,9 +217,6 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 					if(tmpord->GetRegion() == D_REG)
 						FServedOrd[3]++;
 				}
-
-
-
 					Out.Write(tmpord);
 					delete tmpord;
 					ServedOrder.extractMax();
@@ -246,6 +243,7 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 	pGUI->waitForClick();
 
 }
+
 
 void Restaurant::Silent()
 {
@@ -421,38 +419,6 @@ void Restaurant::AssignOrders(int timestep, string s[])
 	}
 
 }
-
-
-//void Restaurant::PrintOutfile()
-//{
-//	float AvgWait = 0;
-//	float AvgServ = 0;
-//	int OrderCount = 0;
-//	Order*tmp=nullptr;
-//	for (int i = 0; i < 4; i++)
-//	{
-//		AvgWait = AvgServ = OrderCount = 0;
-//		if(!R[i].EmptyDelivered());
-//			Out->PrintFirstLine();
-//		while (!R[i].EmptyDelivered())
-//		{
-//			tmp = R[i].GetDeliveredOrder();
-//			Out->Write(tmp);
-//			AvgWait += tmp->GetWaitingTime();
-//			AvgServ += tmp->GetServTime();
-//			OrderCount++;
-//			delete tmp;
-//			tmp = nullptr;
-//
-//		}
-//		AvgWait /= OrderCount;
-//		AvgServ /= OrderCount;
-//		Out->PrintStatstics(R[i],REGION(i), AvgWait, AvgServ);
-//	}
-//
-//}
-
-
 
 Restaurant::~Restaurant()
 {

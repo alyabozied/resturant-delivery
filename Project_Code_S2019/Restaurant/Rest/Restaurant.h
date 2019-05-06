@@ -24,9 +24,9 @@ private:
 	int AutoProm;
 	int TimeTir;
 	int TimeDam;
-	int NServedOrd[4];
-	int FServedOrd[4];
-	int VServedOrd[4];
+	int NServedOrd[4];						//counter to whole Normal for each region
+	int FServedOrd[4];						//counter to whole Frozen for each region
+	int VServedOrd[4];						//counter to whole VIP for each region
 public:
 	Restaurant();
 	~Restaurant();
@@ -44,18 +44,16 @@ public:
 	
 	void SetTimeTir(int);
 	void SetTimeDam(int);
-	/*int getTimeTir();
-	int getTimeDam();
-	*////////////////////////////////////////////////////////////////////////////////
-	//								Mode functions								 //
+	////////////////////////////////////////////////////////////////////////////////
+	//								Mode functions							      //
 	///////////////////////////////////////////////////////////////////////////////
 	void wait(PROG_MODE);
 	void Simulate(PROG_MODE);					//The interactive and step by step modes function
 	void Silent();								// Silent mode function
 
-	///////////////////////////////////////////////////////////////////////////////
-	//							GUI controlling functions						 //
-	///////////////////////////////////////////////////////////////////////////////
+	  ///////////////////////////////////////////////////////////////////////////////
+	 //							GUI controlling functions						  //
+ 	///////////////////////////////////////////////////////////////////////////////
 
 	bool RestUpdate(string, string[] );    // Proceeds to the next time step 
 
