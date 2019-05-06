@@ -138,14 +138,18 @@ void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3, string ms
 {
 	ClearStatusBar();	//First clear the status bar
 	pWind->SetPen(ETSHAWY);
-	pWind->SetFont(22, BOLD, BY_NAME, "SWISS");   
-	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1) - 5, msg); 
-
+	pWind->SetFont(20, BOLD, BY_NAME, "SWISS");   
 	if(msg1 == "")
+	{
+		pWind->SetFont(24, BOLD, BY_NAME, "SWISS");
+		pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1) - 5, msg);
 		return;
+	}
+	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1) - 5, msg);
+
 	pWind->SetPen(LIGHTYELLOW);
 	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 20, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 20);
-	pWind->DrawLine(95, WindHeight - (int) (StatusBarHeight), 95, WindHeight - (int) (StatusBarHeight / 1.1) + 110); //vertical line after the region names
+	pWind->DrawLine(85, WindHeight - (int) (StatusBarHeight), 85, WindHeight - (int) (StatusBarHeight / 1.1) + 110); //vertical line after the region names
 
 	pWind->SetPen(ETSHAWY);
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+25, msg1); 
@@ -164,7 +168,7 @@ void GUI::PrintMessage(string msg,string msg1,string msg2,string msg3, string ms
 	pWind->DrawLine(0, WindHeight - (int) (StatusBarHeight/1.1) + 110, WindWidth, WindHeight - (int) (StatusBarHeight/1.1) + 110);
 
 
-	pWind->DrawLine(865, WindHeight - (int) (StatusBarHeight), 865, WindHeight - (int) (StatusBarHeight / 1.1) + 110);//vertical line  
+	pWind->DrawLine(765, WindHeight - (int) (StatusBarHeight), 765, WindHeight - (int) (StatusBarHeight / 1.1) + 110);//vertical line  
 	
 	pWind->SetPen(ETSHAWY);
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.1)+115, msg4);  

@@ -268,10 +268,7 @@ void Restaurant::Silent()
 
 void Restaurant::PrintStatusBar(string actions)
 {
-	string assignedA = " ";
-	string assignedB = " ";
-	string assignedC = " ";
-	string assignedD = " ";
+	string assigned[REG_CNT];
 	if(actions.length() > 2)
 	{
 		int pos[4];
@@ -279,29 +276,27 @@ void Restaurant::PrintStatusBar(string actions)
 		pos[1] = actions.find("Region2") + 7;
 		pos[2] = actions.find("Region3") + 7;
 		pos[3] = actions.find("Region4") + 7;
-		assignedA += actions.substr(pos[0], pos[1] - pos[0] - 7);
-		assignedB += actions.substr(pos[1], pos[2] - pos[1] - 7);
-		assignedC += actions.substr(pos[2], pos[3] - pos[2] - 7);
-		assignedD += actions.substr(pos[3]);
+		for (int i = 0; i < 3; i++)
+		{
+			assigned[i] += " " + actions.substr(pos[i], pos[i + 1] - pos[i] - 7);
+		}
+		assigned[3] += actions.substr(pos[3]);
 	}
-	char NM[4], VM [4], FM[4], NOrd [4], VOrd[4], FOrd[4];
-	string RN1 ="RegionA   NMotors: "+string(itoa(R[0].Get_NMotorCnt(),NM,10))+",     NOrders: "+string(itoa(R[0].GetNOrdCnt(),NOrd,10));			
-	string RV1 =",     VMotors: "+string(itoa(R[0].Get_VMotorCnt(),VM,10))+",     VOrders: "+string(itoa(R[0].GetVOrdCnt(),VOrd,10));			
-	string RF1 =",     FMotors: "+string(itoa(R[0].Get_FMotorCnt(),FM,10))+",     FOrders: "+string(itoa(R[0].GetFOrdCnt(),FOrd,10));			
-	string RN2 ="RegionB   NMotors: "+string(itoa(R[1].Get_NMotorCnt(),NM,10))+",     NOrders: "+string(itoa(R[1].GetNOrdCnt(),NOrd,10));			
-	string RV2 =",     VMotors: "+string(itoa(R[1].Get_VMotorCnt(),VM,10))+",     VOrders: "+string(itoa(R[1].GetVOrdCnt(),VOrd,10));			
-	string RF2 =",     FMotors: "+string(itoa(R[1].Get_FMotorCnt(),FM,10))+",     FOrders: "+string(itoa(R[1].GetFOrdCnt(),FOrd,10));			
-	string RN3 ="RegionC   NMotors: "+string(itoa(R[2].Get_NMotorCnt(),NM,10))+",     NOrders: "+string(itoa(R[2].GetNOrdCnt(),NOrd,10));			
- 	string RV3 =",     VMotors: "+string(itoa(R[2].Get_VMotorCnt(),VM,10))+",     VOrders: "+string(itoa(R[2].GetVOrdCnt(),VOrd,10));		
-	string RF3 =",     FMotors: "+string(itoa(R[2].Get_FMotorCnt(),FM,10))+",     FOrders: "+string(itoa(R[2].GetFOrdCnt(),FOrd,10));		
-	string RN4 ="RegionD   NMotors: "+string(itoa(R[3].Get_NMotorCnt(),NM,10))+",     NOrders: "+string(itoa(R[3].GetNOrdCnt(),NOrd,10));			
-	string RV4 =",     VMotors: "+string(itoa(R[3].Get_VMotorCnt(),VM,10))+",     VOrders: "+string(itoa(R[3].GetVOrdCnt(),VOrd,10));			
-	string RF4 =",     FMotors: "+string(itoa(R[3].Get_FMotorCnt(),FM,10))+",     FOrders: "+string(itoa(R[3].GetFOrdCnt(),FOrd,10));
-	string R1ALL =  "RegionA [Nord:"+string(itoa(NServedOrd[0],NM,10))+",Vord:" +string(itoa(VServedOrd[0],NM,10))+",Ford :" +string(itoa(FServedOrd[0],NM,10))+"]";
-	string R2ALL =  " , RegionB [Nord:" +string(itoa(NServedOrd[1],NM,10))+",Vord:" +string(itoa(VServedOrd[1],NM,10))+",Ford:" +string(itoa(FServedOrd[1],NM,10))+"]";
-	string R3ALL =  " , RegionC [Nord:" +string(itoa(NServedOrd[2],NM,10))+",Vord:" +string(itoa(VServedOrd[2],NM,10))+",Ford:" +string(itoa(FServedOrd[2],NM,10))+"]";
-	string R4ALL =  " , REgionD [Nord:" +string(itoa(NServedOrd[3],NM,10))+",Vord:" +string(itoa(VServedOrd[3],NM,10))+",Ford:" +string(itoa(FServedOrd[3],NM,10))+"]";
-	pGUI->PrintMessage(RN1+RV1+RF1+assignedA, RN2+RV2+RF2+assignedB, RN3+RV3+RF3+assignedC, RN4+RV4+RF4+assignedD, R1ALL+R2ALL+R3ALL+R4ALL);
+	string RN[REG_CNT], RV [REG_CNT], RF[REG_CNT], RALL[REG_CNT];
+	for (int i = 0; i < REG_CNT; i++)
+	{
+		RN[i] = "NMotors: "+to_string(R[i].Get_NMotorCnt())+",     NOrders: "+to_string(R[i].GetNOrdCnt());
+		RV[i] = ",     VMotors: "+to_string(R[i].Get_VMotorCnt())+",     VOrders: "+to_string(R[i].GetVOrdCnt());
+		RF[i] = ",     FMotors: "+to_string(R[i].Get_FMotorCnt())+",     FOrders: "+to_string(R[i].GetFOrdCnt());
+		RALL[i] = "[Nord:"+to_string(NServedOrd[i])+ ", Ford :" +to_string(FServedOrd[i]) +", Vord:" +to_string(VServedOrd[i])+"]";
+	}			
+	string msg0 = "RegionA   " + RN[0] + RV[0] + RF[0] + assigned[0];
+	string msg1 = "RegionB   " + RN[1] + RV[1] + RF[1] + assigned[1];
+	string msg2 = "RegionC   " + RN[2] + RV[2] + RF[2] + assigned[2];
+	string msg3 = "RegionD   " + RN[3] + RV[3] + RF[3] + assigned[3];
+
+	string msg4 = "Served orders so far: RegionA " + RALL[0] + ",  RegionB " + RALL[1] +",  RegionC " + RALL[2] +",  RegionD " + RALL[3];
+	pGUI->PrintMessage(msg0, msg1, msg2, msg3, msg4);
 
 }
 
