@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 GUI::GUI()
 {
-	pWind = new window(WindWidth +15,WindHeight,0,0); 
+	pWind = new window(WindWidth +15,WindHeight,-13,0); 
 	pWind->ChangeTitle("The Restautant");
 
 	OrderCount = 0;

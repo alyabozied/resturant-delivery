@@ -335,6 +335,7 @@ bool Restaurant::RestUpdate(string timestep, string actions)
 		bool check = LoadGUI();
 		pGUI->UpdateInterface();
 		pGUI->DrawTimeStepCenter(timestep);
+		pGUI->CreateDrawToolBar();
 		PrintStatusBar(actions);
 		return check;
 }
