@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 GUI::GUI()
 {
-	pWind = new window(WindWidth +15,WindHeight,-13,0); 
+	pWind = new window(WindWidth +15,WindHeight, -13,5); 
 	pWind->ChangeTitle("The Restautant");
 
 	OrderCount = 0;
@@ -28,11 +28,98 @@ GUI::~GUI()
 //////////////////////////////////////////////////////////////////////////////////////////
 // ================================== INPUT FUNCTIONS ====================================
 //////////////////////////////////////////////////////////////////////////////////////////
+bool GUI::waitForClick(Restaurant *R, milliseconds t) const
+{
+	int x,y;
+	using namespace std::chrono;
+	milliseconds ms = duration_cast <milliseconds> (system_clock::now().time_since_epoch());
+	if(pWind->WaitMouseClick(x, y, t) == NO_CLICK)
+		return false;	//Wait for mouse click
+	//[1] If user clicks on the Toolbar
+	if ( y >= 0 && y < MenuBarHeight)
+		{	
+			//Check whick Menu item was clicked
+			//==> This assumes that menu items are lined up horizontally <==
+			int ClickedItemOrder = (x / MenuItemWidth);
+			//Divide x coord of the point clicked by the menu item width (int division)
+			//if division result is 0 ==> first item is clicked, if 1 ==> 2nd item and so on
+			GUI*G ;
+			G=R->GetGUI();
+			Restaurant* Rnew;
+			switch (ClickedItemOrder)
+			{
+			case MODE_INTR: 
+				ClearDrawingArea();
+				DrawRestArea();
+				Rnew = new Restaurant(G);
+				Rnew->Simulate(MODE_INTR);
+				delete Rnew;
+				return true; 
+			case MODE_STEP: 
+				ClearDrawingArea();
+				DrawRestArea();
+				Rnew = new Restaurant(G);
+				Rnew->Simulate(MODE_STEP);
+				delete Rnew;
+				return true;
+			case MODE_SLNT:  
+				ClearDrawingArea();
+				DrawRestArea();
+				Rnew = new Restaurant(G);
+				Rnew->Silent();
+				delete Rnew;
+				return true;
+			case MODE_EXIT: 
+				return true;
+			default: return false ;	//A click on empty place in desgin toolbar
+			}
+		}
 
-void GUI::waitForClick() const
+	return false ;
+}
+
+
+bool GUI::waitForClick(Restaurant *R) const
 {
 	int x,y;
 	pWind->WaitMouseClick(x, y);	//Wait for mouse click
+	//[1] If user clicks on the Toolbar
+	if ( y >= 0 && y < MenuBarHeight)
+		{	
+			//Check whick Menu item was clicked
+			//==> This assumes that menu items are lined up horizontally <==
+			int ClickedItemOrder = (x / MenuItemWidth);
+			//Divide x coord of the point clicked by the menu item width (int division)
+			//if division result is 0 ==> first item is clicked, if 1 ==> 2nd item and so on
+			GUI*G ;
+			ClearDrawingArea();
+			DrawRestArea();
+			G=R->GetGUI();
+			Restaurant* Rnew;
+			switch (ClickedItemOrder)
+			{
+			case MODE_INTR: 
+				Rnew = new Restaurant(G);
+				Rnew->Simulate(MODE_INTR);
+				delete Rnew;
+				return true; 
+			case MODE_STEP: 
+				Rnew = new Restaurant(G);
+				Rnew->Simulate(MODE_STEP);
+				delete Rnew;
+				return true;
+			case MODE_SLNT:  
+				Rnew = new Restaurant(G);
+				Rnew->Silent();
+				delete Rnew;
+				return true;
+			case MODE_EXIT: 
+				return true;
+			default: return false ;	//A click on empty place in desgin toolbar
+			}
+		}
+
+	return false ;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 string GUI::GetString() const 
@@ -230,13 +317,13 @@ void GUI::DrawRestArea() const
 	pWind->SetPen(ROYALYELLOW, 2);
 	pWind->DrawLine(0,MenuBarHeight, WindWidth, MenuBarHeight);
 	// 1- Drawing the Circle of the Rest
-	pWind->SetPen(DARKBLUE, 3);
+	pWind->SetPen(VIOLETYELL, 3);
 	pWind->SetBrush(ETSHAWY);
 	pWind->DrawCircle(WindWidth/2, YHalfDrawingArea,RegionCircle);
 
 	// 2- Drawing the 2 crossed lines (for making 4 regions)
 
-	pWind->SetPen(DARKBLUE, 3);
+	pWind->SetPen(VIOLETYELL, 3);
 	pWind->DrawLine(0, YHalfDrawingArea, WindWidth, YHalfDrawingArea);
 	pWind->DrawLine(WindWidth/2, MenuBarHeight, WindWidth/2, WindHeight-StatusBarHeight);
 
@@ -252,8 +339,8 @@ void GUI::DrawRestArea() const
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), YHalfDrawingArea + 5*L/12, "C"); 
 
 	// 4- Drawing circle to count the current step
-	pWind->SetPen(DARKBLUE, 3);
-	pWind->SetBrush(YELLOW);
+	pWind->SetPen(VIOLETYELL, 3);
+	pWind->SetBrush(ORANGE);
 	pWind->DrawCircle(WindWidth/2, YHalfDrawingArea, TimestepCircleRaidus);
 
 }

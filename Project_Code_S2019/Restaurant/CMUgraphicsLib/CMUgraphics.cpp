@@ -558,6 +558,29 @@ clicktype window::WaitMouseClick(int &iX, int &iY) {
 	}
 }
 
+clicktype window::WaitMouseClick(int &iX, int &iY,milliseconds t) {
+	
+	mqueuenode* mqueTmp;
+    clicktype ctTmp;
+	while(true) {
+		milliseconds t2 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+		long flag = t2.count() - t.count();
+		if( flag > 50)
+			return NO_CLICK;
+        ProcessMessage(); // Kludge
+
+	    mqueTmp = mqueInput.Remove();
+	    if(mqueTmp != NULL) {
+	        iX = mqueTmp->iX;
+		    iY = mqueTmp->iY;
+            ctTmp = mqueTmp->ctInfo;
+
+		    delete mqueTmp;
+		    return ctTmp;
+		}
+	}
+}
+
 keytype window::WaitKeyPress(char &cKey) {
 
 	kqueuenode* kqueTmp;

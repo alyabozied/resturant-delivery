@@ -1,6 +1,6 @@
 #ifndef __RESTAURANT_H_
 #define __RESTAURANT_H_
-
+#include <chrono>
 #include "..\CMUgraphicsLib\CMUgraphics.h"
 #include "..\Generic_DS\Queue.h"
 #include "..\Events\Event.h"
@@ -11,7 +11,8 @@
 #include "..\Defs.h"
 #include "Order.h"
 
-
+using namespace std::chrono;
+class GUI;
 class OutputFile;
 // it is the maestro of the project
 class Restaurant  
@@ -28,7 +29,7 @@ private:
 	int FServedOrd[4];						//counter to whole Frozen for each region
 	int VServedOrd[4];						//counter to whole VIP for each region
 public:
-	Restaurant();
+	Restaurant(GUI* = nullptr);
 	~Restaurant();
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +40,7 @@ public:
 	Region* GetRegion(int);
 	void SetTimeTir(int);
 	void SetTimeDam(int);
-
+	GUI* GetGUI() const;
 
 	void AddEvent(Event* pE);				//adds a new event to the queue of events
 	void ExecuteEvents(int TimeStep);		//executes all events at current timestep
@@ -50,7 +51,7 @@ public:
 	////////////////////////////////////////////////////////////////////////////////
 	//								Mode functions							      //
 	////////////////////////////////////////////////////////////////////////////////
-	void wait(PROG_MODE);
+	bool wait(PROG_MODE);
 	void Simulate(PROG_MODE);					//The interactive and step by step modes function
 	void Silent();								// Silent mode function
 

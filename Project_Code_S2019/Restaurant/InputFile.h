@@ -7,7 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-
+class GUI;
 class InputFile
 {
 	string FileName;

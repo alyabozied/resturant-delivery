@@ -5,18 +5,21 @@ This file was last modified on 05.16.1999
 
 #ifndef CMUGRAPHICS_H
 #define CMUGRAPHICS_H
+#include <chrono>
 #include <string>
 #ifndef WINDOWS_H
   #define WINDOWS_H
   #include <windows.h>
 #endif //WINDOWS_H
-
+#include <time.h>
+#include <ctime>
 #include "mousequeue.h"
 #include "keyqueue.h"
 #include "image.h"
 #include "colors.h"
 #include "version.h"
 
+using namespace std::chrono;
 // Aproximate value of Pi, used in some calculations
 const double cdPi = 3.141592653589793238462643383279;
 
@@ -189,7 +192,7 @@ class window {
     // if there is a mouse click event in the queue, otherwise
     // it will wait for one
 	clicktype WaitMouseClick(int &iX, int &iY);
- 	  
+	clicktype WaitMouseClick(int &iX, int &iY, milliseconds);  
     // Removes the next keyboard event from the queue
     // stuffs the key value into ucKey, and returns the
     // type of key that was pressed    

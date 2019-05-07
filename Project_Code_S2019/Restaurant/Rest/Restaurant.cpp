@@ -21,9 +21,9 @@
 using namespace std;
 
 
-Restaurant::Restaurant() 
+Restaurant::Restaurant(GUI* p) 
 {
-	pGUI = NULL;
+	pGUI = p;
 	for (int i = 0; i < REG_CNT; i++)
 	{
 		 NServedOrd[i] = 0;
@@ -31,6 +31,8 @@ Restaurant::Restaurant()
 		 VServedOrd[i] = 0;
 	}
 }
+
+
 
 void Restaurant::RunSimulation()
 {
@@ -53,12 +55,26 @@ void Restaurant::RunSimulation()
 
 }
 
-void Restaurant::wait(PROG_MODE mode)
+bool Restaurant::wait(PROG_MODE mode)
 {
 	if(mode == MODE_INTR)		   // Waiting to show changes before assigning motorcycles to orders
-		pGUI->waitForClick();
-	else
-		Sleep(1000);
+	{
+		if(pGUI->waitForClick(this))
+			return true;
+		return false;
+	}
+	else if(mode == MODE_STEP)
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			if(pGUI->waitForClick(this, duration_cast< milliseconds >(system_clock::now().time_since_epoch())))
+				return true;
+			else
+				Sleep(45);
+		}
+		return false;
+	}
+		
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,6 +92,8 @@ Region* Restaurant::GetRegion(int index){ return &R[index]; }
 void Restaurant::SetTimeDam(int t){ TimeDam = t ;}
 
 void Restaurant::SetTimeTir(int t ){  TimeTir = t;}
+
+GUI* Restaurant::GetGUI()const{return pGUI;}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
@@ -151,9 +169,11 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 		ExecuteEvents(currstep);
 		_itoa_s(currstep,timestep,10);
 
-		wait(mode);						                // Waiting according to the mode of the simulation
+		if(wait(mode))
+			return;						                // Waiting according to the mode of the simulation
 		RestUpdate(timestep, PrintAssigned);		    // Updates the interface 
-		wait(mode);
+		if(wait(mode))
+			return;
 		AssignOrders(currstep, PrintAssigned);		   //Assign the order whose time has come
 		FlagOrd= RestUpdate(timestep, PrintAssigned);  //Updates the interface and sets the order flag
 		PrintAssigned = "";
@@ -205,7 +225,7 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 	Out.PrintStatstics();	
 
 	pGUI->PrintMessage("Simulation done, click to END program");
-	pGUI->waitForClick();
+	pGUI->waitForClick(this);
 
 }
 
@@ -271,7 +291,7 @@ void Restaurant::Silent()
 	}
 		Out.PrintStatstics();	
 		pGUI->PrintMessage("Simulation done, click any where to close the program.");
-		pGUI->waitForClick();
+		pGUI->waitForClick(this);
 }
 
 
@@ -312,7 +332,7 @@ void Restaurant::PrintStatusBar(string actions)
 	string msg0 = "RegionA   " + RN[0] + RV[0] + RF[0] + assigned[0];
 	string msg1 = "RegionB   " + RN[1] + RV[1] + RF[1] + assigned[1];
 	string msg2 = "RegionC   " + RN[2] + RV[2] + RF[2] + assigned[2];
-	string msg3 = "RegionD   " + RN[3] + RV[3] + RF[3] + assigned[3];
+	string msg3 = "RegionD   " + RN[3] + RV[3] + RF[3] + " " + assigned[3];
 
 
 	// to store the number of served orders for each region
@@ -439,5 +459,7 @@ void Restaurant::AssignOrders(int timestep, string& s)
 
 Restaurant::~Restaurant()
 {
+	if(pGUI)
 		delete pGUI;
 }
+

@@ -5,6 +5,7 @@
 
 #include "..\Rest\Order.h"
 #include <string>
+#include"..\Rest\Restaurant.h"
 using namespace std;
 class GUI
 {
@@ -85,7 +86,8 @@ public:
 	~GUI();
 
 	// Input Functions  ---------------------------
-	void waitForClick() const;	// waits a user click from the user
+	bool waitForClick(Restaurant * R) const;	// waits a user click from the user
+	bool waitForClick(Restaurant * R, milliseconds) const;
 	string GetString() const ; // reads a string (keyboard input) from the user
 
 	// Output Functions  ---------------------------
