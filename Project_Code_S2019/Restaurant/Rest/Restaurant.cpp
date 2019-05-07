@@ -69,7 +69,7 @@ void Restaurant::wait(PROG_MODE mode)
 
 int Restaurant::GetAutoProm()const{ return AutoProm; }
 
-void Restaurant::SetAutoProm(int x){ AutoProm = AutoProm > 0 ? AutoProm : 10; }
+void Restaurant::SetAutoProm(int x){ AutoProm = x > 0 ? x : 10; }
 
 Region* Restaurant::GetRegion(int index){ return &R[index]; }
 
@@ -154,7 +154,6 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 		wait(mode);						                // Waiting according to the mode of the simulation
 		RestUpdate(timestep, PrintAssigned);		    // Updates the interface 
 		wait(mode);
-
 		AssignOrders(currstep, PrintAssigned);		   //Assign the order whose time has come
 		FlagOrd= RestUpdate(timestep, PrintAssigned);  //Updates the interface and sets the order flag
 		PrintAssigned = "";
@@ -193,9 +192,12 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 		for (int i = 0; i < 4; i++)
 		{
 			FlagunAssign[i] = R[i].UnAssignMotors(currstep);
-			R[i].Promote(AutoProm, currstep);
 		}
 		currstep++;
+		for (int i = 0; i < REG_CNT; i++)
+		{
+			R[i].Promote(AutoProm, currstep);
+		}
 	}
 		PrintAssigned = "";  
 	
@@ -243,7 +245,6 @@ void Restaurant::Silent()
 		for (int i = 0; i < 4; i++)
 		{
 			FlagunAssign[i] = R[i].UnAssignMotors(currstep);
-			R[i].Promote(AutoProm, currstep);
 		}
 		bool FlagPrint = true;
 
@@ -263,6 +264,10 @@ void Restaurant::Silent()
 				FlagPrint = false;
 		}
 		currstep++;
+		for (int i = 0; i < REG_CNT; i++)
+		{
+			R[i].Promote(AutoProm, currstep);
+		}
 	}
 		Out.PrintStatstics();	
 		pGUI->PrintMessage("Simulation done, click any where to close the program.");

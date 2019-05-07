@@ -444,7 +444,7 @@ void Region::recovered(int timestep)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //																							  //
-//					functions to Assign an order to motorcylce      						  //
+//					functions to return motors to restaurant after delivery      			  //
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -575,6 +575,5 @@ void Region::AppendString(string& s, Order* O, Motorcycle* M)
 
 Region::~Region(void)
 {
-	Order*tmp;
 	DeleteMotors();
 }
