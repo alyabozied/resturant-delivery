@@ -1,6 +1,8 @@
 #ifndef __RESTAURANT_H_
 #define __RESTAURANT_H_
 #include <chrono>
+#include <Windows.h>
+#include <mmsystem.h>
 #include "..\CMUgraphicsLib\CMUgraphics.h"
 #include "..\Generic_DS\Queue.h"
 #include "..\Events\Event.h"
@@ -46,7 +48,7 @@ public:
 	void ExecuteEvents(int TimeStep);		//executes all events at current timestep
 	void RunSimulation();					//prompt the user to choose the mode to start the simulation
 	bool ReadFile();						//function to read input from a file
-	void AssignOrders(int, string&);		//delete the order which should be deleted in the current time step
+	void AssignOrders(int, string&, bool&);		//delete the order which should be deleted in the current time step
 
 	////////////////////////////////////////////////////////////////////////////////
 	//								Mode functions							      //

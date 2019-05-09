@@ -62,6 +62,7 @@ bool Restaurant::wait(PROG_MODE mode)
 		if(pGUI->waitForClick(this))
 			return true;
 		return false;
+		
 	}
 	else if(mode == MODE_STEP)
 	{
@@ -162,10 +163,10 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 
 	//flag to check if there is still an order not served so simulation doesn't stop
 	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
-	
+	bool assignedSound = false;
 	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
 	{
-		
+		assignedSound = false;
 		ExecuteEvents(currstep);
 		_itoa_s(currstep,timestep,10);
 
@@ -174,7 +175,10 @@ void Restaurant::Simulate(PROG_MODE mode)    // Interactive mode
 		RestUpdate(timestep, PrintAssigned);		    // Updates the interface 
 		if(wait(mode))
 			return;
-		AssignOrders(currstep, PrintAssigned);		   //Assign the order whose time has come
+		
+		AssignOrders(currstep, PrintAssigned, assignedSound);		   //Assign the order whose time has come
+		if(assignedSound)
+			PlaySound(TEXT("../Motor.wav"),NULL,SND_ASYNC);
 		FlagOrd= RestUpdate(timestep, PrintAssigned);  //Updates the interface and sets the order flag
 		PrintAssigned = "";
 
@@ -239,7 +243,7 @@ void Restaurant::Silent()
 
 	//flag to check if there is still an order not served so simulation doesn't stop
 	bool FlagOrd=true,FlagunAssign[4]={true,true,true,true};
-	
+	bool assignSound = false;
 	while(!EventsQueue.isEmpty() || FlagOrd || FlagunAssign[0] || FlagunAssign[1] || FlagunAssign[2] || FlagunAssign[3])
 	{
 		ExecuteEvents(currstep);
@@ -258,7 +262,8 @@ void Restaurant::Silent()
 		
 		//Assign the order whose time has come
 		string tmp;
-		AssignOrders(currstep, tmp);
+		
+		AssignOrders(currstep, tmp, assignSound);
 
 		//update the interface after deleting the orders whose time has come
 		//FlagOrd=LoadGUI();
@@ -430,7 +435,7 @@ bool Restaurant::LoadGUI()
 //																							  //	
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Restaurant::AssignOrders(int timestep, string& s)
+void Restaurant::AssignOrders(int timestep, string& s, bool& Snd)
 {
 	for (int i = 0; i < 4; i++)
 	{
@@ -443,15 +448,18 @@ void Restaurant::AssignOrders(int timestep, string& s)
 
 		// start with assigning vip order in each region if exists to a motorcycle
 		if(R[i].GetVOrdCnt())
-			R[i].AssignOrdVMotor(timestep,TimeDam,TimeTir, &ServedOrder, s);
+			if(R[i].AssignOrdVMotor(timestep,TimeDam,TimeTir, &ServedOrder, s) || Snd)
+				Snd = true;
 
 		//then frozen order in each region in case exists to a frozen motorcycle 
 		 if(!R[i].FOrdisEmpty())
-			R[i].AssignOrdFMotor(timestep,TimeDam,TimeTir, &ServedOrder, s);
+			 if(R[i].AssignOrdFMotor(timestep,TimeDam,TimeTir, &ServedOrder, s) || Snd)
+				 Snd = true;
 
 		//Assign first waiting Normal order in each region case exists to a Motorcycle 
 		if(R[i].GetNOrdCnt())
-			R[i].AssignOrdNMotor(timestep,TimeDam,TimeTir, &ServedOrder, s);
+			if(R[i].AssignOrdNMotor(timestep,TimeDam,TimeTir, &ServedOrder, s) || Snd)
+				Snd = true;
 		s += " ";
 	}
 
@@ -460,6 +468,9 @@ void Restaurant::AssignOrders(int timestep, string& s)
 Restaurant::~Restaurant()
 {
 	if(pGUI)
+	{
 		delete pGUI;
+		pGUI = nullptr;
+	}
 }
 
